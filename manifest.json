@@ -1,0 +1,22 @@
+{
+  "manifest_version": 2,
+  "name": "Stacked",
+  "version": "0.1",
+  "permissions": [
+    "tabs",
+    "storage"
+  ],
+  "browser_action": {
+    "default_icon": "poop.png",
+    "default_popup": "popup.html"
+  },
+  "content_scripts": [
+    {
+    "matches": ["http://*/*", "https://*/*"],
+    "js": ["jquery-2.1.4.min.js","content.js"]
+  }
+  ],
+  "background": {
+    "scripts": ["background.js"]
+  }
+}
