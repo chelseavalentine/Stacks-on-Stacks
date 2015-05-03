@@ -7,53 +7,74 @@
 	margin: 0;
 }
 
+.header {
+	background-color: $grey200;
+	display: block;
+	top: 0;
+	left: 0;
+	width: 100%;
+	position: fixed;
+	box-shadow: 0 0 6px 1px rgba(0,0,0,0.18);
+	z-index: 2;
+}
+
 body {
 	@extend .remove;
-	height: 100%;
-	width: 100%;
-	background: $grey50;
-	padding-top: 100px;
-	padding-bottom: 100px;
+	display: block;
+	width: 350px;
+	height: 600px;
+	background: $grey100;
 	z-index: 1;
 }
 
 .container{
 	@extend .remove;
-	max-width: 1000px;
-	width: 95%;
-	min-width: 600px;
-	background-color: white;
-	z-index: 2;
-	margin-top: 50px;
-	padding-bottom: 50px;
-	text-align: left;
-	box-shadow: 0 0 6px 1px rgba(0,0,0,0.18);
+	position: relative;
+	width: 90%;
+	margin-top: 70px;
+	text-align: left;	
 }
 
-.standalone{
-	@extend .container;
-	padding-bottom: 0;
-}
-
-.holder{
-	@extend .standalone;
-	box-shadow: none;
-	background-color: transparent;
-}
-
-.mainContent {
-	display: relative;
-	width: 95%;
-	text-align: left;
-}
-
-.flexSpace {
-	display: flex;
-	justify-content: space-around;
-	flex-wrap: wrap;
-}
-
-.title{
-	@extend .remove;
+.project {
 	width: 100%;
+	box-shadow: 0 0 6px 1px rgba(0,0,0,0.08);
+	margin-bottom: 20px;
+}
+
+.projectHeader {
+	background-color: $cyan500;
+	width: 100%;
+}
+
+.projectTitle {
+	text-align: center;
+	color: $white;
+	font-size: 1.2em;
+	font-weight: 600;
+	padding: 5px;
+}
+
+.title {
+	background-color: $grey50;
+	border-bottom: 1px solid $grey300;
+	width: 100%;
+}
+
+.questionTitle{
+	font-size: 0.9em;
+	padding: 5px;
+	font-weight: 600;
+	cursor: crosshair;
+	display: inline-block;
+}
+
+.answer {
+	width: 100%;
+	background-color: $white;
+	display: none;
+}
+
+.answerText {
+	font-size: 0.9em;
+	padding: 5px;
 }

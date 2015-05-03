@@ -1,7 +1,7 @@
 @import 'color';
 
 .font{
-	font-family: 'Roboto', 'Noto Sans', sans-serif;
+	font-family: Consolas, 'Noto Sans', sans-serif;
 	text-align: left;
 	margin-top: 0;
 	margin-bottom: 0;
@@ -10,8 +10,6 @@
 
 .header{
 	@extend .font;
-	padding-top: 20px;
-	padding-bottom: 10px;
 	color: $grey700;
 	font-weight: 400;
 }
@@ -28,28 +26,29 @@ body{
 
 h1{
 	@extend .header;
-	font-size: 7em;
+	font-size: 1.75em;
 	display: inline-block;
 	font-weight: 700;
-	padding: 20px;
-	color: $cyan400;
+	color: $grey800;
+	padding: 10px;
+
 }
 
 h2{
 	@extend .header;
-	font-size: 4em;
+	font-size: 1.75em;
 	font-weight: 600;
 }
 
 h3{
 	@extend .header;
-	font-size: 3em;
+	font-size: 1.25em;
 	font-weight: 600;
 }
 
 h4{
 	@extend .header;
-	font-size: 2em;
+	font-size: 1em;
 	font-weight: 500;
 }
 
@@ -65,22 +64,19 @@ h6{
 
 p{
 	@extend .text;
-	font-size: 1em;
-	line-height: 200%;
 }
 
 button{
 	@extend .text;
 	@extend .remove;
 	font-size: 1em;
-	font-weight: 500;
+	font-weight: 400;
 	text-transform: uppercase;
 	padding: 7px;
 	border: none;
 	min-width: 85px;
-	background-color: $lightgreen500;
+	background-color: $grey800;
 	color: white;
-	
 	text-align: center;
 	cursor: pointer;
 }

@@ -2,12 +2,27 @@
 @import 'page';
 @import 'font';
 
-body {
-	background-color: green;
-	width: 350px;
-	height: 600px;
-	display: block;
-	border: solid 2px black;
-	padding: 0;
-	margin: 0;
+
+.admin {
+	position: fixed;
+	z-index: 4;
+	top: 555px;
+	left: 300px;
+	opacity: 0.9;
+}
+
+#edit {
+	left: 160px;
+}
+
+#create {
+	left: 255px;
+}
+
+.icon {
+	height: 16px;
+	vertical-align: text-top;
+	float: right;
+	margin-top: 5px;
+	margin-right: 5px;
 }

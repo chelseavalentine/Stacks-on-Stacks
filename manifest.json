@@ -1,6 +1,6 @@
 {
   "manifest_version": 2,
-  "name": "Stacked",
+  "name": "Stacks on Stacks",
   "version": "0.1",
   "permissions": [
     "tabs",
@@ -9,6 +9,7 @@
     "https://ajax.googleapis.com/"
   ],
   "browser_action": {
+    "default_title": "Stacks on Stacks",
     "default_icon": "duck.png",
     "default_popup": "popup.html"
   },
@@ -18,7 +19,8 @@
       "js": [
         "scripts/jquery.min.js",
         "scripts/content.js",
-        "scripts/custom.js"
+        "scripts/custom.js",
+        "scripts/stylishjs.js"
       ]
     }
   ],
