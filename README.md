@@ -1,4 +1,4 @@
-# Stacked
+# Stacks on Stacks
 
 ### Next steps:
 
@@ -17,5 +17,4 @@ Key features:
 - timer for 2-hr block
 - allow graphical UI for user to move around
 - allow user to name each collection
-
 

@@ -1,0 +1,59 @@
+@import 'color';
+
+.remove{
+	position: relative;
+	top: 0;
+	left: 0;
+	margin: 0;
+}
+
+body {
+	@extend .remove;
+	height: 100%;
+	width: 100%;
+	background: $grey50;
+	padding-top: 100px;
+	padding-bottom: 100px;
+	z-index: 1;
+}
+
+.container{
+	@extend .remove;
+	max-width: 1000px;
+	width: 95%;
+	min-width: 600px;
+	background-color: white;
+	z-index: 2;
+	margin-top: 50px;
+	padding-bottom: 50px;
+	text-align: left;
+	box-shadow: 0 0 6px 1px rgba(0,0,0,0.18);
+}
+
+.standalone{
+	@extend .container;
+	padding-bottom: 0;
+}
+
+.holder{
+	@extend .standalone;
+	box-shadow: none;
+	background-color: transparent;
+}
+
+.mainContent {
+	display: relative;
+	width: 95%;
+	text-align: left;
+}
+
+.flexSpace {
+	display: flex;
+	justify-content: space-around;
+	flex-wrap: wrap;
+}
+
+.title{
+	@extend .remove;
+	width: 100%;
+}

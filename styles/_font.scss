@@ -1,0 +1,134 @@
+@import 'color';
+
+.font{
+	font-family: 'Roboto', 'Noto Sans', sans-serif;
+	text-align: left;
+	margin-top: 0;
+	margin-bottom: 0;
+	padding: 0;
+}
+
+.header{
+	@extend .font;
+	padding-top: 20px;
+	padding-bottom: 10px;
+	color: $grey700;
+	font-weight: 400;
+}
+
+.text{
+	@extend .font;
+	font-weight: 400;
+}
+
+body{
+	@extend .text;
+	font-size: 1em;
+}
+
+h1{
+	@extend .header;
+	font-size: 7em;
+	display: inline-block;
+	font-weight: 700;
+	padding: 20px;
+	color: $cyan400;
+}
+
+h2{
+	@extend .header;
+	font-size: 4em;
+	font-weight: 600;
+}
+
+h3{
+	@extend .header;
+	font-size: 3em;
+	font-weight: 600;
+}
+
+h4{
+	@extend .header;
+	font-size: 2em;
+	font-weight: 500;
+}
+
+h5{
+	@extend .header;
+	font-size: 1.5em;
+}
+
+h6{
+	@extend .header;
+	font-size: 1.25em;
+}
+
+p{
+	@extend .text;
+	font-size: 1em;
+	line-height: 200%;
+}
+
+button{
+	@extend .text;
+	@extend .remove;
+	font-size: 1em;
+	font-weight: 500;
+	text-transform: uppercase;
+	padding: 7px;
+	border: none;
+	min-width: 85px;
+	background-color: $lightgreen500;
+	color: white;
+	
+	text-align: center;
+	cursor: pointer;
+}
+
+.raised {
+	box-shadow: 0 0 4px 1px rgba(0,0,0,0.25);
+}
+
+//Special text
+b{
+	@extend .text;
+	font-weight: 500;
+	text-transform: uppercase;
+}
+
+b.no{
+	text-transform: none;
+	font-weight: 600;
+}
+
+a{
+	@extend .font;
+}
+
+//Links
+a:link, a:visited{
+	color: $cyan500;
+	text-decoration: none;
+}
+a:hover, a:active{
+	color: $grey800;
+	text-decoration: underline;
+}
+
+a.no:link, a.no:visited{
+	color: inherit;
+	text-decoration: none;
+}
+
+a.no:hover, a.no:active{
+	text-decoration: underline;
+}
+
+a.lessonLink:link, a.lessonLink:visited{
+	color: inherit;
+	text-decoration: none;
+}
+
+a.lessonLink:hover, a.lessonLink:active{
+	text-decoration: none;
+}

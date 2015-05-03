@@ -1,0 +1,13 @@
+@import 'color';
+@import 'page';
+@import 'font';
+
+body {
+	background-color: green;
+	width: 350px;
+	height: 600px;
+	display: block;
+	border: solid 2px black;
+	padding: 0;
+	margin: 0;
+}

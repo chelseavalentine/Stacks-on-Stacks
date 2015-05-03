@@ -1,7 +1,7 @@
 function getLink(){
    return chrome.storage.local.get('value', function(items) {
     if(!chrome.runtime.error) {
-      $("<a href='" + items.url + "' target='_blank'><p>" + items.question + "</p></a>").appendTo("body");
+      $("<a href='" + items.value + "' target='_blank'><p>" + items.value + "</p></a>").appendTo("body");
        console.log(items);
     }
    });

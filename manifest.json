@@ -9,7 +9,7 @@
     "https://ajax.googleapis.com/"
   ],
   "browser_action": {
-    "default_icon": "poop.png",
+    "default_icon": "duck.png",
     "default_popup": "popup.html"
   },
   "content_scripts": [
