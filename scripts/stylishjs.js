@@ -1,13 +1,4 @@
 //If you click a question's title, the best answer will be shown
-$(".title").click(function() {
-   	$(this).next().toggle(0);
-   	// console.log("clicked");
-})
-
-$(".deleteIcon").click(function() {
-	$(this).parent().text('derp');
-	alert("hi");
-})
 
 
 //If you click a project's title, the questions are hidden

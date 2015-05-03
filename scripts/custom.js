@@ -31,7 +31,9 @@ function deleteLink(link) {
     for (var i = 0; i < item['data'].length; i++ ) {
       if (link === JSON.stringify(item['data'][i]['link'])) {
         // found object to delete from storage
+        console.log(item['data']);
         item['data'].splice(i, 1);
+        console.log(item['data']);
         found = true;
         break;
       }
@@ -47,8 +49,6 @@ function deleteLink(link) {
   });
 }
 
-$("")
-
 
 function getAllLinks(){
   return chrome.storage.local.get(null, function(items) {
@@ -61,44 +61,26 @@ function getAllLinks(){
         var newQuestion = question.substring(1, 30) + "...";
 
 
-        var thing = $('<div class="question" id="question' + i +'"><div class="title"><p class="questionTitle">' + newQuestion + '</p><a href="' + link + '"><img src="images/go.svg" class="icon"></a></div></div>').appendTo(document.getElementsByClassName('questions')[0]);
         
-        (function(i, thing){
+        (function(i, link){
+          $('<div class="question" id="question' + i +'"><div class="title"><p class="questionTitle">' + newQuestion + '</p><a target="_blank" href=' + link + '><img src="images/go.svg" class="icon"></a></div></div>').appendTo(document.getElementsByClassName('questions')[0]);
           $('<img src="/images/delete.svg" class="icon deleteIcon"></div>').appendTo(document.getElementsByClassName('title')[i]).click(function() {
             var deleteTest;
             chrome.storage.local.get(null, function(item) { 
-              deleteTest = JSON.stringify(item['data'][i]['link']);
-              console.log(deleteTest);
-              deleteLink(deleteTest);
               $("#question" + i).remove();
+              deleteLink(link);
             });
-            alert("hi");
-
           });          
-        })(i, thing);
+        })(i, link);
 
       }
     }
   });
 }
 
-// $(".title").click(function() {
-//   alert("clicked");
-//   var currentURL = window.location.href.toString();
-//   if (!(currentURL.indexOf("stackoverflow") >= 0)) {
-//     $(this).next().toggle(0);
-//   }
-// })
 
 $(function(){
   checkIfInitialized();
-    // checking delete
-  // var deleteTest;
-  // chrome.storage.local.get(null, function(item) { 
-  //   deleteTest = JSON.stringify(item['data'][0]['link']);
-  //   console.log(deleteTest);
-  //   deleteLink(deleteTest);
-  // });
 })
 
 //Style javascript
