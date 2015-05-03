@@ -31,7 +31,7 @@ function deleteLink(link) {
     for (var i = 0; i < item['data'].length; i++ ) {
       if (link === JSON.stringify(item['data'][i]['link'])) {
         // found object to delete from storage
-        item['data'].splice(i, i+1);
+        item['data'].splice(i, 1);
         found = true;
         break;
       }
@@ -47,6 +47,7 @@ function deleteLink(link) {
   });
 }
 
+$("")
 
 
 function getAllLinks(){
@@ -57,59 +58,39 @@ function getAllLinks(){
         // var newLink = link.substring(1, link.length-1);
 
         var question =  JSON.stringify(items['data'][i]['question']);
-        var newQuestion = question.substring(1, 36) + "...";
+        var newQuestion = question.substring(1, 30) + "...";
 
-        var divQuestion = document.createElement("div");
-        divQuestion.className = "question";
+
+        var thing = $('<div class="question" id="question' + i +'"><div class="title"><p class="questionTitle">' + newQuestion + '</p><a href="' + link + '"><img src="images/go.svg" class="icon"></a></div></div>').appendTo(document.getElementsByClassName('questions')[0]);
         
-        var divTitle = document.createElement("div");
-        divTitle.className = "title";
+        (function(i, thing){
+          $('<img src="/images/delete.svg" class="icon deleteIcon"></div>').appendTo(document.getElementsByClassName('title')[i]).click(function() {
+            var deleteTest;
+            chrome.storage.local.get(null, function(item) { 
+              deleteTest = JSON.stringify(item['data'][i]['link']);
+              console.log(deleteTest);
+              deleteLink(deleteTest);
+              $("#question" + i).remove();
+            });
+            alert("hi");
 
-        var questionTitle = document.createElement("p");
-        questionTitle.className = "questionTitle";
-        questionTitle.appendChild(document.createTextNode(newQuestion));
+          });          
+        })(i, thing);
 
-        divTitle.appendChild(questionTitle);
-
-        var divAnswer = document.createElement("div");
-        divAnswer.className = "answer";
-        var answer = document.createElement("p");
-        answer.appendChild(document.createTextNode("Stop time. Learn X in 10 years, and then resume time."));
-        answer.className = "answerText";
-        divAnswer.appendChild(answer);
-
-        divQuestion.appendChild(divTitle);
-        divQuestion.appendChild(divAnswer);
-        document.getElementById("myBase").href = "chrome-extension://gfifjnamhobmppodbibkpkhjkkpebgjf";
-        document.getElementsByClassName('questions')[0].appendChild(divQuestion);
-
-
-        var deleteIcon = document.createElement("img");
-        deleteIcon.setAttribute("src", "/images/delete.svg");
-        deleteIcon.className = "delete";
-        deleteIcon.setAttribute("onclick", "fucker()");
-
-        divTitle.appendChild(deleteIcon);
-
-        $( '<a href=' + link + ' target="_blank"><img src="/images/go.svg" class="icon"></a>').appendTo(document.getElementsByClassName('title')[i]);
       }
     }
   });
 }
 
+// $(".title").click(function() {
+//   alert("clicked");
+//   var currentURL = window.location.href.toString();
+//   if (!(currentURL.indexOf("stackoverflow") >= 0)) {
+//     $(this).next().toggle(0);
+//   }
+// })
 
-
-$(".title").click(function() {
-  alert("clicked");
-  var currentURL = window.location.href.toString();
-  if (!(currentURL.indexOf("stackoverflow") >= 0)) {
-    $(this).next().toggle(0);
-  }
-})
-
-
-
-$(window).ready(function(){
+$(function(){
   checkIfInitialized();
     // checking delete
   // var deleteTest;
