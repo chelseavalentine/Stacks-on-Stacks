@@ -4,7 +4,9 @@
   "version": "0.1",
   "permissions": [
     "tabs",
-    "storage"
+    "storage",
+    "activeTab",
+    "https://ajax.googleapis.com/"
   ],
   "browser_action": {
     "default_icon": "poop.png",
@@ -14,8 +16,9 @@
     {
       "matches": ["http://*/*", "https://*/*"],
       "js": [
-        "scripts/jquery-2.1.4.min.js",
-        "scripts/content.js"
+        "scripts/jquery.min.js",
+        "scripts/content.js",
+        "scripts/custom.js"
       ]
     }
   ],

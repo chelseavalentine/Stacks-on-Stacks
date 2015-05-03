@@ -1,5 +1,3 @@
-///FILE JULIE HAD
-
 // background.js
 chrome.runtime.onMessage.addListener(
   function(request, sender, sendResponse) {
