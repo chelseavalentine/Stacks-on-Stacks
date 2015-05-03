@@ -49,9 +49,9 @@ body {
   width: 100%; }
 
 .questionTitle {
-  font-size: 0.9em;
+  font-size: 0.75em;
   padding: 5px;
-  font-weight: 600;
+  font-weight: 400;
   cursor: crosshair;
   display: inline-block; }
 
@@ -164,7 +164,7 @@ a.lessonLink:hover, a.lessonLink:active {
 #create {
   left: 255px; }
 
-.icon {
+.icon, .delete {
   height: 16px;
   vertical-align: text-top;
   float: right;

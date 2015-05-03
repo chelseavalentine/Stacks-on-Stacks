@@ -1,17 +1,15 @@
 //If you click a question's title, the best answer will be shown
 $(".title").click(function() {
-  var currentURL = window.location.href.toString();
-  if (!(currentURL.indexOf("stackoverflow") >= 0)) {
    	$(this).next().toggle(0);
-  }
+   	console.log("clicked");
 })
+
+
+
 
 //If you click a project's title, the questions are hidden
 $(".projectHeader").click(function() {
-  var currentURL = window.location.href.toString();
-  if (!(currentURL.indexOf("stackoverflow") >= 0)) {
    	$(this).next().toggle(0);
-  }
 })
 
 
