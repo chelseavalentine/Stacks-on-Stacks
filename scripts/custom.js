@@ -1,7 +1,7 @@
 function getLink(){
    return chrome.storage.local.get('value', function(items) {
     if(!chrome.runtime.error) {
-      $("<p>" + items.value + "</p>").appendTo("body");
+      $("<a href='" + items.url + "' target='_blank'><p>" + items.question + "</p></a>").appendTo("body");
        console.log(items);
     }
    });
@@ -19,5 +19,9 @@ function getAllLinks(){
 $(window).ready(function(){
   
 getLink();
+console.log("Got that one link");
+
+getAllLinks();
+console.log("Now got all links");
  
 })

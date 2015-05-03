@@ -1,5 +1,14 @@
 # Stacked
 
+### Next steps:
+
+* Add a new link on every load (done in custom.js)
+* Add the top answer to each object
+* Create front-end display for this
+	* Change our icon from a poop *[side-eyes julie]*
+
+
+
 Key features:
 
 - auto-add links and replaces with "question-title"
@@ -9,6 +18,4 @@ Key features:
 - allow graphical UI for user to move around
 - allow user to name each collection
 
-Possible problems:
 
-- HTML5 Storage only allocates 5MB for each origin, so unless there's a backend to the plugin, it might get hard to manage when the amount of links get big

@@ -14,7 +14,7 @@
   },
   "content_scripts": [
     {
-      "matches": ["http://*/*", "https://*/*"],
+      "matches": ["http://stackoverflow.com/questions/*", "https://stackoverflow.com/questions/*"],
       "js": [
         "scripts/jquery.min.js",
         "scripts/content.js",
