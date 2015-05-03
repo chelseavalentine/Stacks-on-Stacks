@@ -83,11 +83,4 @@ $(function(){
   checkIfInitialized();
 })
 
-//Style javascript
-$(document).click(function() {
-  var currentURL = window.location.href.toString();
-  if (!(currentURL.indexOf("stackoverflow") >= 0)) {
-
-  }    
-})
 
