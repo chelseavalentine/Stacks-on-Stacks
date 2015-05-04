@@ -58,21 +58,26 @@ function getAllLinks(){
         // var newLink = link.substring(1, link.length-1);
 
         var question =  JSON.stringify(items['data'][i]['question']);
-        var newQuestion = question.substring(1, 30) + "...";
+        
 
-
+        //check to see whether the question was cut to see whether we should add the ...
+        if (question.length > 58) {
+          question = question.substring(1, 60) + "...";
+        }
+        
         
         (function(i, link){
-          $('<div class="question" id="question' + i +'"><div class="title"><p class="questionTitle">' + newQuestion + '</p><a target="_blank" href=' + link + '><img src="images/go.svg" class="icon"></a></div></div>').appendTo(document.getElementsByClassName('questions')[0]);
-          $('<img src="/images/delete.svg" class="icon deleteIcon"></div>').appendTo(document.getElementsByClassName('title')[i]).click(function() {
-            var deleteTest;
-            chrome.storage.local.get(null, function(item) { 
+          $('<div class="question" id="question' + i +'"><div class="title"><p class="questionTitle">' + question + '</p><a target="_blank" href=' + link + '><img src="images/go.svg" class="icon"></a></div></div>')
+            .appendTo(document.getElementsByClassName('questions')[0]);
+          $('<img src="/images/delete.svg" class="icon deleteIcon"></div>')
+            .appendTo(document.getElementsByClassName('title')[i]).click(function() {
+              var deleteTest;
+          chrome.storage.local.get(null, function(item) { 
               $("#question" + i).remove();
               deleteLink(link);
             });
           });          
         })(i, link);
-
       }
     }
   });

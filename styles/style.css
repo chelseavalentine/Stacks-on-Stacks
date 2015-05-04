@@ -52,6 +52,7 @@ body {
   font-size: 0.9em;
   padding: 5px;
   font-weight: 400;
+  width: 265px;
   cursor: crosshair;
   display: inline-block; }
 
