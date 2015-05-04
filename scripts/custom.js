@@ -7,6 +7,7 @@ function checkIfInitialized() {
     }
     else { // storage exists
       getAllLinks();
+      clear();
     }
   });
 }
@@ -60,8 +61,6 @@ function getAllLinks(){
         var question =  JSON.stringify(items['data'][i]['question']);
         var newQuestion = question.substring(1, 30) + "...";
 
-
-        
         (function(i, link){
           $('<div class="question" id="question' + i +'"><div class="title"><p class="questionTitle">' + newQuestion + '</p><a target="_blank" href=' + link + '><img src="images/go.svg" class="icon"></a></div></div>').appendTo(document.getElementsByClassName('questions')[0]);
           $('<img src="/images/delete.svg" class="icon deleteIcon"></div>').appendTo(document.getElementsByClassName('title')[i]).click(function() {
@@ -82,5 +81,17 @@ function getAllLinks(){
 $(function(){
   checkIfInitialized();
 })
+
+function clear() {
+$("#clearthis").click(function() {
+	chrome.storage.local.get(null, function(item) {
+        item['data'].splice(0, item['data'].length);
+        chrome.storage.local.set(item, function() {
+          console.log('clear all');
+        });
+        
+        });
+});
+}
 
 

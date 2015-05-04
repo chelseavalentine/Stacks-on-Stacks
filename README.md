@@ -11,10 +11,9 @@
 
 Key features:
 
-- auto-add links and replaces with "question-title"
-- delete button
-- should not have repeats of links
 - timer for 2-hr block
-- allow graphical UI for user to move around
+- allow graphical UI for user to drag stuff
+- concept of links as Collections
 - allow user to name each collection
+- allow key strokes to navigate through the links (one button to open/close, a few to navigate, press enter to open link)
 

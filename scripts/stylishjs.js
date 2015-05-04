@@ -22,6 +22,6 @@ $(document).ready(function() {
 	}
 })
 
-$("#clearthis").click(function() {
-	chrome.storage.local.clear();
-})
+//$("#clearthis").click(function() {
+//	chrome.storage.local.clear();
+//})
