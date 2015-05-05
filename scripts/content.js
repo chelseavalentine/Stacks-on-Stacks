@@ -2,7 +2,18 @@
 // GET CURRENT URL
 var currentURL = window.location.href;
 var title = document.getElementById('question-header').textContent;
-var firstAnswer = document.getElementsByClassName('answercell')[0].textContent.substring(0, 450);
+var firstAnswer = document.getElementsByClassName('answercell')[0].textContent;
+
+var content = firstAnswer.split('share|improve this answer');
+firstAnswer = content[0];
+console.log("first answer is ");
+console.log(firstAnswer);
+
+// if (firstAnswer.length > 450) {
+//   firstAnswer = firstAnswer.substring(0, 450);
+// } else {
+
+// }
 
 saveLink(currentURL, title, firstAnswer);
 

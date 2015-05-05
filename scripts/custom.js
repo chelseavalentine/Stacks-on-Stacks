@@ -38,26 +38,49 @@ function deleteLink(link) {
 }
 
 
+
 function getAllLinks(){
   return chrome.storage.local.get(null, function(items) {
     if(!chrome.runtime.error) {
       for (var i = 0; i < items['data'].length; i++) {
         var link =  JSON.stringify(items['data'][i]['link']);
-        var question =  JSON.stringify(items['data'][i]['question']);
+        var oldQuestion =  JSON.stringify(items['data'][i]['question']);
         var answer = JSON.stringify(items['data'][i]['answer']);
 
-        answer = answer.substring(1, answer.length-1) + "...";
+        answer = answer.substring(1, answer.length-40);
 
         //check to see whether the question was cut to see whether we should add the ...
-        if (question.length > 58) {
-          question = question.substring(1, 60) + "...";
+        if (oldQuestion.length > 62) {
+          var question = oldQuestion.substring(1, 60) + "...";
+          oldQuestion = oldQuestion.substring(1, oldQuestion.length-1);
         } else {
-          question = question.substring(1, question.length-1);
+          var question = oldQuestion.substring(1, oldQuestion.length-1);
+          oldQuestion = question;
         }
         
-        (function(i, link){
-          $('<div class="question" id="question' + i +'"><div class="title"><p class="questionTitle">' + question + '</p><a target="_blank" href=' + link + '><img src="images/go.svg" class="icon"></a></div><div class="answer"><p class="answerText">' + answer + '</p></div></div>')
-            .appendTo(document.getElementsByClassName('questions')[0]);
+        (function(i, link, question, oldQuestion){
+          $('<div class="question" id="question' + i +'"></div>')
+            .appendTo(document.getElementsByClassName('questions')[0])
+
+          $('<div class="title" id="title' + i + '"><p class="questionTitle">' + question + '</p><a target="_blank" href=' + link + '><img src="images/go.svg" class="icon"></a></div>')
+            .appendTo(document.getElementById('question' + i))
+            .click(function() {
+              var clicks = $(this).data('clicks');
+              $(this).next().toggle(0);
+              if (clicks) {
+                $("#title" + i).children().eq(0).text(question);
+              } else {
+                $("#title" + i).children().eq(0).text(oldQuestion);
+              }
+              $(this).data("clicks", !clicks);
+            })
+
+
+          $('<div class="answer"><p class="answerText">' + answer + '</p></div>')
+            .insertAfter(document.getElementById('title' + i));
+
+          // $('<div class="question" id="question' + i +'"><div class="title"><p class="questionTitle">' + question + '</p><a target="_blank" href=' + link + '><img src="images/go.svg" class="icon"></a></div><div class="answer"><p class="answerText">' + answer + '</p></div></div>')
+          //   .appendTo(document.getElementsByClassName('questions')[0])
           $('<img src="/images/delete.svg" class="icon deleteIcon"></div>')
             .appendTo(document.getElementsByClassName('title')[i]).click(function() {
               var deleteTest;
@@ -66,7 +89,7 @@ function getAllLinks(){
               deleteLink(link);
             });
           });          
-        })(i, link);
+        })(i, link, question, oldQuestion);
       }
     }
   });

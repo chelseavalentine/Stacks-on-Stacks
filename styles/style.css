@@ -58,13 +58,15 @@ body {
 
 .answer {
   width: 100%;
-  background-color: #fff; }
+  background-color: #fff;
+  display: none; }
 
 .answerText {
   font-size: 0.9em;
   padding: 5px;
   white-space: pre-line;
-  /*show \n as a new line*/ }
+  /*show \n as a new line*/
+  padding-bottom: 20px; }
 
 .font, .header, h1, h2, h3, h4, h5, h6, .text, body, p, button, b, a {
   font-family: Consolas, 'Noto Sans', sans-serif;

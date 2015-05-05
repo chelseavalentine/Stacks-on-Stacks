@@ -72,10 +72,12 @@ body {
 .answer {
 	width: 100%;
 	background-color: $white;
+	display: none;
 }
 
 .answerText {
 	font-size: 0.9em;
 	padding: 5px;
 	white-space: pre-line; /*show \n as a new line*/
+	padding-bottom: 20px;
 }
