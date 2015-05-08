@@ -12,6 +12,37 @@ function checkIfInitialized() {
   });
 }
 
+function projectInit() {
+  chrome.storage.local.get('projects', function(item) {
+    if (Object.keys(item).length === 0) { // initialize storage
+      chrome.storage.local.set({'projects':[]}, function(){
+        console.log('storage initialized');
+      })
+    }
+    else { // storage exists
+      getProjects();
+      clear();
+    }
+  });
+}
+
+
+// THIS WORKS
+function getProjects() {
+  return chrome.storage.local.get(null, function(items) {
+    if (!chrome.runtime.error) {
+      for (var i = 0; i < items['projects'].length; i++) {
+        var name =  JSON.stringify(items['projects'][i]['name']);
+        console.log(name);
+        
+        $('<div class="project"><div class="projectHeader"><p class="projectTitle"><input class="newproject" value=' + name + ' disabled></p></div><div class="questions"></div></div>')
+            .insertAfter($(".project").eq($(".project").length-1))
+      }
+    } else {
+      console.log("welps");
+    }
+  });
+}
 
 function deleteLink(link) {
   var found = false;
@@ -36,7 +67,6 @@ function deleteLink(link) {
     }
   });
 }
-
 
 
 function getAllLinks(){
@@ -98,6 +128,7 @@ function getAllLinks(){
 
 $(function(){
   checkIfInitialized();
+  projectInit();
 })
 
 function clear() {

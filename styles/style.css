@@ -68,6 +68,18 @@ body {
   /*show \n as a new line*/
   padding-bottom: 20px; }
 
+input {
+  background-color: transparent;
+  width: 100%;
+  padding: 0;
+  margin: 0;
+  border: 0;
+  color: white;
+  font-family: Consolas;
+  font-size: 1em;
+  font-weight: 600;
+  text-align: center; }
+
 .font, .header, h1, h2, h3, h4, h5, h6, .text, body, p, button, b, a {
   font-family: Consolas, 'Noto Sans', sans-serif;
   text-align: left;
@@ -161,6 +173,9 @@ a.lessonLink:hover, a.lessonLink:active {
   top: 555px;
   left: 300px;
   opacity: 0.9; }
+
+#save {
+  left: 65px; }
 
 #edit {
   left: 160px; }

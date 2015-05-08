@@ -9,11 +9,6 @@ firstAnswer = content[0];
 console.log("first answer is ");
 console.log(firstAnswer);
 
-// if (firstAnswer.length > 450) {
-//   firstAnswer = firstAnswer.substring(0, 450);
-// } else {
-
-// }
 
 saveLink(currentURL, title, firstAnswer);
 
@@ -46,3 +41,22 @@ function saveLink(link, question, answer) {
     }
   });
 }
+
+
+// Project formation
+
+// var newName = document.getElementById('newproject').textContent;
+//   // Saving a new project
+//   function saveNewProject (newName) {
+//       //add new project header
+//       // var newName = $("#newproject").val();
+      
+//       console.log(newName);
+//       var newProject = {'name': newName};
+
+//       chrome.storage.local.get(null, function(item) {
+//         item['projects'].push(newProject);
+//       })
+//   }
+
+//   saveNewProject(newName);
