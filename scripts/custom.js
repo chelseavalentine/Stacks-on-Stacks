@@ -36,6 +36,17 @@ function getProjects() {
 				var name =  JSON.stringify(items['projects'][i]['name']);
 				$('<div class="project"><div class="projectHeader"><p class="projectTitle"><input value=' + name + ' disabled></p></div><div class="questions"></div></div>')
 					.insertAfter($(".project").eq($(".project").length-1))
+					.ready(function() {
+						var projectheaders = $(".projectHeader");
+						for (var i = 0; i < projectheaders.length; i++) {
+							$(".projectHeader").eq(i).css({
+								"background-color": bgcolors[i%bgcolors.length]
+							})
+						}
+					})
+					.click(function() {
+						$(this).next().toggle(0);
+					})
 			}
 		} else {
 			console.log("welps");

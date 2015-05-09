@@ -45,6 +45,9 @@ body {
   padding: 5px;
   margin-bottom: 0; }
 
+#newproject {
+  background-color: #757575; }
+
 .title {
   background-color: #fafafa;
   border-bottom: 1px solid #e0e0e0;
@@ -200,7 +203,10 @@ li {
   opacity: 0.9; }
 
 #save {
-  left: 65px; }
+  left: 65px;
+  display: none;
+  background-color: #ef5350;
+  opacity: 0.95; }
 
 #edit {
   left: 160px; }

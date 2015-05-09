@@ -12,6 +12,9 @@
 
 #save {
 	left: 65px;
+	display: none;
+	background-color: $red400;
+	opacity: 0.95;
 }
 
 #edit {
@@ -29,5 +32,3 @@
 	margin-top: 5px;
 	margin-right: 5px;
 }
-
-#clearthis {}

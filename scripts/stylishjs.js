@@ -7,25 +7,6 @@ $(".projectHeader").click(function() {
 //Background colors available
 var bgcolors = ['#00bcd4', '#ff436c', '#8bc34a', '#ff9800'];
 
-$(document).ready(function() {
-	var currentURL = window.location.href.toString();
-	if (!(currentURL.indexOf("stackoverflow") >= 0)) {
-		var projectheaders = $(".projectHeader");
-		for (var i = 0; i < projectheaders.length; i++) {
-			$(".projectHeader").eq(i).css({
-				"background-color": bgcolors[i%bgcolors.length]
-			})
-		}
-	}
-})
-
-// $("#newproject").on('keyup', function(e) {
-// 	if (e.which == 13) {
-// 		//add new project header
-// 	}
-// })
-
-
 $("#create").click(function() {
 	$('<div class="project"><div class="projectHeader"><p class="projectTitle"></p></div><div class="questions"></div></div>').insertAfter(
 		$(".project").eq($(".project").length-1))
@@ -33,6 +14,8 @@ $("#create").click(function() {
 
 	$('<input value="Project" class="newproject">')
 		.appendTo(lastProjectTitle)
+
+	$("#save").show(0)
 })
 
 
@@ -54,23 +37,16 @@ $("#save").click(function() {
 		})
 	})
 
-	// console.log("the value is " + allProjects[0].value);
+	//Color all of the new projects
+	var projectheaders = $(".projectHeader");
+	for (var i = 0; i < projectheaders.length; i++) {
+		$(".projectHeader").eq(i).css({
+			"background-color": bgcolors[i%bgcolors.length]
+		})
+	}
 
-	// for (var i = 0; i < allProjects.length; i++) {
-	// 	projects.push(allProjects[i].value);
-	// }
-
-	// console.log("pushed projects are ");
-	// console.log(projects);
-
-	// for (var i = 0; i < projects.length; i++) {
-	// 	chrome.storage.local.get(null, function (item) {
-	// 		item['projects'][i]['name'] = projects[i];
-	// 		chrome.storage.local.set(item, function() {
-	// 			console.log("set");
-	// 		})
-	// 	})
-	// }	
+	$(this).hide(0)
+	
 })
 
 
