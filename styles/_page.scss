@@ -60,6 +60,10 @@ body {
 	width: 100%;
 }
 
+.title:hover {
+	background-color: $white;
+}
+
 .questionTitle{
 	font-size: 0.9em;
 	padding: 5px;
@@ -83,9 +87,7 @@ body {
 }
 
 
-
 //ADDING NEW LESSONS
-
 input {
 	background-color: transparent;
 	width: 100%;

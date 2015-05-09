@@ -9,17 +9,17 @@ firstAnswer = content[0];
 console.log("first answer is ");
 console.log(firstAnswer);
 
-
 saveLink(currentURL, title, firstAnswer);
 
 
 function saveLink(link, question, answer) {
-	// prettify question & answer by taking out whitespaces, tabs, and null
-	question = question.split(/\s+/).filter(function(e){return e===0 || e}).join(' ');
+  // prettify question & answer by taking out whitespaces, tabs, and null
+  question = question.split(/\s+/).filter(function(e){return e===0 || e}).join(' ');
   answer = answer.replace(/\r?\n/g, '<br />').substring(16, 450);
 
   // check for duplicates
   obj = {'link': link, 'question': question, 'answer': answer};
+
   chrome.storage.local.get(null, function(item) {
     var isDup = false;
 
@@ -35,28 +35,8 @@ function saveLink(link, question, answer) {
       chrome.storage.local.set(item, function(){
         console.log("");
       });
-    }
-    else {
+    } else {
       console.log('already exists in storage');
     }
   });
 }
-
-
-// Project formation
-
-// var newName = document.getElementById('newproject').textContent;
-//   // Saving a new project
-//   function saveNewProject (newName) {
-//       //add new project header
-//       // var newName = $("#newproject").val();
-      
-//       console.log(newName);
-//       var newProject = {'name': newName};
-
-//       chrome.storage.local.get(null, function(item) {
-//         item['projects'].push(newProject);
-//       })
-//   }
-
-//   saveNewProject(newName);

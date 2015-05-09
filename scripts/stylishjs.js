@@ -1,9 +1,6 @@
-//If you click a question's title, the best answer will be shown
-
-
 //If you click a project's title, the questions are hidden
 $(".projectHeader").click(function() {
-   	$(this).next().toggle(0);
+	$(this).next().toggle(0);
 })
 
 
@@ -22,21 +19,18 @@ $(document).ready(function() {
 	}
 })
 
+
 $("#clearthis").click(function() {
 	chrome.storage.local.clear();
 })
 
+
 // $("#newproject").on('keyup', function(e) {
 // 	if (e.which == 13) {
 // 		//add new project header
-// 		var newName = $("#newproject").val();
-// 		var newProject = {'name': newName};
-
-// 		chrome.storage.local.get(null, function(item) {
-// 			item['projects'].push(newProject);
-// 		})
 // 	}
 // })
+
 
 $("#create").click(function() {
 	$('<div class="project"><div class="projectHeader"><p class="projectTitle"></p></div><div class="questions"></div></div>').insertAfter(
@@ -46,6 +40,7 @@ $("#create").click(function() {
 	$('<input value="Project" class="newproject">')
 		.appendTo(lastProjectTitle)
 })
+
 
 $("#save").click(function() {
 	var allProjects = document.getElementsByClassName('newproject');
@@ -64,33 +59,28 @@ $("#save").click(function() {
 		chrome.storage.local.get(null, function (item) {
 			item['projects'][i]['name'] = projects[i];
 			chrome.storage.local.set(item, function() {
-			console.log("set");
+				console.log("set");
 			})
 		})
-	}
-	
+	}	
 })
 
-// $(".container").click(function() {
-// 	//disable the project titles
-// 	//this.disabled = true;
-// })
 
 function saveLink(link, question, answer) {
 	// prettify question & answer by taking out whitespaces, tabs, and null
 	question = question.split(/\s+/).filter(function(e){return e===0 || e}).join(' ');
-  answer = answer.replace(/\r?\n/g, '<br />').substring(16, 450);
+	answer = answer.replace(/\r?\n/g, '<br />').substring(16, 450);
 
-  // check for duplicates
-  obj = {'link': link, 'question': question, 'answer': answer};
-  chrome.storage.local.get(null, function(item) {
-    var isDup = false;
+	// check for duplicates
+	obj = {'link': link, 'question': question, 'answer': answer};
+	chrome.storage.local.get(null, function(item) {
+		var isDup = false;
 
-    if (!isDup) {
-      item['data'].push(obj);
-      chrome.storage.local.set(item, function(){
-        console.log("");
-      });
-    }
-  });
+		if (!isDup) {
+			item['data'].push(obj);
+			chrome.storage.local.set(item, function(){
+				console.log("");
+			});
+		}
+	});
 }
