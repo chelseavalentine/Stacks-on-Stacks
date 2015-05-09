@@ -1,3 +1,6 @@
+/*
+* function checks storage to see if 'data' JSON blob used for links storage has been initialized or not. If initialized, do nothing; else, initialize empty 'data' array.
+* */
 function checkIfInitialized() {
 	chrome.storage.local.get('data', function(item) {
 		if (Object.keys(item).length === 0) { // initialize storage
@@ -6,7 +9,7 @@ function checkIfInitialized() {
 			})
 		} else { // storage exists
 			getAllLinks();
-			clear();
+			clearAll();
 		}
 	});
 }
@@ -20,7 +23,6 @@ function projectInit() {
 			})
 		} else { // storage exists
 			getProjects();
-			clear();
 		}
 	});
 }
@@ -43,16 +45,17 @@ function getProjects() {
 	});
 }
 
-
+/*
+* params {String link}
+* Search storage for matching record with field that matches to the string and deletes it
+* */
 function deleteLink(link) {
 	var found = false;
 	chrome.storage.local.get(null, function(item) {
 		for (var i = 0; i < item['data'].length; i++ ) {
 			if (link === JSON.stringify(item['data'][i]['link'])) {
 				// found object to delete from storage
-				console.log(item['data']);
 				item['data'].splice(i, 1);
-				console.log(item['data']);
 				found = true;
 				break;
 			}
@@ -130,14 +133,20 @@ $(function(){
 	projectInit();
 })
 
-
-function clear() {
-	$("#clearthis").click(function() {
-		chrome.storage.local.get(null, function(item) {
-			item['data'].splice(0, item['data'].length);
-			chrome.storage.local.set(item, function() {
-				console.log('clear all');
-			});
-		});
-	});
+/*
+ * This function clears out all data in 'data' JSON blob where links are stored upon onclick and then sets the empty array back into storage
+ */
+function clearAll() {
+  if(!chrome.runtime.error) {
+    $("#clearthis").click(function() {
+      chrome.storage.local.get(null, function(item) {
+        var len = Object.keys(item['data']).length;
+        item['data'].splice(0, len);
+        chrome.storage.local.set(item, function() {
+          console.log('all links deleted from storage');
+        })
+      });
+    });
+  }
 }
+
