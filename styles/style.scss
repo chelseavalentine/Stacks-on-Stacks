@@ -32,3 +32,27 @@
 	margin-top: 5px;
 	margin-right: 5px;
 }
+
+#empty {
+	height: 10px;
+	position: absolute;
+	top: 4px;
+	left: 4px;
+	z-index: 2;
+}
+
+#star {
+	position: absolute;
+	height: 13px;
+	top: 2px;
+	left: 16px;
+	z-index: 2;
+}
+
+.flatButton {
+	display: inline-block;
+	background-color: transparent;
+	padding: 0;
+	margin: 0;
+	font-weight: 600;
+}

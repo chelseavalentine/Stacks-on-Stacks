@@ -1,5 +1,5 @@
 //If you click a project's title, the questions are hidden
-$(".projectHeader").click(function() {
+$(".projectHeader").dblclick(function() {
 	$(this).next().toggle(0);
 })
 

@@ -163,21 +163,63 @@ $(function(){
  */
 function clearAll() {
 	if(!chrome.runtime.error) {
-		$("#clearthis").click(function() {
-			var confirmation = confirm("Are you sure you want to delete all of the links in 'Unsorted'?");
-			if (confirmation === true) {
-				chrome.storage.local.get(null, function(item) {
-					var len = Object.keys(item['data']).length;
-					item['data'].splice(0, len);
-					chrome.storage.local.set(item, function() {
-						console.log("All links in 'Unsorted' were deleted from storage.");
-					})
-				});
+		$("#empty").click(function() {
+			$('<div class="cover"></div>')
+				.appendTo("body")
+			$('<div class="modal"><center id="modalCenter"><p class="modalText">Are you sure you want to delete all of the links in <i>Unsorted</i>?</p><br></center></div>')
+				.appendTo("body")
 
-				//Visually clear the questions in 'Unsorted'
-				$(".questions").eq(0).empty();
+			var confirmation = false;
+
+			$('<button class="confirmDelete flatButton">DELETE</button>')
+				.appendTo("#modalCenter")
+				.click(function () {
+					confirmation = true;
+					$(".cover, .modal").remove();
+
+					chrome.storage.local.get(null, function(item) {
+						var len = Object.keys(item['data']).length;
+						item['data'].splice(0, len);
+						chrome.storage.local.set(item, function() {
+							console.log("All links in 'Unsorted' were deleted from storage.");
+						})
+					});
+
+					//Visually clear the questions in 'Unsorted'
+					$(".questions").eq(0).empty();
+				})
+
+			$('<button class="confirmKeep flatButton">NO</button>')
+				.appendTo("#modalCenter")
+				.click(function () {
+					confirmation = false;
+					$(".cover, .modal").remove();
+				})
+
+
+			if (confirmation === true) {
+				
 			}
 		});
 	}
 }
 
+//When you hover over the clear all button it looks more
+$("#empty").hover(function() {
+	$(this).attr("src", "images/empty-hover.svg");
+}, function() {
+	$(this).attr("src", "images/empty.svg");
+})
+
+
+//When you hover over the star, it will switch image to indicate hovering state
+$("#star").hover(function() {
+	$(this).attr("src", "images/star-chosen.svg");
+}, function() {
+	$(this).attr("src", "images/star.svg");
+})
+
+// [FIX THIS] Make the chosen class keep the filled in star
+$("#star").click(function() {
+	$(this).attr("src", "images/star-chosen.svg");
+})

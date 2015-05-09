@@ -12,7 +12,7 @@
   width: 100%;
   position: fixed;
   box-shadow: 0 0 6px 1px rgba(0, 0, 0, 0.18);
-  z-index: 2; }
+  z-index: 4; }
 
 #unsorted {
   margin-top: 70px; }
@@ -87,6 +87,42 @@ input {
   font-size: 1em;
   font-weight: 600;
   text-align: center; }
+
+.cover {
+  position: fixed;
+  display: flex;
+  justify-content: center;
+  width: 100%;
+  height: 100%;
+  top: 0;
+  left: 0;
+  background-color: #000;
+  opacity: 0.8;
+  z-index: 5; }
+
+.modal {
+  position: absolute;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-color: #fff;
+  border-radius: 1px;
+  left: 45px;
+  top: 150px;
+  width: 240px;
+  height: 100px;
+  opacity: 1;
+  z-index: 6;
+  padding: 7.5px; }
+
+.modalText {
+  text-align: center; }
+
+.confirmDelete {
+  color: #f44336; }
+
+.confirmKeep {
+  color: #4caf50; }
 
 .font, .header, .text, body, p, button, ul, ol, h1, h2, h3, h4, h5, h6, a {
   font-family: Consolas, sans-serif;
@@ -220,5 +256,26 @@ li {
   float: right;
   margin-top: 5px;
   margin-right: 5px; }
+
+#empty {
+  height: 10px;
+  position: absolute;
+  top: 4px;
+  left: 4px;
+  z-index: 2; }
+
+#star {
+  position: absolute;
+  height: 13px;
+  top: 2px;
+  left: 16px;
+  z-index: 2; }
+
+.flatButton {
+  display: inline-block;
+  background-color: transparent;
+  padding: 0;
+  margin: 0;
+  font-weight: 600; }
 
 /*# sourceMappingURL=style.css.map */
