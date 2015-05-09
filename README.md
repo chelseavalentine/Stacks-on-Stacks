@@ -9,6 +9,5 @@ If you know how to install unpacked Chrome extensions, you can feel free to pull
 
 * Add collection creation capabilities
 * Better data organization
-* Fix 'clear all' after-effects
 * Edit link order capabilities
 * Key stroke navigation

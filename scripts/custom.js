@@ -80,7 +80,7 @@ function getAllLinks(){
 
 				answer = answer.substring(1, answer.length-1).trim().replace(/\r?\\/g, '');
 
-				//check to see whether the question was cut to see whether we should add the ...
+				//check to see whether the question should be cut to see whether we should add the ...
 				if (oldQuestion.length > 57) {
 					var question = oldQuestion.substring(1, 55) + "...";
 					oldQuestion = oldQuestion.substring(1, oldQuestion.length-1);
@@ -159,12 +159,12 @@ function clearAll() {
 					var len = Object.keys(item['data']).length;
 					item['data'].splice(0, len);
 					chrome.storage.local.set(item, function() {
-						console.log('all links deleted from storage');
+						console.log("All links in 'Unsorted' were deleted from storage.");
 					})
 				});
 
-				//refresh window to update the storage change to UI
-				window.location.href = window.location.href;
+				//Visually clear the questions in 'Unsorted'
+				$(".questions").eq(0).empty();
 			}
 		});
 	}

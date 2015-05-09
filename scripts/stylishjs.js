@@ -37,26 +37,46 @@ $("#create").click(function() {
 
 
 $("#save").click(function() {
-	var allProjects = document.getElementsByClassName('newproject');
+	var newProjects = $('.newproject');
 	var projects = [];
-	console.log("All projects are ");
-	console.log(allProjects);
+	console.log("All new projects are ");
+	console.log(newProjects);
 
-	for (var i = 0; i < allProjects.length; i++) {
-		projects.push(allProjects[i].value);
-	}
+	chrome.storage.local.get(null, function(items) {
+		for (var i = 0; i < newProjects.length; i++) {
+			var createdProject = {'name': newProjects.eq(i).val};
+			items['projects'].push(createdProject);
+			newProjects.eq(i).removeClass("newproject");
 
-	console.log("pushed projects are ");
-	console.log(projects);
-
-	for (var i = 0; i < projects.length; i++) {
-		chrome.storage.local.get(null, function (item) {
-			item['projects'][i]['name'] = projects[i];
-			chrome.storage.local.set(item, function() {
-				console.log("set");
-			})
+		}
+		chrome.storage.local.set(items, function() {
+			console.log("New projects were set.")
 		})
-	}	
+	})
+
+	//remove the new project class from each current divider
+	//this way they aren't added 2x in the future
+	// $("input").each(function() {
+	// 	$(this).removeClass("newproject");
+	// })
+
+	// console.log("the value is " + allProjects[0].value);
+
+	// for (var i = 0; i < allProjects.length; i++) {
+	// 	projects.push(allProjects[i].value);
+	// }
+
+	// console.log("pushed projects are ");
+	// console.log(projects);
+
+	// for (var i = 0; i < projects.length; i++) {
+	// 	chrome.storage.local.get(null, function (item) {
+	// 		item['projects'][i]['name'] = projects[i];
+	// 		chrome.storage.local.set(item, function() {
+	// 			console.log("set");
+	// 		})
+	// 	})
+	// }	
 })
 
 
