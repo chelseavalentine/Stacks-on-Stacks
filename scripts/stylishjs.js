@@ -44,21 +44,15 @@ $("#save").click(function() {
 
 	chrome.storage.local.get(null, function(items) {
 		for (var i = 0; i < newProjects.length; i++) {
-			var createdProject = {'name': newProjects.eq(i).val};
+			console.log(newProjects.eq(i).val())
+			var createdProject = {'name': newProjects.eq(i).val()};
 			items['projects'].push(createdProject);
-			newProjects.eq(i).removeClass("newproject");
-
+			$(".newproject").eq(i).removeClass("newproject");
 		}
 		chrome.storage.local.set(items, function() {
 			console.log("New projects were set.")
 		})
 	})
-
-	//remove the new project class from each current divider
-	//this way they aren't added 2x in the future
-	// $("input").each(function() {
-	// 	$(this).removeClass("newproject");
-	// })
 
 	// console.log("the value is " + allProjects[0].value);
 

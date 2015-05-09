@@ -34,7 +34,7 @@ function getProjects() {
 		if (!chrome.runtime.error) {
 			for (var i = 0; i < items['projects'].length; i++) {
 				var name =  JSON.stringify(items['projects'][i]['name']);
-				$('<div class="project"><div class="projectHeader"><p class="projectTitle"><input class="newproject" value=' + name + ' disabled></p></div><div class="questions"></div></div>')
+				$('<div class="project"><div class="projectHeader"><p class="projectTitle"><input value=' + name + ' disabled></p></div><div class="questions"></div></div>')
 					.insertAfter($(".project").eq($(".project").length-1))
 			}
 		} else {
