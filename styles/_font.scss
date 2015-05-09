@@ -23,17 +23,67 @@ body{
 	font-size: 1em;
 }
 
+.stacks {
+	padding: 10px;
+	font-size: 1.5em;
+	color: $grey800;
+	font-weight: 700;
+	display: inline-block;
+	border: 0;
+	margin: 0;
+	max-width: 100%;
+}
+
 h1{
 	@extend .font;
-	font-size: 1.5em;
-	display: inline-block;
+	font-size: 1.3em;
 	font-weight: 700;
-	color: $grey800;
-	padding: 10px;
+	border-bottom: 1px solid $grey500;
+	margin-bottom: 10px;
+	max-width: 285px;
+}
+
+h2 {
+	@extend h1;
+	font-size: 1.2em;
+	font-weight: 700;
+	margin-bottom: 7.5px;
+	border-bottom: 1px solid $grey400;
+}
+
+h3 {
+	@extend h2;
+	font-size: 1.15em;
+	margin-bottom: 5px;
+	border-bottom: 1px solid $grey300;
+}
+
+h4 {
+	@extend h3;
+	font-size: 1.05em;
+	font-weight: 700;
+	border: 0;
+}
+
+h5 {
+	@extend h4;
+	font-size: 1em;
+	font-weight: 700;
+}
+
+h6 {
+	@extend h5;
+	font-size: 0.9em;
+	font-weight: 700;
 }
 
 p{
 	@extend .text;
+	max-width: 290px;
+	font-size: 0.85em;
+}
+
+p+p {
 	margin-bottom: 15px;
 }
 
@@ -67,11 +117,31 @@ a:hover, a:active{
 	text-decoration: underline;
 }
 
-code {
+code, pre {
 	background-color: $grey200;
-	padding-right: 4px;
-	padding-left: 4px;
-	white-space: normal;
-/*	word-wrap: break-word;
-*/	display: inline-block;
+	padding: 2px 4px 4px 2px; /*bottom-left-right-top*/
+	white-space: pre-line;
+	word-wrap: break-word;
+	max-width: 275px;
+	display: inline-block;
+	text-align: left;
+}
+
+hr {
+	border: none;
+	width: 95%;
+	border-bottom: 1px solid $grey200;
+
+}
+
+ul, ol {
+	@extend .text;
+	max-width: 290px;
+	font-size: 0.85em;
+	margin-bottom: 15px;
+	margin: 0;
+}
+
+li {
+	margin-left: -10px;
 }

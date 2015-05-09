@@ -34,8 +34,6 @@ function getProjects() {
 		if (!chrome.runtime.error) {
 			for (var i = 0; i < items['projects'].length; i++) {
 				var name =  JSON.stringify(items['projects'][i]['name']);
-				console.log(name);
-
 				$('<div class="project"><div class="projectHeader"><p class="projectTitle"><input class="newproject" value=' + name + ' disabled></p></div><div class="questions"></div></div>')
 					.insertAfter($(".project").eq($(".project").length-1))
 			}
@@ -80,14 +78,11 @@ function getAllLinks(){
 				var oldQuestion =  JSON.stringify(items['data'][i]['question']);
 				var answer = JSON.stringify(items['data'][i]['answer']);
 
-				console.log("At this point");
-				console.log(answer);
-
-				answer = answer.substring(1, answer.length-1).trim();
+				answer = answer.substring(1, answer.length-1).trim().replace(/\r?\\/g, '');
 
 				//check to see whether the question was cut to see whether we should add the ...
-				if (oldQuestion.length > 62) {
-					var question = oldQuestion.substring(1, 60) + "...";
+				if (oldQuestion.length > 57) {
+					var question = oldQuestion.substring(1, 55) + "...";
 					oldQuestion = oldQuestion.substring(1, oldQuestion.length-1);
 				} else {
 					var question = oldQuestion.substring(1, oldQuestion.length-1);
@@ -104,17 +99,20 @@ function getAllLinks(){
 							var clicks = $(this).data('clicks');
 							$(this).next().toggle(0);
 							if (clicks) {
-								$("#title" + i).children().eq(0).HTML(question);
+								$("#title" + i).children().eq(0).text(question);
 							} else {
-								$("#title" + i).children().eq(0).HTML(oldQuestion);
+								$("#title" + i).children().eq(0).text(oldQuestion);
 							}
 
 							$(this).data("clicks", !clicks);
 						})
 
 
-					$('<div class="answer"><p class="answerText">' + answer + '</p></div>')
-						.insertAfter(document.getElementById('title' + i));
+					$('<div class="answer"><center><p class="answerText">' + answer + '</p></center></div>')
+						.insertAfter(document.getElementById('title' + i))
+						// .dblclick(function() {
+						// 	$(this).toggle();
+						// })
 
 					$('<img src="/images/delete.svg" class="icon deleteIcon"></div>')
 						.appendTo(document.getElementsByClassName('title')[i]).click(function() {
@@ -126,6 +124,21 @@ function getAllLinks(){
 						});          
 				})(i, link, question, oldQuestion);
 			}
+
+			//Add open in new tab property to every <a>
+			var links = $("a");
+			for (var i = 0; i < links.length; i++) {
+				$("a").eq(i).attr("target", "_blank");
+				console.log("link " + i + " " + $("a").eq(i).attr('href'));
+			}
+
+			//get rid of empty <p> tags
+			// var paragraphs = $("p");
+			// for (var i = 0; i < paragraphs.length; i++) {
+			// 	if ($("paragraphs").eq(i).textContent == "") {
+			// 		$("paragraphs").eq(i).remove();
+			// 	}
+			// }
 		}
 	});
 }
@@ -143,7 +156,8 @@ function clearAll() {
 	if(!chrome.runtime.error) {
 		$("#clearthis").click(function() {
 			var confirmation = confirm("Are you sure you want to delete all of the links in 'Unsorted'?");
-			if (confirmation) {
+			console.log(confirmation);
+			if (confirmation === true) {
 				chrome.storage.local.get(null, function(item) {
 					var len = Object.keys(item['data']).length;
 					item['data'].splice(0, len);

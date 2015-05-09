@@ -18,6 +18,10 @@
 	z-index: 2;
 }
 
+#unsorted {
+	margin-top: 70px;
+}
+
 body {
 	@extend .remove;
 	display: block;
@@ -30,8 +34,7 @@ body {
 .container{
 	@extend .remove;
 	width: 90%;
-	margin-top: 70px;
-	text-align: left;	
+	text-align: left;
 }
 
 .project {
@@ -68,7 +71,7 @@ body {
 .questionTitle{
 	font-size: 0.9em;
 	padding: 5px;
-	font-weight: 400;
+	font-weight: 600;
 	width: 265px;
 	cursor: crosshair;
 	display: inline-block;
@@ -76,15 +79,17 @@ body {
 }
 
 .answer {
-	width: 100%;
 	background-color: $white;
 	display: none;
-	padding-bottom: 10px;
+	padding-bottom: 5px;
+	overflow-y: scroll;
+	max-height: 250px;
 }
 
 .answerText {
-	font-size: 0.9em;
+	font-size: 0.85em;
 	padding: 5px;
+	max-width: 270px;
 }
 
 
