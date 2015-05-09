@@ -1,17 +1,16 @@
 @import 'color';
 
 .font{
-	font-family: Consolas, 'Noto Sans', sans-serif;
+	font-family: Consolas, sans-serif;
 	text-align: left;
 	margin-top: 0;
 	margin-bottom: 0;
-	padding: 0;
 }
 
 .header{
 	@extend .font;
 	color: $grey700;
-	font-weight: 400;
+	font-weight: 600;
 }
 
 .text{
@@ -25,41 +24,12 @@ body{
 }
 
 h1{
-	@extend .header;
-	font-size: 1.75em;
+	@extend .font;
+	font-size: 1.5em;
 	display: inline-block;
 	font-weight: 700;
 	color: $grey800;
 	padding: 10px;
-
-}
-
-h2{
-	@extend .header;
-	font-size: 1.75em;
-	font-weight: 600;
-}
-
-h3{
-	@extend .header;
-	font-size: 1.25em;
-	font-weight: 600;
-}
-
-h4{
-	@extend .header;
-	font-size: 1em;
-	font-weight: 500;
-}
-
-h5{
-	@extend .header;
-	font-size: 1.5em;
-}
-
-h6{
-	@extend .header;
-	font-size: 1.25em;
 }
 
 p{
@@ -70,7 +40,6 @@ button{
 	@extend .text;
 	@extend .remove;
 	font-size: 1em;
-	font-weight: 400;
 	text-transform: uppercase;
 	padding: 7px;
 	border: none;
@@ -81,22 +50,7 @@ button{
 	cursor: pointer;
 }
 
-.raised {
-	box-shadow: 0 0 4px 1px rgba(0,0,0,0.25);
-}
-
 //Special text
-b{
-	@extend .text;
-	font-weight: 500;
-	text-transform: uppercase;
-}
-
-b.no{
-	text-transform: none;
-	font-weight: 600;
-}
-
 a{
 	@extend .font;
 }
@@ -106,25 +60,8 @@ a:link, a:visited{
 	color: $cyan500;
 	text-decoration: none;
 }
+
 a:hover, a:active{
 	color: $grey800;
 	text-decoration: underline;
-}
-
-a.no:link, a.no:visited{
-	color: inherit;
-	text-decoration: none;
-}
-
-a.no:hover, a.no:active{
-	text-decoration: underline;
-}
-
-a.lessonLink:link, a.lessonLink:visited{
-	color: inherit;
-	text-decoration: none;
-}
-
-a.lessonLink:hover, a.lessonLink:active{
-	text-decoration: none;
 }

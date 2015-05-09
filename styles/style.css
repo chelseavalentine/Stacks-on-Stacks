@@ -4,7 +4,7 @@
   left: 0;
   margin: 0; }
 
-.header, h1, h2, h3, h4, h5, h6 {
+.header {
   background-color: #eee;
   display: block;
   top: 0;
@@ -22,7 +22,6 @@ body {
   z-index: 1; }
 
 .container {
-  position: relative;
   width: 90%;
   margin-top: 70px;
   text-align: left; }
@@ -74,8 +73,6 @@ body {
 input {
   background-color: transparent;
   width: 100%;
-  padding: 0;
-  margin: 0;
   border: 0;
   color: white;
   font-family: Consolas;
@@ -83,51 +80,31 @@ input {
   font-weight: 600;
   text-align: center; }
 
-.font, .header, h1, h2, h3, h4, h5, h6, .text, body, p, button, b, a {
-  font-family: Consolas, 'Noto Sans', sans-serif;
+.font, .header, .text, body, p, button, h1, a {
+  font-family: Consolas, sans-serif;
   text-align: left;
   margin-top: 0;
-  margin-bottom: 0;
-  padding: 0; }
+  margin-bottom: 0; }
 
-.header, h1, h2, h3, h4, h5, h6 {
+.header {
   color: #616161;
-  font-weight: 400; }
+  font-weight: 600; }
 
-.text, body, p, button, b {
+.text, body, p, button {
   font-weight: 400; }
 
 body {
   font-size: 1em; }
 
 h1 {
-  font-size: 1.75em;
+  font-size: 1.5em;
   display: inline-block;
   font-weight: 700;
   color: #424242;
   padding: 10px; }
 
-h2 {
-  font-size: 1.75em;
-  font-weight: 600; }
-
-h3 {
-  font-size: 1.25em;
-  font-weight: 600; }
-
-h4 {
-  font-size: 1em;
-  font-weight: 500; }
-
-h5 {
-  font-size: 1.5em; }
-
-h6 {
-  font-size: 1.25em; }
-
 button {
   font-size: 1em;
-  font-weight: 400;
   text-transform: uppercase;
   padding: 7px;
   border: none;
@@ -137,17 +114,6 @@ button {
   text-align: center;
   cursor: pointer; }
 
-.raised {
-  box-shadow: 0 0 4px 1px rgba(0, 0, 0, 0.25); }
-
-b {
-  font-weight: 500;
-  text-transform: uppercase; }
-
-b.no {
-  text-transform: none;
-  font-weight: 600; }
-
 a:link, a:visited {
   color: #00bcd4;
   text-decoration: none; }
@@ -155,20 +121,6 @@ a:link, a:visited {
 a:hover, a:active {
   color: #424242;
   text-decoration: underline; }
-
-a.no:link, a.no:visited {
-  color: inherit;
-  text-decoration: none; }
-
-a.no:hover, a.no:active {
-  text-decoration: underline; }
-
-a.lessonLink:link, a.lessonLink:visited {
-  color: inherit;
-  text-decoration: none; }
-
-a.lessonLink:hover, a.lessonLink:active {
-  text-decoration: none; }
 
 .admin {
   position: fixed;
