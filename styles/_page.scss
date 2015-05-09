@@ -81,9 +81,9 @@ body {
 .answer {
 	background-color: $white;
 	display: none;
-	padding-bottom: 5px;
 	overflow-y: scroll;
 	max-height: 250px;
+	padding-top: 5px;
 }
 
 .answerText {

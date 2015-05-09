@@ -110,9 +110,9 @@ function getAllLinks(){
 
 					$('<div class="answer"><center><p class="answerText">' + answer + '</p></center></div>')
 						.insertAfter(document.getElementById('title' + i))
-						// .dblclick(function() {
-						// 	$(this).toggle();
-						// })
+						.dblclick(function() {
+							$(this).toggle();
+						})
 
 					$('<img src="/images/delete.svg" class="icon deleteIcon"></div>')
 						.appendTo(document.getElementsByClassName('title')[i]).click(function() {
@@ -129,16 +129,14 @@ function getAllLinks(){
 			var links = $("a");
 			for (var i = 0; i < links.length; i++) {
 				$("a").eq(i).attr("target", "_blank");
-				console.log("link " + i + " " + $("a").eq(i).attr('href'));
 			}
 
 			//get rid of empty <p> tags
-			// var paragraphs = $("p");
-			// for (var i = 0; i < paragraphs.length; i++) {
-			// 	if ($("paragraphs").eq(i).textContent == "") {
-			// 		$("paragraphs").eq(i).remove();
-			// 	}
-			// }
+			$("p").each(function() {
+				if ($(this).html().replace(/\s|&nbsp;/g, '').length == 0) {
+					$(this).remove();
+				}
+			})
 		}
 	});
 }
@@ -156,7 +154,6 @@ function clearAll() {
 	if(!chrome.runtime.error) {
 		$("#clearthis").click(function() {
 			var confirmation = confirm("Are you sure you want to delete all of the links in 'Unsorted'?");
-			console.log(confirmation);
 			if (confirmation === true) {
 				chrome.storage.local.get(null, function(item) {
 					var len = Object.keys(item['data']).length;
@@ -166,7 +163,7 @@ function clearAll() {
 					})
 				});
 
-				// refresh window to update the storage change to UI
+				//refresh window to update the storage change to UI
 				window.location.href = window.location.href;
 			}
 		});

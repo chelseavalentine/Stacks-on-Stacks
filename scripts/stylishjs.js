@@ -19,12 +19,6 @@ $(document).ready(function() {
 	}
 })
 
-
-$("#clearthis").click(function() {
-	chrome.storage.local.clear();
-})
-
-
 // $("#newproject").on('keyup', function(e) {
 // 	if (e.which == 13) {
 // 		//add new project header
