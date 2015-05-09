@@ -146,6 +146,8 @@ function clearAll() {
           console.log('all links deleted from storage');
         })
       });
+      // refresh window to update the storage change to UI
+      window.location.href = window.location.href;
     });
   }
 }
