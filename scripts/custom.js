@@ -80,7 +80,10 @@ function getAllLinks(){
 				var oldQuestion =  JSON.stringify(items['data'][i]['question']);
 				var answer = JSON.stringify(items['data'][i]['answer']);
 
-				answer = answer.substring(1, answer.length-40);
+				console.log("At this point");
+				console.log(answer);
+
+				answer = answer.substring(1, answer.length-1).trim();
 
 				//check to see whether the question was cut to see whether we should add the ...
 				if (oldQuestion.length > 62) {
@@ -101,9 +104,9 @@ function getAllLinks(){
 							var clicks = $(this).data('clicks');
 							$(this).next().toggle(0);
 							if (clicks) {
-								$("#title" + i).children().eq(0).text(question);
+								$("#title" + i).children().eq(0).HTML(question);
 							} else {
-								$("#title" + i).children().eq(0).text(oldQuestion);
+								$("#title" + i).children().eq(0).HTML(oldQuestion);
 							}
 
 							$(this).data("clicks", !clicks);
@@ -137,18 +140,22 @@ $(function(){
  * This function clears out all data in 'data' JSON blob where links are stored upon onclick and then sets the empty array back into storage
  */
 function clearAll() {
-  if(!chrome.runtime.error) {
-    $("#clearthis").click(function() {
-      chrome.storage.local.get(null, function(item) {
-        var len = Object.keys(item['data']).length;
-        item['data'].splice(0, len);
-        chrome.storage.local.set(item, function() {
-          console.log('all links deleted from storage');
-        })
-      });
-      // refresh window to update the storage change to UI
-      window.location.href = window.location.href;
-    });
-  }
+	if(!chrome.runtime.error) {
+		$("#clearthis").click(function() {
+			var confirmation = confirm("Are you sure you want to delete all of the links in 'Unsorted'?");
+			if (confirmation) {
+				chrome.storage.local.get(null, function(item) {
+					var len = Object.keys(item['data']).length;
+					item['data'].splice(0, len);
+					chrome.storage.local.set(item, function() {
+						console.log('all links deleted from storage');
+					})
+				});
+
+				// refresh window to update the storage change to UI
+				window.location.href = window.location.href;
+			}
+		});
+	}
 }
 

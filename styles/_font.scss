@@ -34,6 +34,7 @@ h1{
 
 p{
 	@extend .text;
+	margin-bottom: 15px;
 }
 
 button{
@@ -64,4 +65,13 @@ a:link, a:visited{
 a:hover, a:active{
 	color: $grey800;
 	text-decoration: underline;
+}
+
+code {
+	background-color: $grey200;
+	padding-right: 4px;
+	padding-left: 4px;
+	white-space: normal;
+/*	word-wrap: break-word;
+*/	display: inline-block;
 }

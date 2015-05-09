@@ -51,12 +51,14 @@ body {
 	font-size: 1.2em;
 	font-weight: 600;
 	padding: 5px;
+	margin-bottom: 0;
 }
 
 .title {
 	background-color: $grey50;
 	border-bottom: 1px solid $grey300;
 	width: 100%;
+	margin-bottom: 0;
 }
 
 .title:hover {
@@ -70,19 +72,19 @@ body {
 	width: 265px;
 	cursor: crosshair;
 	display: inline-block;
+	margin-bottom: 0;
 }
 
 .answer {
 	width: 100%;
 	background-color: $white;
 	display: none;
+	padding-bottom: 10px;
 }
 
 .answerText {
 	font-size: 0.9em;
 	padding: 5px;
-	white-space: pre-line; /*show \n as a new line*/
-	padding-bottom: 20px;
 }
 
 

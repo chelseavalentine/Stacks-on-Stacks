@@ -40,12 +40,14 @@ body {
   color: #fff;
   font-size: 1.2em;
   font-weight: 600;
-  padding: 5px; }
+  padding: 5px;
+  margin-bottom: 0; }
 
 .title {
   background-color: #fafafa;
   border-bottom: 1px solid #e0e0e0;
-  width: 100%; }
+  width: 100%;
+  margin-bottom: 0; }
 
 .title:hover {
   background-color: #fff; }
@@ -56,19 +58,18 @@ body {
   font-weight: 400;
   width: 265px;
   cursor: crosshair;
-  display: inline-block; }
+  display: inline-block;
+  margin-bottom: 0; }
 
 .answer {
   width: 100%;
   background-color: #fff;
-  display: none; }
+  display: none;
+  padding-bottom: 10px; }
 
 .answerText {
   font-size: 0.9em;
-  padding: 5px;
-  white-space: pre-line;
-  /*show \n as a new line*/
-  padding-bottom: 20px; }
+  padding: 5px; }
 
 input {
   background-color: transparent;
@@ -103,6 +104,9 @@ h1 {
   color: #424242;
   padding: 10px; }
 
+p {
+  margin-bottom: 15px; }
+
 button {
   font-size: 1em;
   text-transform: uppercase;
@@ -121,6 +125,15 @@ a:link, a:visited {
 a:hover, a:active {
   color: #424242;
   text-decoration: underline; }
+
+code {
+  background-color: #eee;
+  padding-right: 4px;
+  padding-left: 4px;
+  white-space: normal;
+  /*	word-wrap: break-word;
+  */
+  display: inline-block; }
 
 .admin {
   position: fixed;

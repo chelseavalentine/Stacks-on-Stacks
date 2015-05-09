@@ -1,8 +1,8 @@
 // content.js
 // GET CURRENT URL
 var currentURL = window.location.href;
-var title = document.getElementById('question-header').textContent;
-var firstAnswer = document.getElementsByClassName('answercell')[0].textContent;
+var title = document.getElementById('question-header').children[0].children[0].innerHTML;
+var firstAnswer = document.getElementsByClassName('answercell')[0].children[0].innerHTML;
 
 var content = firstAnswer.split('share|improve this answer');
 firstAnswer = content[0];
@@ -15,7 +15,7 @@ saveLink(currentURL, title, firstAnswer);
 function saveLink(link, question, answer) {
   // prettify question & answer by taking out whitespaces, tabs, and null
   question = question.split(/\s+/).filter(function(e){return e===0 || e}).join(' ');
-  answer = answer.replace(/\r?\n/g, '<br />').substring(16, 450);
+  answer = answer.replace(/\r?\n/g, '').substring(0, answer.length);
 
   // check for duplicates
   obj = {'link': link, 'question': question, 'answer': answer};
