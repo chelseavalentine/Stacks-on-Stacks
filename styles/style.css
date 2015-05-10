@@ -35,7 +35,8 @@ body {
 
 .projectHeader {
   background-color: #00bcd4;
-  width: 100%; }
+  width: 100%;
+  position: relative; }
 
 .projectTitle {
   text-align: center;
@@ -118,7 +119,7 @@ input {
 .modalText {
   text-align: center; }
 
-.confirmDelete {
+.confirmDelete, .confirmProjectDelete {
   color: #f44336; }
 
 .confirmKeep {
@@ -255,16 +256,17 @@ li {
   vertical-align: text-top;
   float: right;
   margin-top: 5px;
-  margin-right: 5px; }
+  margin-right: 5px;
+  cursor: pointer; }
 
-#empty {
+.empty {
   height: 10px;
   position: absolute;
   top: 4px;
   left: 4px;
   z-index: 2; }
 
-#star {
+.star {
   position: absolute;
   height: 13px;
   top: 2px;
@@ -277,5 +279,15 @@ li {
   padding: 0;
   margin: 0;
   font-weight: 600; }
+
+.helperText {
+  position: absolute;
+  background-color: #000;
+  color: #fff;
+  display: block;
+  font-size: 0.7em;
+  padding: 3px;
+  width: fit-content;
+  max-width: 100px; }
 
 /*# sourceMappingURL=style.css.map */

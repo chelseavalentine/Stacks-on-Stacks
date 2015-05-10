@@ -31,9 +31,10 @@
 	float: right;
 	margin-top: 5px;
 	margin-right: 5px;
+	cursor: pointer;
 }
 
-#empty {
+.empty {
 	height: 10px;
 	position: absolute;
 	top: 4px;
@@ -41,7 +42,7 @@
 	z-index: 2;
 }
 
-#star {
+.star {
 	position: absolute;
 	height: 13px;
 	top: 2px;
@@ -55,4 +56,17 @@
 	padding: 0;
 	margin: 0;
 	font-weight: 600;
+}
+
+
+//The text that appears when you hover
+.helperText {
+	position: absolute;
+	background-color: $black;
+	color: $white;
+	display: block;
+	font-size: 0.7em;
+	padding: 3px;
+	width: fit-content;
+	max-width: 100px;
 }

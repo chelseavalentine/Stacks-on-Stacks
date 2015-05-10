@@ -1,3 +1,7 @@
+//Get the X position of the emptyUnsorted icon so that we can position the other helpertext boxes relative to that
+var topIconPos = $("#emptyUnsorted").offset();
+var topIconPosX = topIconPos.top;
+
 /*
 * function checks storage to see if 'data' JSON blob used for links storage has been initialized or not. If initialized, do nothing; else, initialize empty 'data' array.
 * */
@@ -34,25 +38,114 @@ function getProjects() {
 		if (!chrome.runtime.error) {
 			for (var i = 0; i < items['projects'].length; i++) {
 				var name =  JSON.stringify(items['projects'][i]['name']);
-				$('<div class="project"><div class="projectHeader"><p class="projectTitle"><input value=' + name + ' disabled></p></div><div class="questions"></div></div>')
+				$('<div class="project"><div class="projectHeader"><p class="projectTitle addIcons"><input value=' + name + ' disabled></p></div><div class="questions"></div></div><div class="answers"></div>')
 					.insertAfter($(".project").eq($(".project").length-1))
 					.ready(function() {
 						var projectheaders = $(".projectHeader");
 						for (var i = 0; i < projectheaders.length; i++) {
-							$(".projectHeader").eq(i).css({
-								"background-color": bgcolors[i%bgcolors.length]
-							})
+							$(".projectHeader")
+								.eq(i)
+								.css({
+									"background-color": bgcolors[i%bgcolors.length]
+								})
 						}
 					})
-					.click(function() {
-						$(this).next().toggle(0);
+					// .click(function() {
+					// 	$(this).next().toggle(0);
+					// })
+				$("<img src='images/empty.svg' class='empty'>")
+					.appendTo($(".addIcons").eq(i))
+					.hover(function() {
+						$(this).attr("src", "images/empty-hover.svg");
+						
+						//Get the position of the 'empty' icon so we can accurately position the
+						//helper text
+						var position = $(this).offset();
+						var top = position.top;
+						var left = position.left;
+
+						$('<p class="helperText">Delete project</p>')
+							.appendTo("body")
+							.css({
+								"top": top - topIconPosX - 19 + "px",
+								"left": left - 4 + "px"
+							})
+					}, function() {
+						$(this).attr("src", "images/empty.svg");
+						$(".helperText").remove();
 					})
+					.click(function() {
+						//get the index of this icon, which is also the index of the project
+						var thisIndex = $(this).index(".empty") - 1;
+
+						//Confirm deletion
+						chrome.storage.local.get(null, function(item) {
+							var projectName = item['projects'][thisIndex]['name'];
+
+							$('<div class="cover"></div>')
+								.appendTo("body")
+							$('<div class="modal"><center id="modalCenter"><p class="modalText">Are you sure you want to delete all of the links in <i>' + projectName + '</i>?</p><br></center></div>')
+								.appendTo("body")
+
+							var confirmation = false;
+
+							$('<button class="confirmProjectDelete flatButton">DELETE</button>')
+								.appendTo("#modalCenter")
+								.click(function () {
+									confirmation = true;
+									$(".cover, .modal").remove();
+
+									chrome.storage.local.get(null, function(item) {
+										item['projects'].splice(thisIndex, 1);
+										chrome.storage.local.set(item, function() {
+											console.log(projectName + " was successfully deleted from storage.")
+										})
+									});
+
+									//Visually clear the questions in 'Unsorted'
+									$(".project").eq(thisIndex + 1).empty();
+								})
+
+							$('<button class="confirmKeep flatButton">NO</button>')
+								.appendTo("#modalCenter")
+								.click(function () {
+									confirmation = false;
+									$(".cover, .modal").remove();
+								})
+						})
+
+					})
+
+				$("<img src='images/star.svg' class='star'>")
+					.appendTo($(".addIcons").eq(i))
+					.hover(function() {
+						$(this).attr("src", "images/star-chosen.svg");
+
+						//Get the position of the 'empty' icon so we can accurately position the
+						//helper text
+						var position = $(this).offset();
+						var top = position.top;
+						var left = position.left;
+
+						$('<p class="helperText">Make default</p>')
+							.appendTo("body")
+							.css({
+								"top": top - topIconPosX - 17 + "px",
+								"left": left - 16 + "px"
+							})
+
+					}, function() {
+						$(this).attr("src", "images/star.svg");
+						$(".helperText").remove();
+					})
+
 			}
 		} else {
 			console.log("welps");
 		}
 	});
 }
+
 
 /*
 * params {String link}
@@ -158,12 +251,13 @@ $(function(){
 	projectInit();
 })
 
+
 /*
  * This function clears out all data in 'data' JSON blob where links are stored upon onclick and then sets the empty array back into storage
  */
 function clearAll() {
 	if(!chrome.runtime.error) {
-		$("#empty").click(function() {
+		$("#emptyUnsorted").click(function() {
 			$('<div class="cover"></div>')
 				.appendTo("body")
 			$('<div class="modal"><center id="modalCenter"><p class="modalText">Are you sure you want to delete all of the links in <i>Unsorted</i>?</p><br></center></div>')
@@ -195,31 +289,57 @@ function clearAll() {
 					confirmation = false;
 					$(".cover, .modal").remove();
 				})
-
-
-			if (confirmation === true) {
-				
-			}
 		});
 	}
 }
 
+
 //When you hover over the clear all button it looks more
-$("#empty").hover(function() {
+$("#emptyUnsorted").hover(function() {
 	$(this).attr("src", "images/empty-hover.svg");
+	
+	//Get the position of the 'empty' icon so we can accurately position the
+	//helper text
+	var position = $(this).offset();
+	var top = position.top;
+	var left = position.left;
+
+	$('<p class="helperText">Empty this</p>')
+		.appendTo("body")
+		.css({
+			"top": top - top - 18 + "px",
+			"left": left - 4 + "px"
+		})
 }, function() {
 	$(this).attr("src", "images/empty.svg");
+	$(".helperText").remove();
 })
 
 
 //When you hover over the star, it will switch image to indicate hovering state
-$("#star").hover(function() {
+$(".star").hover(function() {
 	$(this).attr("src", "images/star-chosen.svg");
+
+	//Get the position of the 'empty' icon so we can accurately position the
+	//helper text
+	var position = $(this).offset();
+	var top = position.top;
+	var left = position.left;
+
+	$('<p class="helperText">Make default</p>')
+		.appendTo("body")
+		.css({
+			"top": top - top - 18 + "px",
+			"left": left - 16 + "px"
+		})
+
 }, function() {
 	$(this).attr("src", "images/star.svg");
+	$(".helperText").remove();
 })
 
+
 // [FIX THIS] Make the chosen class keep the filled in star
-$("#star").click(function() {
+$(".star").click(function() {
 	$(this).attr("src", "images/star-chosen.svg");
 })
