@@ -102,6 +102,10 @@ button{
 }
 
 //Special text
+::selection {
+	background-color: $grey200;
+}
+
 a{
 	@extend .font;
 }

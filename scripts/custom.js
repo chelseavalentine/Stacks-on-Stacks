@@ -214,19 +214,17 @@ function getAllLinks(){
 						})
 
 
-					$('<div class="answer" id="answer' + i +'"><center><p class="answerText">' + answer + '</p><h1 class="upvotes">' + upvotes +'</h1></center></div>')
+					$('<div class="answer" id="answer' + i +'"><center><p class="answerText">' + answer + '</p><p class="upvotes">' + upvotes +'</p></center></div>')
 						.insertAfter(document.getElementById('title' + i))
 						.dblclick(function() {
 							$(this).toggle();
 						})
 
-					//Add this answer's number of upvotes
-					//We need to position the upvotes, so get the width of the element
 					$(".upvotes")
 						.eq(i)
 						.css({
 							"top": 0,
-							"left": "273px"
+							"right": "5px"
 						})
 
 					$('<img src="/images/delete.svg" class="icon deleteIcon"></div>')

@@ -161,8 +161,15 @@ input {
 	margin-top: 3px;
 	font-size: 1em;
 	color: $white;
-	opacity: 0.35;
+	opacity: 0.9;
 	background-color: $cyan500;
 	padding-left: 3px;
 	padding-right: 3px;
+	width: fit-content;
+}
+
+.upvotes:hover {
+	opacity: 0.1;
+}
+.measureUpvotes {
 }

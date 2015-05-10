@@ -133,10 +133,14 @@ input {
   margin-top: 3px;
   font-size: 1em;
   color: #fff;
-  opacity: 0.35;
+  opacity: 0.9;
   background-color: #00bcd4;
   padding-left: 3px;
-  padding-right: 3px; }
+  padding-right: 3px;
+  width: fit-content; }
+
+.upvotes:hover {
+  opacity: 0.1; }
 
 .font, .header, .text, body, p, button, ul, ol, h1, h2, h3, h4, h5, h6, a {
   font-family: Consolas, sans-serif;
@@ -212,6 +216,9 @@ button {
   color: white;
   text-align: center;
   cursor: pointer; }
+
+::selection {
+  background-color: #eee; }
 
 a:link, a:visited {
   color: #00bcd4;
@@ -294,7 +301,6 @@ li {
   font-weight: 600; }
 
 .helperText {
-  position: absolute;
   background-color: #000;
   color: #fff;
   display: block;

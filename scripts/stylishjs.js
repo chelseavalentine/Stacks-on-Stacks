@@ -8,12 +8,18 @@ $(".projectHeader").dblclick(function() {
 var bgcolors = ['#00bcd4', '#ff436c', '#8bc34a', '#ff9800'];
 
 $("#create").click(function() {
-	$('<div class="project"><div class="projectHeader"><p class="projectTitle"></p></div><div class="questions"></div></div>').insertAfter(
-		$(".project").eq($(".project").length-1))
+	$('<div class="project"><div class="projectHeader"><p class="projectTitle"></p></div><div class="questions"></div></div>')
+		.insertAfter($(".project").eq($(".project").length-1))
 	var lastProjectTitle = $(".projectTitle").eq($(".projectTitle").length-1);
 
 	$('<input value="Project" class="newproject">')
 		.appendTo(lastProjectTitle)
+		.on('keyup', function(e) {
+			if (e.which == 13) {
+				$("#save").click()
+				this.disabled = true;
+			}
+		})
 
 	$("#save").show(0)
 
