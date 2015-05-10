@@ -84,7 +84,7 @@ function getProjects() {
 
 							$('<div class="cover"></div>')
 								.appendTo("body")
-							$('<div class="modal"><center id="modalCenter"><p class="modalText">Are you sure you want to delete all of the links in <i>' + projectName + '</i>?</p><br></center></div>')
+							$('<div class="modal"><center id="modalCenter"><p class="modalText">Are you sure you want to delete <i>' + projectName + '</i>?</p><br></center></div>')
 								.appendTo("body")
 
 							var confirmation = false;
@@ -102,8 +102,8 @@ function getProjects() {
 										})
 									});
 
-									//Visually clear the questions in 'Unsorted'
-									$(".project").eq(thisIndex + 1).empty();
+									//Visually delete the project from view
+									$(".project").eq(thisIndex + 1).remove();
 								})
 
 							$('<button class="confirmKeep flatButton">NO</button>')
@@ -138,7 +138,6 @@ function getProjects() {
 						$(this).attr("src", "images/star.svg");
 						$(".helperText").remove();
 					})
-
 			}
 		} else {
 			console.log("welps");
@@ -181,7 +180,10 @@ function getAllLinks(){
 				var link =  JSON.stringify(items['data'][i]['link']);
 				var oldQuestion =  JSON.stringify(items['data'][i]['question']);
 				var answer = JSON.stringify(items['data'][i]['answer']);
+				var upvotes = JSON.stringify(items['data'][i]['upvotes']);
 
+				//Get rid of the quotation marks
+				upvotes = upvotes.substring(1, upvotes.length-1);
 				answer = answer.substring(1, answer.length-1).trim().replace(/\r?\\/g, '');
 
 				//check to see whether the question should be cut to see whether we should add the ...
@@ -212,10 +214,19 @@ function getAllLinks(){
 						})
 
 
-					$('<div class="answer"><center><p class="answerText">' + answer + '</p></center></div>')
+					$('<div class="answer" id="answer' + i +'"><center><p class="answerText">' + answer + '</p><h1 class="upvotes">' + upvotes +'</h1></center></div>')
 						.insertAfter(document.getElementById('title' + i))
 						.dblclick(function() {
 							$(this).toggle();
+						})
+
+					//Add this answer's number of upvotes
+					//We need to position the upvotes, so get the width of the element
+					$(".upvotes")
+						.eq(i)
+						.css({
+							"top": 0,
+							"left": "273px"
 						})
 
 					$('<img src="/images/delete.svg" class="icon deleteIcon"></div>')

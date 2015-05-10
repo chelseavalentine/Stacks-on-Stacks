@@ -49,7 +49,7 @@ $("#create").click(function() {
 
 				$('<div class="cover"></div>')
 					.appendTo("body")
-				$('<div class="modal"><center id="modalCenter"><p class="modalText">Are you sure you want to delete all of the links in <i>' + projectName + '</i>?</p><br></center></div>')
+				$('<div class="modal"><center id="modalCenter"><p class="modalText">Are you sure you want to delete <i>' + projectName + '</i>?</p><br></center></div>')
 					.appendTo("body")
 
 				var confirmation = false;
@@ -68,8 +68,8 @@ $("#create").click(function() {
 							})
 						});
 
-						//Visually clear the questions in 'Unsorted'
-						$(".project").eq(thisIndex + 1).empty();
+						//Visually delete the project from view
+						$(".project").eq(thisIndex + 1).remove();
 					})
 
 				$('<button class="confirmKeep flatButton">NO</button>')

@@ -2,20 +2,21 @@
 var currentURL = window.location.href;
 var title = document.getElementById('question-header').children[0].children[0].innerHTML;
 var firstAnswer = document.getElementsByClassName('answercell')[0].children[0].innerHTML;
+var topUpvotes = document.getElementsByClassName('vote-count-post')[1].textContent;
 
 var content = firstAnswer.split('share|improve this answer');
 firstAnswer = content[0];
 
-saveLink(currentURL, title, firstAnswer);
+saveLink(currentURL, title, firstAnswer, topUpvotes);
 
 
-function saveLink(link, question, answer) {
+function saveLink(link, question, answer, upvotes) {
 	// prettify question & answer by taking out whitespaces, tabs, and null
 	question = question.split(/\s+/).filter(function(e){return e===0 || e}).join(' ');
 	answer = answer.replace(/\r?\n/g, '').substring(0, answer.length);
 
 	// check for duplicates
-	obj = {'link': link, 'question': question, 'answer': answer};
+	obj = {'link': link, 'question': question, 'answer': answer, 'upvotes': upvotes};
 
 	chrome.storage.local.get(null, function(item) {
 	  var isDup = false;

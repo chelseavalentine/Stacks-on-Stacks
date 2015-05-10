@@ -84,6 +84,7 @@ body {
 }
 
 .answer {
+	position: relative;
 	background-color: $white;
 	display: none;
 	overflow-y: scroll;
@@ -150,4 +151,18 @@ input {
 
 .confirmKeep {
 	color: $green500;
+}
+
+//Answer's upvotes
+.upvotes {
+	position: absolute;
+	border: 0;
+	margin: 0;
+	margin-top: 3px;
+	font-size: 1em;
+	color: $white;
+	opacity: 0.35;
+	background-color: $cyan500;
+	padding-left: 3px;
+	padding-right: 3px;
 }
