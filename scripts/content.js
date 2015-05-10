@@ -16,24 +16,33 @@ function saveLink(link, question, answer, upvotes) {
 	answer = answer.replace(/\r?\n/g, '').substring(0, answer.length);
 
 	// check for duplicates
-	obj = {'link': link, 'question': question, 'answer': answer, 'upvotes': upvotes};
+	obj = {
+		'question': question,
+		'link': link,
+		'answer': answer,
+		'upvotes': upvotes
+	};
 
 	chrome.storage.local.get(null, function(item) {
-	  var isDup = false;
-	  for (var i = 0; i < Object.keys(item['data']).length; i++) {
-		if (item['data'][i]['link'] === obj['link']) {
-		  isDup = true;
-		  break;
-		}
-	  }
+		var undefined = 0; // let's set it to unsorted in case the storage hasn't been initialized yet
+		var currentProject = item['settings'][0]['default']; // if this is undefined, it'll be 0
+		console.log("Current project we're adding into is " + currentProject);
 
-	  if (!isDup) {
-	  	item['data'].push(obj);
-	  	chrome.storage.local.set(item, function(){
-	  		console.log("");
-	  	});
-	  } else {
-	  	console.log('already exists in storage');
-	  }
+		var isDup = false;
+		for (var i = 0; i < item.projects[currentProject].questions.length; i++) {
+			if (item['projects'][currentProject]['questions'][i]['link'] === obj['link']) {
+				isDup = true;
+				break;
+			}
+		}
+
+		if (!isDup) {
+			item['projects'][currentProject]['questions'].push(obj);
+			chrome.storage.local.set(item, function(){
+				console.log("We just added a question to " + currentProject);
+			});
+		} else {
+			console.log("You've already visited this page.");
+		}
 	});
 }

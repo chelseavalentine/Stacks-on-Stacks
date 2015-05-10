@@ -7,7 +7,5 @@ If you know how to install unpacked Chrome extensions, you can feel free to pull
 
 ### Next steps
 
-* Add collection creation capabilities
-* Better data organization
 * Edit link order capabilities
 * Key stroke navigation

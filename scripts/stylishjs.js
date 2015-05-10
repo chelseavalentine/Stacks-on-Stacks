@@ -1,11 +1,12 @@
-//If you click a project's title, the questions are hidden
-$(".projectHeader").dblclick(function() {
-	$(this).next().toggle(0);
-})
-
-
-//Background colors available
+//Project background colors
 var bgcolors = ['#00bcd4', '#ff436c', '#8bc34a', '#ff9800'];
+
+//If you double click a project's title, the questions are hidden
+$(".projectHeader")
+	.dblclick(function() {
+		$(this).next().toggle(0);
+	})
+
 
 $("#create").click(function() {
 	$('<div class="project"><div class="projectHeader"><p class="projectTitle"></p></div><div class="questions"></div></div>')
@@ -85,7 +86,6 @@ $("#create").click(function() {
 						$(".cover, .modal").remove();
 					})
 			})
-
 		})
 
 	$("<img src='images/star.svg' class='star'>")
@@ -115,29 +115,24 @@ $("#create").click(function() {
 
 $("#save").click(function() {
 	var newProjects = $('.newproject');
-	var projects = [];
-	console.log("All new projects are ");
-	console.log(newProjects);
 
 	chrome.storage.local.get(null, function(items) {
 		for (var i = 0; i < newProjects.length; i++) {
-			console.log(newProjects.eq(i).val())
-			var createdProject = {'name': newProjects.eq(i).val()};
+			var createdProject = {
+				'name': newProjects.eq(i).val(),
+				'questions': []
+			};
 			items['projects'].push(createdProject);
-			$(".newproject").eq(i).removeClass("newproject");
+			$(".newproject")
+				.eq(i)
+				.removeClass("newproject");
 		}
 		chrome.storage.local.set(items, function() {
 			console.log("New projects were set.")
 		})
 	})
 
-	//Color all of the new projects
-	var projectheaders = $(".projectHeader");
-	for (var i = 0; i < projectheaders.length; i++) {
-		$(".projectHeader").eq(i).css({
-			"background-color": bgcolors[i%bgcolors.length]
-		})
-	}
+	colorHeaders(); // Color all of the new projects too
 
 	$(this).hide(0)	
 })

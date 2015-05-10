@@ -7,6 +7,13 @@
 	margin: 0;
 }
 
+#helpInsertProjects {
+	display: block;
+	position: relative;
+	width: 100%;
+	height: 70px;
+}
+
 .header {
 	background-color: $grey200;
 	display: block;
@@ -161,15 +168,15 @@ input {
 	margin-top: 3px;
 	font-size: 1em;
 	color: $white;
-	opacity: 0.9;
-	background-color: $cyan500;
+	background-color: $cyan300;
 	padding-left: 3px;
 	padding-right: 3px;
 	width: fit-content;
 }
 
 .upvotes:hover {
-	opacity: 0.1;
+	opacity: 0.2;
 }
+
 .measureUpvotes {
 }
