@@ -24,8 +24,7 @@ function saveLink(link, question, answer, upvotes) {
 	};
 
 	chrome.storage.local.get(null, function(item) {
-		var undefined = 0; // let's set it to unsorted in case the storage hasn't been initialized yet
-		var currentProject = item['settings'][0]['default']; // if this is undefined, it'll be 0
+		var currentProject = item.settings['defaultProject'];
 		console.log("Current project we're adding into is " + currentProject);
 
 		var isDup = false;

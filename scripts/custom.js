@@ -12,8 +12,8 @@ it will create the data table for you.
 Execute these functions when jQuery loads/at the very beginning.
 -------------------------------------------------------------------*/
 $(function beginning() {
-	projectsInit();
 	settingsInit();
+	projectsInit();
 });
 
 /*-------------------------------------------------------------------
@@ -32,6 +32,7 @@ function projectsInit() {
 			}, function(){
 				console.log('The projects have been initialized.');
 			});
+			window.location.reload(); // Refresh window.
 		} else { // projects exist
 			getProjects(); // load in the projects
 			getAllLinks(); // load in the projects' links
@@ -48,13 +49,17 @@ function settingsInit() {
 	chrome.storage.local.get('settings', function(item) {
 		if (Object.keys(item).length === 0) { // initialize storage
 			chrome.storage.local.set({
-				//Set 'unsorted' as the default project that things will be added to
-				'settings':[{
-					'default': 0
-				}]
+				// Set 'unsorted' as the default project that things will be added to
+				'settings':{
+					'defaultProject': 0
+				}
 			}, function(){
 				console.log('Your settings have been initialized.');
 			});
+
+			window.location.reload(); // Refresh window.
+		} else {
+			console.log("Your settings have been initialized before.");
 		}
 	});
 }
@@ -163,9 +168,9 @@ function getAllLinks(){
 								var clicks = $(this).data('clicks');
 								$(this).next().toggle(0);
 								if (clicks) {
-									$("#title" + i).children().eq(0).text(question);
+									$("#title" + i + j).children().eq(0).text(question);
 								} else {
-									$("#title" + i).children().eq(0).text(oldQuestion);
+									$("#title" + i + j).children().eq(0).text(oldQuestion);
 								}
 
 								$(this).data("clicks", !clicks);
@@ -211,6 +216,7 @@ function getAllLinks(){
 }
 
 
+
 /*===================================================================
 ---------------------------------------------------------------------
 * VISUAL MANIPULATION
@@ -238,10 +244,21 @@ function colorHeaders() {
 	}
 }
 
+/*-------------------------------------------------------------------
+********* SHOW NEW DEFAULT CHOICE
+iF 
+-------------------------------------------------------------------*/
+
 
 /*===================================================================
 ***** VISUAL MANIPULATION: ADDING ELEMENTS
 ===================================================================*/
+
+/*-------------------------------------------------------------------
+********* SHOW DEFAULT
+Show which project is the default project upon load, by making that
+star a filled-in one.
+-------------------------------------------------------------------*/
 
 /*-------------------------------------------------------------------
 ********* ADD 'UNSORTED' EMPTY ICON
@@ -286,18 +303,29 @@ function changeEmptyIconStart(i) {
 	var top = $(".empty").eq(i).position().top;
 	var left = $(".empty").eq(i).offset().left;
 	var topOffset = -70;
-	console.log("calculation is" + top + " and this is " + topOffset);
-	if (i !== 0) {
-		//Get the X position of the emptyUnsorted icon so that we can position the other helpertext boxes relative to that
-		topOffset = -1 * $("#emptyUnsorted").offset().top;
-	}
 
-	$('<p class="helperText">Delete project</p>')
+	if (i !== 0) {
+		top = (top - topOffset - 23);
+		var height = $(".projectHeader").eq(0).height(); // Get the height of a projectHeader
+
+		//Get the X position of the emptyUnsorted icon so that we can position the other helpertext boxes relative to that
+		topOffset = $("#emptyUnsorted").offset().top;
+
+		$('<p class="helperText">Delete project</p>')
+		.appendTo("body")
+		.css({
+			"top": top + topOffset + height + "px",
+			"left": left - 4 + "px"
+		});
+		console.log("mofoooo " + topOffset);
+	} else {
+		$('<p class="helperText">Delete project</p>')
 		.appendTo("body")
 		.css({
 			"top": top - topOffset - 23 + "px",
 			"left": left - 4 + "px"
 		});
+	}
 }
 
 /*-------------------------------------------------------------------
@@ -428,30 +456,64 @@ Reorganization changes, such as moving around links, & reordering
 projects.
 ===================================================================*/
 function addStar(i){
+	var chosen = false;
+
 	$("<img src='images/star.svg' class='star'>")
 		.appendTo($(".addIcons").eq(i))
 		.hover(function() {
+			if (chosen === false) {
+
+			}
 			$(this).attr("src", "images/star-chosen.svg");
 
-			//Get the position of the 'empty' icon so we can accurately position the
-			//helper text
-			var top = $(this).offset().top;
-			var left = $(this).offset().left;
+			// Get the position of the 'empty' icon so we can accurately position the
+			// helper text
+			var top = $(".star").eq(i).offset().top;
+			var left = $(".star").eq(i).offset().left;
+
+			var height = $(".projectHeader").eq(i).height(); // Get the height of a projectHeader
 			var topOffset = 0;
 
 			if (i !== 0) {
-				//Get the X position of the emptyUnsorted icon so that we can position the other helpertext boxes relative to that
+				// Get the X position of the emptyUnsorted icon so that we can position the other helpertext boxes relative to that
 				topOffset = $("#emptyUnsorted").offset().top;
-			}
 
-			$('<p class="helperText">Make default</p>')
+				$('<p class="helperText">Make default</p>')
+				.appendTo("body")
+				.css({
+					"top": top - topOffset + height + 18 + "px",
+					"left": left - 16 + "px"
+				});
+			} else {
+				$('<p class="helperText">Make default</p>')
 				.appendTo("body")
 				.css({
 					"top": top - topOffset - 21 + "px",
 					"left": left - 16 + "px"
 				});
+			}
+
+			
 		}, function() {
 			$(this).attr("src", "images/star.svg");
 			$(".helperText").remove();
-		});
+		})
+		.click(function() {
+			setDefault(i);
+		})
+}
+
+/*-------------------------------------------------------------------
+********* SET DEFAULT PROJECT
+Change the project that links are automatically added to.
+-------------------------------------------------------------------*/
+function setDefault(newDefault) {
+	chrome.storage.local.get(null, function(item) {
+		item.settings['defaultProject'] = newDefault;
+		console.log("You switched the project that links will automatically be added to. Now, new links are automatically added to " + item.projects[newDefault].name + " (Project #" + (newDefault + 1) + ").");
+
+		chrome.storage.local.set(item, function() {
+			console.log("Your new default project. has been saved.");
+		})
+	})
 }
