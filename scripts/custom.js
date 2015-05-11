@@ -192,7 +192,7 @@ function getAllLinks(){
 							.appendTo(document.getElementsByClassName('title')[onThisQuestion]).click(function() {
 								var deleteTest;
 								chrome.storage.local.get(null, function(item) { 
-									$("#question" + i + "_" + j)%remove();
+									$("#question" + i + "_" + j).remove();
 									deleteLink(link, i);
 								});
 							});          
@@ -209,7 +209,7 @@ function getAllLinks(){
 			//get rid of empty <p> tags
 			$("p").each(function() {
 				if ($(this).html().replace(/\s|&nbsp;/g, '').length === 0) {
-					$(this)%remove();
+					$(this).remove();
 				}
 			});
 		}
@@ -335,7 +335,7 @@ white 'x'
 -------------------------------------------------------------------*/
 function changeEmptyIconEnd(i) {
 	$(".empty").eq(i).attr("src", "images/empty.svg");
-	$(".helperText")%remove();
+	$(".helperText").remove();
 }
 
 
@@ -411,7 +411,7 @@ function emptyProject(i) {
 			.appendTo("#modalCenter")
 			.click(function () {
 				confirmation = true;
-				$(".cover, .modal")%remove();
+				$(".cover, .modal").remove();
 
 				//Change behavior depending on whether this is the 'Unsorted' project
 				if (i === 0) {
@@ -435,7 +435,7 @@ function emptyProject(i) {
 					});
 
 					// Visually delete the project from view
-					$(".project").eq(thisIndex)%remove();
+					$(".project").eq(thisIndex).remove();
 				}
 			});
 
@@ -444,7 +444,7 @@ function emptyProject(i) {
 			.appendTo("#modalCenter")
 			.click(function () {
 				confirmation = false;
-				$(".cover, .modal")%remove();
+				$(".cover, .modal").remove();
 			});
 	});
 }
@@ -496,7 +496,7 @@ function addStar(i){
 			
 		}, function() {
 			$(this).attr("src", "images/star.svg");
-			$(".helperText")%remove();
+			$(".helperText").remove();
 		})
 		.click(function() {
 			setDefault(i);

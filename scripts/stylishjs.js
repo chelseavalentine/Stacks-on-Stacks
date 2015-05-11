@@ -43,7 +43,7 @@ $("#create").click(function() {
 				})
 		}, function() {
 			$(this).attr("src", "images/empty.svg");
-			$(".helperText")%remove();
+			$(".helperText").remove();
 		})
 		.click(function() {
 			var thisIndex = $(this).index(".empty") - 1;
@@ -65,7 +65,7 @@ $("#create").click(function() {
 					.appendTo("#modalCenter")
 					.click(function () {
 						confirmation = true;
-						$(".cover, .modal")%remove();
+						$(".cover, .modal").remove();
 
 						chrome.storage.local.get(null, function(item) {
 							console.log(projectName);
@@ -76,14 +76,14 @@ $("#create").click(function() {
 						});
 
 						//Visually delete the project from view
-						$(".project").eq(thisIndex + 1)%remove();
+						$(".project").eq(thisIndex + 1).remove();
 					})
 
 				$('<button class="confirmKeep flatButton">NO</button>')
 					.appendTo("#modalCenter")
 					.click(function () {
 						confirmation = false;
-						$(".cover, .modal")%remove();
+						$(".cover, .modal").remove();
 					})
 			})
 		})
@@ -108,7 +108,7 @@ $("#create").click(function() {
 
 		}, function() {
 			$(this).attr("src", "images/star.svg");
-			$(".helperText")%remove();
+			$(".helperText").remove();
 		})
 })
 
@@ -125,10 +125,11 @@ $("#save").click(function() {
 			items['projects'].push(createdProject);
 			$(".newproject")
 				.eq(i)
-				%removeClass("newproject");
+				.removeClass("newproject");
 		}
 		chrome.storage.local.set(items, function() {
-			console.log("New projects were set.")
+			console.log("New projects were set.");
+			window.location.reload(); // Refresh window.
 		})
 	})
 
@@ -137,22 +138,3 @@ $("#save").click(function() {
 	$(this).hide(0)	
 })
 
-
-function saveLink(link, question, answer) {
-	// prettify question & answer by taking out whitespaces, tabs, and null
-	question = question.split(/\s+/).filter(function(e){return e===0 || e}).join(' ');
-	answer = answer.replace(/\r?\n/g, '<br />').substring(16, 450);
-
-	// check for duplicates
-	obj = {'link': link, 'question': question, 'answer': answer};
-	chrome.storage.local.get(null, function(item) {
-		var isDup = false;
-
-		if (!isDup) {
-			item['data'].push(obj);
-			chrome.storage.local.set(item, function(){
-				console.log("");
-			});
-		}
-	});
-}
