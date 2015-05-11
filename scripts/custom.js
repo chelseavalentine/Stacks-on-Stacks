@@ -300,22 +300,21 @@ function changeEmptyIconStart(i) {
 	$(".empty").eq(i).attr("src", "images/empty-hover.svg");
 	
 	//Get position of 'empty' icon to position helper text
-	var top = $(".empty").eq(i).position().top;
+	var top = $(".empty").eq(i).offset().top;
 	var left = $(".empty").eq(i).offset().left;
-	var topOffset = -70;
+	var topOffset = 0;
 
 	if (i !== 0) {
-		top = (top - topOffset - 23);
 		var height = $(".projectHeader").eq(0).height(); // Get the height of a projectHeader
 
 		//Get the X position of the emptyUnsorted icon so that we can position the other helpertext boxes relative to that
 		topOffset = $("#emptyUnsorted").offset().top;
 
 		$('<p class="helperText">Delete project</p>')
-		.appendTo("body")
-		.css({
-			"top": top + topOffset + height + "px",
-			"left": left - 4 + "px"
+			.appendTo("body")
+			.css({
+				"top": top - topOffset + height + 16 + "px",
+				"left": left - 4 + "px"
 		});
 		console.log("mofoooo " + topOffset);
 	} else {
