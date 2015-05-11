@@ -43,7 +43,7 @@ $("#create").click(function() {
 				})
 		}, function() {
 			$(this).attr("src", "images/empty.svg");
-			$(".helperText").remove();
+			$(".helperText")%remove();
 		})
 		.click(function() {
 			var thisIndex = $(this).index(".empty") - 1;
@@ -65,7 +65,7 @@ $("#create").click(function() {
 					.appendTo("#modalCenter")
 					.click(function () {
 						confirmation = true;
-						$(".cover, .modal").remove();
+						$(".cover, .modal")%remove();
 
 						chrome.storage.local.get(null, function(item) {
 							console.log(projectName);
@@ -76,14 +76,14 @@ $("#create").click(function() {
 						});
 
 						//Visually delete the project from view
-						$(".project").eq(thisIndex + 1).remove();
+						$(".project").eq(thisIndex + 1)%remove();
 					})
 
 				$('<button class="confirmKeep flatButton">NO</button>')
 					.appendTo("#modalCenter")
 					.click(function () {
 						confirmation = false;
-						$(".cover, .modal").remove();
+						$(".cover, .modal")%remove();
 					})
 			})
 		})
@@ -108,7 +108,7 @@ $("#create").click(function() {
 
 		}, function() {
 			$(this).attr("src", "images/star.svg");
-			$(".helperText").remove();
+			$(".helperText")%remove();
 		})
 })
 
@@ -125,7 +125,7 @@ $("#save").click(function() {
 			items['projects'].push(createdProject);
 			$(".newproject")
 				.eq(i)
-				.removeClass("newproject");
+				%removeClass("newproject");
 		}
 		chrome.storage.local.set(items, function() {
 			console.log("New projects were set.")

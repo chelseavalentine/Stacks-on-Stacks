@@ -1,151 +1,150 @@
 @import 'color';
 
-.font{
-	font-family: Consolas, sans-serif;
-	text-align: left;
-	margin-top: 0;
-	margin-bottom: 0;
+%font {
+  font-family: Consolas, sans-serif;
+  margin-bottom: 0;
+  margin-top: 0;
+  text-align: left;
 }
 
-.header{
-	@extend .font;
-	color: $grey700;
-	font-weight: 600;
+%header {
+  @extend %font;
+  color: $grey700;
+  font-weight: 700;
+  margin-bottom: 5px;
+  padding-left: 5px;
 }
 
-.text{
-	@extend .font;
-	font-weight: 400;
+%text {
+  @extend %font;
+  font-weight: 400;
 }
 
-body{
-	@extend .text;
-	font-size: 1em;
+body {
+  @extend %text;
+  font-size: 1em;
 }
 
 .stacks {
-	padding: 10px;
-	font-size: 1.5em;
-	color: $grey800;
-	font-weight: 700;
-	display: inline-block;
-	border: 0;
-	margin: 0;
-	max-width: 100%;
+  @extend %header;
+  border: 0;
+  color: $grey800;
+  display: inline-block;
+  font-size: 1.5em;
+  font-weight: 700;
+  margin: 0;
+  padding: 10px;
 }
 
-h1{
-	@extend .font;
-	font-size: 1.3em;
-	font-weight: 700;
-	border-bottom: 1px solid $grey500;
-	margin-bottom: 10px;
-	max-width: 285px;
+h1 {
+  @extend %header;
+  border-bottom: 1px solid $grey500;
+  font-size: 1.3em;
+  margin-bottom: 10px;
+  max-width: 285px;
 }
 
 h2 {
-	@extend h1;
-	font-size: 1.2em;
-	font-weight: 700;
-	margin-bottom: 7.5px;
-	border-bottom: 1px solid $grey400;
+  @extend %header;
+  border-bottom: 1px solid $grey400;
+  font-size: 1.2em;
+  margin-bottom: 7.5px;
 }
 
 h3 {
-	@extend h2;
-	font-size: 1.15em;
-	margin-bottom: 5px;
-	border-bottom: 1px solid $grey300;
+  @extend %header;
+  border-bottom: 1px solid $grey300;
+  font-size: 1.15em;
 }
 
 h4 {
-	@extend h3;
-	font-size: 1.05em;
-	font-weight: 700;
-	border: 0;
+  @extend %header;
+  font-size: 1.05em;
 }
 
 h5 {
-	@extend h4;
-	font-size: 1em;
-	font-weight: 700;
+  @extend %header;
+  font-size: 1em;
 }
 
 h6 {
-	@extend h5;
-	font-size: 0.9em;
-	font-weight: 700;
+  @extend %header;
+  font-size: .9em;
 }
 
-p{
-	@extend .text;
-	max-width: 290px;
-	font-size: 0.85em;
+p {
+  @extend %text;
+  font-size: .85em;
+  max-width: 290px;
 }
 
 p+p {
-	margin-bottom: 15px;
+  margin-bottom: 15px;
 }
 
-button{
-	@extend .text;
-	@extend .remove;
-	font-size: 1em;
-	text-transform: uppercase;
-	padding: 7px;
-	border: none;
-	min-width: 85px;
-	background-color: $grey800;
-	color: white;
-	text-align: center;
-	cursor: pointer;
+button {
+  @extend %text;
+  @extend %remove;
+  background-color: $grey800;
+  border: 0;
+  color: $white;
+  cursor: pointer;
+  font-size: 1em;
+  min-width: 85px;
+  padding: 7px;
+  text-align: center;
+  text-transform: uppercase;
 }
 
 //Special text
 ::selection {
-	background-color: $grey100;
+  background-color: $grey100;
 }
 
-a{
-	@extend .font;
+a {
+  @extend %font;
 }
 
-//Links
-a:link, a:visited{
-	color: $cyan500;
-	text-decoration: none;
+// Links
+a:link,
+a:visited {
+  color: $cyan500;
+  text-decoration: none;
 }
 
-a:hover, a:active{
-	color: $grey800;
-	text-decoration: underline;
+a:hover,
+a:active {
+  color: $grey800;
+  text-decoration: underline;
 }
 
-code, pre {
-	background-color: $grey200;
-	padding: 2px 4px 4px 2px; /*bottom-left-right-top*/
-	white-space: pre-line;
-	word-wrap: break-word;
-	max-width: 275px;
-	display: inline-block;
-	text-align: left;
+code,
+pre {
+  background-color: $grey200;
+  display: inline-block;
+  max-width: 275px;
+  padding: 2px 4px 4px 2px; // bottom-left-right-top
+  text-align: left;
+  white-space: pre-line;
+  word-wrap: break-word;
 }
 
 hr {
-	border: none;
-	width: 95%;
-	border-bottom: 1px solid $grey200;
+  border: 0;
+  border-bottom: 1px solid $grey200;
+  width: 95%;
 
 }
 
-ul, ol {
-	@extend .text;
-	max-width: 290px;
-	font-size: 0.85em;
-	margin-bottom: 15px;
-	margin: 0;
+ul,
+ol {
+  @extend %text;
+  font-size: .85em;
+  margin: 0;
+  margin-bottom: 15px;
+  max-width: 290px;
 }
 
 li {
-	margin-left: -10px;
+  margin-left: -10px;
 }

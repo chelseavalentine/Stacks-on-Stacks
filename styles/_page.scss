@@ -1,182 +1,176 @@
 @import 'color';
 
-.remove{
-	position: relative;
-	top: 0;
-	left: 0;
-	margin: 0;
+%remove {
+  left: 0;
+  margin: 0;
+  position: relative;
+  top: 0;
 }
 
 #helpInsertProjects {
-	display: block;
-	position: relative;
-	width: 100%;
-	height: 70px;
+  display: block;
+  height: 70px;
+  position: relative;
+  width: 100%;
 }
 
 .header {
-	background-color: $grey200;
-	display: block;
-	top: 0;
-	left: 0;
-	width: 100%;
-	position: fixed;
-	box-shadow: 0 0 6px 1px rgba(0,0,0,0.18);
-	z-index: 4;
-}
-
-#unsorted {
-	margin-top: 70px;
+  background-color: $grey200;
+  box-shadow: 0 0 6px 1px rgba(0, 0, 0, .18);
+  display: block;
+  left: 0;
+  position: fixed;
+  top: 0;
+  width: 100%;
+  z-index: 4;
 }
 
 body {
-	@extend .remove;
-	display: block;
-	width: 350px;
-	height: 600px;
-	background: $grey100;
-	z-index: 1;
+  @extend %remove;
+  background: $grey100;
+  display: block;
+  height: 600px;
+  position: relative;
+  width: 350px;
+  z-index: 1;
 }
 
-.container{
-	@extend .remove;
-	width: 90%;
-	text-align: left;
+.container {
+  @extend %remove;
+  text-align: left;
+  width: 90%;
 }
 
 .project {
-	width: 100%;
-	box-shadow: 0 0 6px 1px rgba(0,0,0,0.08);
-	margin-bottom: 20px;
+  box-shadow: 0 0 6px 1px rgba(0, 0, 0, .08);
+  margin-bottom: 20px;
+  width: 100%;
 }
 
 .projectHeader {
-	background-color: $cyan500;
-	width: 100%;
-	position: relative;
+  background-color: $cyan500;
+  position: relative;
+  width: 100%;
 }
 
 .projectTitle {
-	text-align: center;
-	color: $white;
-	font-size: 1.2em;
-	font-weight: 600;
-	padding: 5px;
-	margin-bottom: 0;
+  color: $white;
+  font-size: 1.2em;
+  font-weight: 600;
+  margin-bottom: 0;
+  padding: 5px;
+  text-align: center;
 }
 
 #newproject {
-	background-color: $grey600;
+  background-color: $grey600;
 }
 
 .title {
-	background-color: $grey50;
-	border-bottom: 1px solid $grey300;
-	width: 100%;
-	margin-bottom: 0;
+  background-color: $grey50;
+  border-bottom: 1px solid $grey300;
+  margin-bottom: 0;
+  width: 100%;
 }
 
 .title:hover {
-	background-color: $white;
+  background-color: $white;
 }
 
-.questionTitle{
-	font-size: 0.9em;
-	padding: 5px;
-	font-weight: 600;
-	width: 265px;
-	cursor: crosshair;
-	display: inline-block;
-	margin-bottom: 0;
+.questionTitle {
+  cursor: crosshair;
+  display: inline-block;
+  font-size: .9em;
+  font-weight: 600;
+  margin-bottom: 0;
+  padding: 5px;
+  width: 265px;
 }
 
 .answer {
-	position: relative;
-	background-color: $white;
-	display: none;
-	overflow-y: scroll;
-	max-height: 250px;
-	padding-top: 5px;
+  background-color: $white;
+  display: none;
+  max-height: 250px;
+  overflow-y: scroll;
+  padding-top: 5px;
+  position: relative;
 }
 
 .answerText {
-	font-size: 0.85em;
-	padding: 5px;
-	max-width: 270px;
+  font-size: .85em;
+  max-width: 270px;
+  padding: 5px;
 }
 
 
 //ADDING NEW LESSONS
 input {
-	background-color: transparent;
-	width: 100%;
-	border: 0;
-	color: white;
-	font-family: Consolas;
-	font-size: 1em;
-	font-weight: 600;
-	text-align: center;
+  background-color: transparent;
+  border: 0;
+  color: $white;
+  font-family: Consolas;
+  font-size: 1em;
+  font-weight: 600;
+  text-align: center;
+  width: 100%;
 }
 
 .cover {
-	position: fixed;
-	display: flex;
-	justify-content: center;
-	width: 100%;
-	height: 100%;
-	top: 0;
-	left: 0;
-	background-color: $black;
-	opacity: 0.8;
-	z-index: 5;
+  background-color: $black;
+  display: flex;
+  height: 100%;
+  justify-content: center;
+  left: 0;
+  opacity: .8;
+  position: fixed;
+  top: 0;
+  width: 100%;
+  z-index: 5;
 }
 
 .modal {
-	position: absolute;
-	display: flex;
-	justify-content: center;
-	align-items: center;
-	background-color: $white;
-	border-radius: 1px;
-	left: 45px;
-	top: 150px;
-	width: 240px;
-	height: 100px;
-	opacity: 1;
-	z-index: 6;
-	padding: 7.5px;
+  align-items: center;
+  background-color: $white;
+  border-radius: 1px;
+  display: flex;
+  height: 100px;
+  justify-content: center;
+  left: 45px;
+  opacity: 1;
+  padding: 7.5px;
+  position: absolute;
+  top: 150px;
+  width: 240px;
+  z-index: 6;
 }
 
 .modalText {
-	text-align: center;
-
+  text-align: center;
 }
 
-.confirmDelete, .confirmProjectDelete {
-	color: $red500;
+.confirmDelete,
+.confirmProjectDelete {
+  color: $red500;
 }
 
 .confirmKeep {
-	color: $green500;
+  color: $green500;
 }
 
 //Answer's upvotes
 .upvotes {
-	position: absolute;
-	border: 0;
-	margin: 0;
-	margin-top: 3px;
-	font-size: 1em;
-	color: $white;
-	background-color: $cyan300;
-	padding-left: 3px;
-	padding-right: 3px;
-	width: fit-content;
+  background-color: $cyan300;
+  border: 0;
+  color: $white;
+  font-size: 1em;
+  margin: 0;
+  margin-top: 3px;
+  padding-left: 3px;
+  padding-right: 3px;
+  position: absolute;
+  width: fit-content;
 }
 
 .upvotes:hover {
-	opacity: 0.2;
-}
-
-.measureUpvotes {
+  opacity: .2;
 }

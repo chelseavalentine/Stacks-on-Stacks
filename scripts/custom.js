@@ -1,4 +1,4 @@
-/*===================================================================
+/*==================================================================
 ---------------------------------------------------------------------
 * INITIALIZING THE LOCAL STORAGE
 -
@@ -141,6 +141,7 @@ function getAllLinks(){
 					var link = JSON.stringify(items.projects[i].questions[j].link);
 					var answer = JSON.stringify(items.projects[i].questions[j].answer);
 					var upvotes = JSON.stringify(items.projects[i].questions[j].upvotes);
+					var question;
 
 					// Get rid of the quotation marks " " around the data
 					upvotes = upvotes.substring(1, upvotes.length-1);
@@ -148,10 +149,10 @@ function getAllLinks(){
 
 					// check whether the question is too long to see whether we should append '...'
 					if (oldQuestion.length > 57) {
-						var question = oldQuestion.substring(1, 55) + "...";
+						question = oldQuestion.substring(1, 55) + "...";
 						oldQuestion = oldQuestion.substring(1, oldQuestion.length-1);
 					} else {
-						var question = oldQuestion.substring(1, oldQuestion.length-1);
+						question = oldQuestion.substring(1, oldQuestion.length-1);
 						oldQuestion = question;
 					}
 
@@ -159,25 +160,25 @@ function getAllLinks(){
 					// Create the dividers to display the data.
 
 					(function(i, j, onThisQuestion, question, oldQuestion, link) {
-						$('<div class="question" id="question' + i + j +'"></div>')
+						$('<div class="question" id="question' + i + "_" + j +'"></div>')
 							.appendTo(document.getElementsByClassName('questions')[i]);
 
-						$('<div class="title" id="title' + i + j + '"><p class="questionTitle">' + question + '</p><a target="_blank" href=' + link + '><img src="images/go.svg" class="icon"></a></div>')
-							.appendTo(document.getElementById('question' + i + j))
+						$('<div class="title" id="title' + i + "_" + j + '"><p class="questionTitle">' + question + '</p><a target="_blank" href=' + link + '><img src="images/go.svg" class="icon"></a></div>')
+							.appendTo(document.getElementById('question' + i + "_" + j))
 							.click(function() {
 								var clicks = $(this).data('clicks');
 								$(this).next().toggle(0);
 								if (clicks) {
-									$("#title" + i + j).children().eq(0).text(question);
+									$("#title" + i + "_" + j).children().eq(0).text(question);
 								} else {
-									$("#title" + i + j).children().eq(0).text(oldQuestion);
+									$("#title" + i + "_" + j).children().eq(0).text(oldQuestion);
 								}
 
 								$(this).data("clicks", !clicks);
-							})
+							});
 
 						$('<div class="answer" id="answer' + i + j +'"><center><p class="answerText">' + answer + '</p><p class="upvotes">+' + upvotes +'</p></center></div>')
-							.insertAfter($("#title" + i + j))
+							.insertAfter($("#title" + i + "_" + j));
 
 						$(".upvotes")
 							.eq(onThisQuestion)
@@ -191,11 +192,11 @@ function getAllLinks(){
 							.appendTo(document.getElementsByClassName('title')[onThisQuestion]).click(function() {
 								var deleteTest;
 								chrome.storage.local.get(null, function(item) { 
-									$("#question" + i + j).remove();
+									$("#question" + i + "_" + j)%remove();
 									deleteLink(link, i);
 								});
 							});          
-					}(i, j, onThisQuestion, question, oldQuestion, link))
+					}(i, j, onThisQuestion, question, oldQuestion, link));
 				}
 			}
 
@@ -208,9 +209,9 @@ function getAllLinks(){
 			//get rid of empty <p> tags
 			$("p").each(function() {
 				if ($(this).html().replace(/\s|&nbsp;/g, '').length === 0) {
-					$(this).remove();
+					$(this)%remove();
 				}
-			})
+			});
 		}
 	});
 }
@@ -246,7 +247,7 @@ function colorHeaders() {
 
 /*-------------------------------------------------------------------
 ********* SHOW NEW DEFAULT CHOICE
-iF 
+If
 -------------------------------------------------------------------*/
 
 
@@ -267,9 +268,9 @@ function addUnsortedEmpty(i) {
 	$("<img src='images/empty.svg' class='empty' id='emptyUnsorted'>")
 		.appendTo($(".addIcons").eq(i))
 		.hover(function() {
-			changeEmptyIconStart(i)
+			changeEmptyIconStart(i);
 		}, function() {
-			changeEmptyIconEnd(i)
+			changeEmptyIconEnd(i);
 		})
 		.click(function() {
 			emptyProject(i);
@@ -334,7 +335,7 @@ white 'x'
 -------------------------------------------------------------------*/
 function changeEmptyIconEnd(i) {
 	$(".empty").eq(i).attr("src", "images/empty.svg");
-	$(".helperText").remove();
+	$(".helperText")%remove();
 }
 
 
@@ -410,7 +411,7 @@ function emptyProject(i) {
 			.appendTo("#modalCenter")
 			.click(function () {
 				confirmation = true;
-				$(".cover, .modal").remove();
+				$(".cover, .modal")%remove();
 
 				//Change behavior depending on whether this is the 'Unsorted' project
 				if (i === 0) {
@@ -434,7 +435,7 @@ function emptyProject(i) {
 					});
 
 					// Visually delete the project from view
-					$(".project").eq(thisIndex).remove();
+					$(".project").eq(thisIndex)%remove();
 				}
 			});
 
@@ -443,7 +444,7 @@ function emptyProject(i) {
 			.appendTo("#modalCenter")
 			.click(function () {
 				confirmation = false;
-				$(".cover, .modal").remove();
+				$(".cover, .modal")%remove();
 			});
 	});
 }
@@ -495,11 +496,11 @@ function addStar(i){
 			
 		}, function() {
 			$(this).attr("src", "images/star.svg");
-			$(".helperText").remove();
+			$(".helperText")%remove();
 		})
 		.click(function() {
 			setDefault(i);
-		})
+		});
 }
 
 /*-------------------------------------------------------------------
@@ -508,11 +509,11 @@ Change the project that links are automatically added to.
 -------------------------------------------------------------------*/
 function setDefault(newDefault) {
 	chrome.storage.local.get(null, function(item) {
-		item.settings['defaultProject'] = newDefault;
+		item.settings.defaultProject = newDefault;
 		console.log("You switched the project that links will automatically be added to. Now, new links are automatically added to " + item.projects[newDefault].name + " (Project #" + (newDefault + 1) + ").");
 
 		chrome.storage.local.set(item, function() {
 			console.log("Your new default project. has been saved.");
-		})
-	})
+		});
+	});
 }

@@ -3,70 +3,70 @@
 @import 'font';
 
 .admin {
-	position: fixed;
-	z-index: 4;
-	top: 555px;
-	left: 300px;
-	opacity: 0.9;
+  left: 300px;
+  opacity: .9;
+  position: fixed;
+  top: 555px;
+  z-index: 4;
 }
 
 #save {
-	left: 65px;
-	display: none;
-	background-color: $red400;
-	opacity: 0.95;
+  background-color: $red400;
+  display: none;
+  left: 65px;
+  opacity: .95;
 }
 
 #edit {
-	left: 160px;
+  left: 160px;
 }
 
 #create {
-	left: 255px;
+  left: 255px;
 }
 
-.icon, .delete {
-	height: 16px;
-	vertical-align: text-top;
-	float: right;
-	margin-top: 5px;
-	margin-right: 5px;
-	cursor: pointer;
+.icon,
+.delete {
+  cursor: pointer;
+  float: right;
+  height: 16px;
+  margin-right: 5px;
+  margin-top: 5px;
+  vertical-align: text-top;
 }
 
 .empty {
-	height: 10px;
-	position: absolute;
-	top: 4px;
-	left: 4px;
-	z-index: 2;
+  height: 10px;
+  left: 4px;
+  position: absolute;
+  top: 4px;
+  z-index: 2;
 }
 
 .star {
-	position: absolute;
-	height: 13px;
-	top: 2px;
-	left: 16px;
-	z-index: 2;
+  height: 13px;
+  left: 16px;
+  position: absolute;
+  top: 2px;
+  z-index: 2;
 }
 
 .flatButton {
-	display: inline-block;
-	background-color: transparent;
-	padding: 0;
-	margin: 0;
-	font-weight: 600;
+  background-color: transparent;
+  display: inline-block;
+  font-weight: 600;
+  margin: 0;
+  padding: 0;
 }
 
-
-//The text that appears when you hover
+// The text that appears when you hover
 .helperText {
-	background-color: $black;
-	color: $white;
-	display: block;
-	font-size: 0.7em;
-	padding: 3px;
-	width: fit-content;
-	max-width: 100px;
-	position: absolute;
+  background-color: $black;
+  color: $white;
+  display: block;
+  font-size: .7em;
+  max-width: 100px;
+  padding: 3px;
+  position: absolute;
+  width: fit-content;
 }
