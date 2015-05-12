@@ -332,6 +332,10 @@ function setDefault(newDefault) {
 
 		chrome.storage.local.set(item, function() {
 			console.log("Your new default project has been saved.");
+
+			// derp derp, idk how to solve the problem of visually representing the change
+			// without doing a refresh;
+			window.location.reload();
 		});
 	});
 

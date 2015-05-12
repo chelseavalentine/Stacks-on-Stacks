@@ -15,6 +15,9 @@ our questions will get appended to.
 function getProjects() {
 	return chrome.storage.local.get(null, function(items) {
 		if (!chrome.runtime.error) {
+			// We want the appended stars to be unfilled
+			var filled = false;
+
 			// Iterate through the projects in the storage
 			for (var i = 0; i < items.projects.length; i++) {
 				var name =  JSON.stringify(items.projects[i].name);
@@ -27,7 +30,7 @@ function getProjects() {
 							// Do these when the project loads in.
 							colorHeaders();
 							addUnsortedEmpty(i); // add emptyUnsorted icon
-							addStar(i); // add star icon
+							addStar(i, filled); // add star icon
 						});
 				} else {
 					//Load all of the projects that aren't 'Unsorted' in a slightly different manner
@@ -41,7 +44,7 @@ function getProjects() {
 							// Do these when the project loads in.
 							colorHeaders();
 							addEmpty(i); // add emptyUnsorted icon
-							addStar(i); // add star icon
+							addStar(i, filled); // add star icon
 						});
 				}
 			}
