@@ -19,6 +19,8 @@
       "js": [
         "scripts/jquery.min.js",
         "scripts/content.js",
+        "scripts/initialize.js",
+        "scripts/getters.js",
         "scripts/custom.js",
         "scripts/stylishjs.js"
       ]

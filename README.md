@@ -7,5 +7,8 @@ If you know how to install unpacked Chrome extensions, you can feel free to pull
 
 ### Next steps
 
+* Edit project names
 * Edit link order capabilities
+* Move links between projects
+* Clearer visual representation of events and status of data to create a better user experience
 * Key stroke navigation

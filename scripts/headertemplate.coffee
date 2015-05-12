@@ -2,8 +2,7 @@
 ---------------------------------------------------------------------
 * HEADER 1
 -
-Details can go here. This header is used to denote a large section of
-functions.
+Details here. Thisis used to denote a large section of functions.
 ---------------------------------------------------------------------
 ===================================================================*/
 
@@ -21,4 +20,3 @@ This header is used to denote a function.
 // Significant details of a function can go here
 
 // Small details of a function
-
