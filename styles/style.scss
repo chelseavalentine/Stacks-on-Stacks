@@ -84,13 +84,29 @@
 // Mimic the way stackoverflow styles their code blocks
 .pln, .pun {
   word-wrap: normal;
-  width: auto;
-  height: auto;
   display: inline;
   white-space: pre;
   text-align: left;
 }
 
-/*.com {
-  display: inline-block;
-}*/
+// <code>/<pre> Syntax highlighting brah
+
+// Style keywords
+.kwd {
+  color: $blueA400;
+}
+
+// Style strings
+.str {
+  color: $pinkA200;
+}
+
+// Style comments
+.com {
+  color: $grey600;
+}
+
+// Style integers/numbers
+.lit {
+  color: $orange500;
+}

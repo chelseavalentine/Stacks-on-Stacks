@@ -325,14 +325,20 @@ li {
 
 .pln, .pun {
   word-wrap: normal;
-  width: auto;
-  height: auto;
   display: inline;
   white-space: pre;
   text-align: left; }
 
-/*.com {
-  display: inline-block;
-}*/
+.kwd {
+  color: #2979ff; }
+
+.str {
+  color: #ff4081; }
+
+.com {
+  color: #757575; }
+
+.lit {
+  color: #ff9800; }
 
 /*# sourceMappingURL=style.css.map */

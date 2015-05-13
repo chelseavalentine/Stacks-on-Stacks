@@ -155,18 +155,41 @@ function getAllLinks() {
 				}
 			});
 
-			// try to format code
-			$("<br>").insertAfter($(".com"));
-			// $(".com").next().css({
-			// 	"display": "block"
-			// })
-			for (var i = 0; i < $(".pln").length; i++) {
-				if ( ($(".pln").eq(i).text() === " ")) {
-					// $(".pln").eq(i).css({
-					// 	"background-color": "red",
-					// 	"display": "block"
-					// });
+			// TRY TO FORMAT CODE
+
+			// If there is a comment on a line by itself, then add a line break before it to show this
+			for (var i = 0; i < $(".com").length; i++) {
+				if ( ($(".com").eq(i).prev().html() === "") ) {
+					$("<br>").insertBefore($(".com").eq(i));
 				}
+				if ( ($(".com").eq(i).prev().html() === "  ") ) {
+					$("<br>").insertBefore($(".com").eq(i));
+				}
+			}
+
+			// //Add line breaks after any type of comment.
+			// $("<br>").insertAfter($(".com"));
+
+			for (var i = 0; i < $(".pln").length; i++) {
+				// If there's a comment before the pln, add another line break
+				if ($(".pln").eq(i).prev().hasClass("com")) {
+					$("<br>").insertBefore($(".pln").eq(i))
+				}
+
+				// Put a line break before 'tab's, because that's usually indicates a new line
+				if ( ($(".pln").eq(i).html() === "  ") && !($(".pln").eq(i).prev().hasClass("com")) ) {
+					$("<br>").insertBefore($(".pln").eq(i));
+				}
+
+				// // Check whether the span contains a tab; if it does, put a line break before it
+				// if ($(".pln").eq(i).html().indexOf("    ") > -1) {
+				// 	console.log("fuckkkk")
+				// }
+
+				// An empty span usually indicates end of line, so add a space there.
+				if ($(".pln").eq(i).html() === "") {
+					$("<br>").insertAfter($(".pln").eq(i))
+				} 
 			}
 		}
 	});
