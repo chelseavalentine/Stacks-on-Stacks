@@ -79,23 +79,17 @@ function getAllLinks() {
 
 					/////////////// DATA INPUT PREPARATION
 					// Prepare the data that we'll display to the user.
-					var oldQuestion = JSON.stringify(items.projects[i].questions[j].question);
+					var oldQuestion = items.projects[i].questions[j].question;
 					var link = JSON.stringify(items.projects[i].questions[j].link);
-					var answer = JSON.stringify(items.projects[i].questions[j].answer);
-					var upvotes = JSON.stringify(items.projects[i].questions[j].upvotes);
+					var answer = items.projects[i].questions[j].answer;
+					var upvotes = items.projects[i].questions[j].upvotes;
 					var question;
 
-					// Get rid of the quotation marks " " around the data
-					upvotes = upvotes.substring(1, upvotes.length-1);
-					answer = answer.substring(1, answer.length-1).replace(/\r?\\/g, '');
-
 					// check whether the question is too long to see whether we should append '...'
-					if (oldQuestion.length > 57) {
-						question = oldQuestion.substring(1, 55) + "...";
-						oldQuestion = oldQuestion.substring(1, oldQuestion.length-1);
+					if (oldQuestion.length > 60) {
+						question = oldQuestion.substring(0, 59) + "...";
 					} else {
-						question = oldQuestion.substring(1, oldQuestion.length-1);
-						oldQuestion = question;
+						question = oldQuestion;
 					}
 
 					/////////////// DISPLAY THE DATA TO THE USER
@@ -154,6 +148,8 @@ function getAllLinks() {
 					$(this).remove();
 				}
 			});
+
+
 
 			// TRY TO FORMAT CODE
 
