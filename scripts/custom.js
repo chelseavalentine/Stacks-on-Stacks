@@ -337,8 +337,77 @@ function setDefault(newDefault) {
 			// without doing a refresh;
 			window.location.reload();
 		});
-	});
-
-	// Visually show our new default
-	
+	});	
 }
+
+/*-------------------------------------------------------------------
+********* EDITTING PROJECT HEADERS
+Edit a project's title
+-------------------------------------------------------------------*/
+$("#edit")
+	.click(function() {
+		$("#saveEdits").show(0);
+
+		// Make all of the project headers, except for 'Unsorted' editable
+		for (var i = 1; i < $("input").length; i++) {
+			document.getElementsByTagName("input")[i].disabled = false;
+			$("input").eq(i).on('keyup', function(e) {
+				if (e.which == 13) {
+					$("#saveEdits").click()
+					this.disabled = true;
+				}
+			})
+		}
+
+		// Change the questions so you get a different cursor when you hover
+		$(".questionTitle, .title").unbind("click");
+		
+		// Make it so that double clicking on a header title won't hide all questions
+		$(".project").unbind("dblclick");
+
+		// Remove the current 'go to' & 'delete' buttons
+		$(".deleteIcon, .goToIcon").remove();
+
+		// // Add in arrow buttons
+		// addUpArrows();
+		// addDownArrows();
+	})
+
+$("#saveEdits").click(function() {
+	$(this).hide(0)
+
+	// Save each of the project headers
+	chrome.storage.local.get(null, function(item) {
+		for (var i = 1; i < $("input").length; i++) {
+			item.projects[i].name = $("input").eq(i).val();
+			// console.log($("input").eq(i).val());
+		}
+		chrome.storage.local.set(item, function() {
+			console.log("Your function names have successfully been changed.");
+		})
+	})
+
+	// Revert the cursor back
+	for (var i = 0; i < $(".questionTitle").length; i++) {
+		$(".questionTitle")
+			.eq(i)
+			.css({
+				"cursor": "crosshair"
+			})
+	}
+
+	// Add the dbl click function back to the projects
+	$(".project").dblclick(function() {
+		$(this).children().next().toggle();
+	})
+
+	$("input").disabled = true;
+	window.location.reload();
+})
+
+// Drag & drop functions
+
+
+function addUpArrows() {}
+
+function addDownArrows() {}

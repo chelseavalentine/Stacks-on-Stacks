@@ -10,11 +10,21 @@
   z-index: 4;
 }
 
-#save {
+.admin:hover {
+  background-color: $grey900;
+}
+
+#save,
+#saveEdits {
   background-color: $red400;
   display: none;
   left: 65px;
   opacity: .95;
+}
+
+#save:hover,
+#saveEdits:hover {
+  background-color: $red500;
 }
 
 #edit {
@@ -70,3 +80,17 @@
   position: absolute;
   width: fit-content;
 }
+
+// Mimic the way stackoverflow styles their code blocks
+.pln, .pun {
+  word-wrap: normal;
+  width: auto;
+  height: auto;
+  display: inline;
+  white-space: pre;
+  text-align: left;
+}
+
+/*.com {
+  display: inline-block;
+}*/

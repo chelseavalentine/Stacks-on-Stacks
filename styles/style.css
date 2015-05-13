@@ -30,7 +30,8 @@ body {
 
 .container {
   text-align: left;
-  width: 90%; }
+  width: 90%;
+  padding-bottom: 100px; }
 
 .project {
   box-shadow: 0 0 6px 1px rgba(0, 0, 0, 0.08);
@@ -262,11 +263,19 @@ li {
   top: 555px;
   z-index: 4; }
 
-#save {
+.admin:hover {
+  background-color: #212121; }
+
+#save,
+#saveEdits {
   background-color: #ef5350;
   display: none;
   left: 65px;
   opacity: .95; }
+
+#save:hover,
+#saveEdits:hover {
+  background-color: #f44336; }
 
 #edit {
   left: 160px; }
@@ -313,5 +322,17 @@ li {
   padding: 3px;
   position: absolute;
   width: fit-content; }
+
+.pln, .pun {
+  word-wrap: normal;
+  width: auto;
+  height: auto;
+  display: inline;
+  white-space: pre;
+  text-align: left; }
+
+/*.com {
+  display: inline-block;
+}*/
 
 /*# sourceMappingURL=style.css.map */

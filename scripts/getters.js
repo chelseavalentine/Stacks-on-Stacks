@@ -31,11 +31,11 @@ function getProjects() {
 							colorHeaders();
 							addUnsortedEmpty(i); // add emptyUnsorted icon
 							addStar(i, filled); // add star icon
-						});
+						})
 				} else {
-					//Load all of the projects that aren't 'Unsorted' in a slightly different manner
+					// Load all of the projects that aren't 'Unsorted' in a slightly different manner
 
-					//Place the project after the current last project
+					// Place the project after the current last project
 					var placing = $(".project").eq($(".project").length - 1);
 
 					$('<div class="project"><div class="projectHeader"><p class="projectTitle addIcons"><input value=' + name + ' disabled></p></div><div class="questions"></div></div><div class="answers"></div>')
@@ -45,11 +45,16 @@ function getProjects() {
 							colorHeaders();
 							addEmpty(i); // add emptyUnsorted icon
 							addStar(i, filled); // add star icon
-						});
+						})
 				}
 			}
 
 			showDefaultProject(); // visually represent the current place links are added to
+
+			// When you double click on a project header, it will hide the questions
+			$(".projectHeader").dblclick(function() {
+				$(this).next().toggle(0);
+			});
 		} else {
 			console.log("Welps. I failed to get all of the projects you requested.");
 		}
@@ -82,7 +87,7 @@ function getAllLinks() {
 
 					// Get rid of the quotation marks " " around the data
 					upvotes = upvotes.substring(1, upvotes.length-1);
-					answer = answer.substring(1, answer.length-1).trim().replace(/\r?\\/g, '');
+					answer = answer.substring(1, answer.length-1).replace(/\r?\\/g, '');
 
 					// check whether the question is too long to see whether we should append '...'
 					if (oldQuestion.length > 57) {
@@ -100,7 +105,7 @@ function getAllLinks() {
 						$('<div class="question" id="question' + i + "_" + j +'"></div>')
 							.appendTo(document.getElementsByClassName('questions')[i]);
 
-						$('<div class="title" id="title' + i + "_" + j + '"><p class="questionTitle">' + question + '</p><a target="_blank" href=' + link + '><img src="images/go.svg" class="icon"></a></div>')
+						$('<div class="title" id="title' + i + "_" + j + '"><p class="questionTitle">' + question + '</p><a target="_blank" href=' + link + '><img src="images/go.svg" class="icon goToIcon"></a></div>')
 							.appendTo(document.getElementById('question' + i + "_" + j))
 							.click(function() {
 								var clicks = $(this).data('clicks');
@@ -149,6 +154,20 @@ function getAllLinks() {
 					$(this).remove();
 				}
 			});
+
+			// try to format code
+			$("<br>").insertAfter($(".com"));
+			// $(".com").next().css({
+			// 	"display": "block"
+			// })
+			for (var i = 0; i < $(".pln").length; i++) {
+				if ( ($(".pln").eq(i).text() === " ")) {
+					// $(".pln").eq(i).css({
+					// 	"background-color": "red",
+					// 	"display": "block"
+					// });
+				}
+			}
 		}
 	});
 }
