@@ -85,7 +85,7 @@
 .pln, .pun {
   word-wrap: normal;
   display: inline;
-  white-space: pre;
+  white-space: pre-wrap;
   text-align: left;
 }
 
@@ -98,7 +98,7 @@
 
 // Style strings
 .str {
-  color: $pinkA200;
+  color: $purple300;
 }
 
 // Style comments
@@ -108,5 +108,10 @@
 
 // Style integers/numbers
 .lit {
-  color: $orange500;
+  color: $orange600;
+}
+
+// Style type
+.typ {
+  color: $pinkA200;
 }

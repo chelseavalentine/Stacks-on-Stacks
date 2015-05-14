@@ -163,9 +163,6 @@ function getAllLinks() {
 				}
 			}
 
-			// //Add line breaks after any type of comment.
-			// $("<br>").insertAfter($(".com"));
-
 			for (var i = 0; i < $(".pln").length; i++) {
 				// If there's a comment before the pln, add another line break
 				if ($(".pln").eq(i).prev().hasClass("com")) {
@@ -177,15 +174,15 @@ function getAllLinks() {
 					$("<br>").insertBefore($(".pln").eq(i));
 				}
 
-				// // Check whether the span contains a tab; if it does, put a line break before it
-				// if ($(".pln").eq(i).html().indexOf("    ") > -1) {
-				// 	console.log("fuckkkk")
-				// }
+				// If ; then make a line break after it
+				if ( ($(".pun").eq(i).text().indexOf(";") > -1) && !($(".pun").eq(i).next().next().hasClass("com")) && !($(".pun").eq(i).prev().is("br")) ) {
+					$("<br>").insertAfter($(".pun").eq(i));
+				}
 
-				// An empty span usually indicates end of line, so add a space there.
-				if ($(".pln").eq(i).html() === "") {
-					$("<br>").insertAfter($(".pln").eq(i))
-				} 
+				// Check whether the span contains a tab; if it does, put a line break before it
+				if (($(".pln").eq(i).html().indexOf("    ") > -1) && !($(".pln").eq(i).prev().is("br")) ) {
+					$("<br>").insertBefore($(".pln").eq(i))
+				}
 			}
 		}
 	});
