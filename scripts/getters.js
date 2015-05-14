@@ -153,35 +153,45 @@ function getAllLinks() {
 
 			// TRY TO FORMAT CODE
 
+			// Need to include this code snippet, otherwise it'll also edit stackoverflow's divs
+			var currentURL = window.location.href.toString();
+			if (!(currentURL.indexOf("stackoverflow") >= 0)) {
+
 			// If there is a comment on a line by itself, then add a line break before it to show this
-			for (var i = 0; i < $(".com").length; i++) {
-				if ( ($(".com").eq(i).prev().html() === "") ) {
-					$("<br>").insertBefore($(".com").eq(i));
-				}
-				if ( ($(".com").eq(i).prev().html() === "  ") ) {
-					$("<br>").insertBefore($(".com").eq(i));
-				}
-			}
-
-			for (var i = 0; i < $(".pln").length; i++) {
-				// If there's a comment before the pln, add another line break
-				if ($(".pln").eq(i).prev().hasClass("com")) {
-					$("<br>").insertBefore($(".pln").eq(i))
+				for (var i = 0; i < $(".com").length; i++) {
+					if ( ($(".com").eq(i).prev().html() === "") ) {
+						$("<br>").insertBefore($(".com").eq(i));
+					}
+					if ( ($(".com").eq(i).prev().html() === "  ") ) {
+						$("<br>").insertBefore($(".com").eq(i));
+					}
 				}
 
-				// Put a line break before 'tab's, because that's usually indicates a new line
-				if ( ($(".pln").eq(i).html() === "  ") && !($(".pln").eq(i).prev().hasClass("com")) ) {
-					$("<br>").insertBefore($(".pln").eq(i));
-				}
+				for (var i = 0; i < $(".pln").length; i++) {
+					// // If there's a comment before the pln, add another line break
+					// if ($(".pln").eq(i).prev().hasClass("com")) {
+					// 	$("<br>").insertBefore($(".pln").eq(i))
+					// }
 
-				// If ; then make a line break after it
-				if ( ($(".pun").eq(i).text().indexOf(";") > -1) && !($(".pun").eq(i).next().next().hasClass("com")) && !($(".pun").eq(i).prev().is("br")) ) {
-					$("<br>").insertAfter($(".pun").eq(i));
-				}
+					// If there's an empty pln, add another line break
+					if ( ($(".pln").eq(i).html() === "") && !($(".pln").eq(i).prev().is("br")) ) {
+						$("<br>").insertAfter($(".pln").eq(i))
+					}
 
-				// Check whether the span contains a tab; if it does, put a line break before it
-				if (($(".pln").eq(i).html().indexOf("    ") > -1) && !($(".pln").eq(i).prev().is("br")) ) {
-					$("<br>").insertBefore($(".pln").eq(i))
+					// Put a line break before 'tab's, because that's usually indicates a new line
+					if ( ($(".pln").eq(i).html() === "  ") && !($(".pln").eq(i).prev().hasClass("com")) ) {
+						$("<br>").insertBefore($(".pln").eq(i));
+					}
+
+					// If ; then make a line break after it
+					if ( ($(".pun").eq(i).text().indexOf(";") > -1) && !($(".pun").eq(i).next().next().hasClass("com")) && !($(".pun").eq(i).prev().is("br")) ) {
+						$("<br>").insertAfter($(".pun").eq(i));
+					}
+
+					// Check whether the span contains a tab; if it does, put a line break before it
+					if (($(".pln").eq(i).html().indexOf("    ") > -1) && !($(".pln").eq(i).prev().is("br")) ) {
+						$("<br>").insertBefore($(".pln").eq(i))
+					}
 				}
 			}
 		}
