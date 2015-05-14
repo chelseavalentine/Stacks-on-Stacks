@@ -24,7 +24,7 @@ function getProjects() {
 
 				// If it's the first project being loaded, then it is the 'Unsorted' project, and we want that to be first.
 				if (i === 0) {
-					$('<div class="project"><div class="projectHeader"><p class="projectTitle addIcons"><input value=' + name + ' disabled></p></div><div class="questions"></div></div><div class="answers"></div>')
+					$('<div class="project"><div class="projectHeader"><p class="projectTitle addIcons"><input class="newproject" value=' + name + ' disabled></p></div><div class="questions"></div></div><div class="answers"></div>')
 						.insertAfter("#helpInsertProjects")
 						.ready(function() {
 							// Do these when the project loads in.
@@ -38,7 +38,7 @@ function getProjects() {
 					// Place the project after the current last project
 					var placing = $(".project").eq($(".project").length - 1);
 
-					$('<div class="project"><div class="projectHeader"><p class="projectTitle addIcons"><input value=' + name + ' disabled></p></div><div class="questions"></div></div><div class="answers"></div>')
+					$('<div class="project"><div class="projectHeader"><p class="projectTitle addIcons"><input class="newproject" value=' + name + ' disabled></p></div><div class="questions"></div></div><div class="answers"></div>')
 						.insertAfter(placing)
 						.ready(function() {
 							// Do these when the project loads in.
@@ -79,38 +79,22 @@ function getAllLinks() {
 
 					/////////////// DATA INPUT PREPARATION
 					// Prepare the data that we'll display to the user.
-					var oldQuestion = items.projects[i].questions[j].question;
+					var question = items.projects[i].questions[j].question;
 					var link = JSON.stringify(items.projects[i].questions[j].link);
 					var answer = items.projects[i].questions[j].answer;
 					var upvotes = items.projects[i].questions[j].upvotes;
-					var question;
-
-					// check whether the question is too long to see whether we should append '...'
-					if (oldQuestion.length > 60) {
-						question = oldQuestion.substring(0, 59) + "...";
-					} else {
-						question = oldQuestion;
-					}
 
 					/////////////// DISPLAY THE DATA TO THE USER
 					// Create the dividers to display the data.
 
-					(function(i, j, onThisQuestion, question, oldQuestion, link) {
+					(function(i, j, onThisQuestion, question, link) {
 						$('<div class="question" id="question' + i + "_" + j +'"></div>')
 							.appendTo(document.getElementsByClassName('questions')[i]);
 
 						$('<div class="title" id="title' + i + "_" + j + '"><p class="questionTitle">' + question + '</p><a target="_blank" href=' + link + '><img src="images/go.svg" class="icon goToIcon"></a></div>')
 							.appendTo(document.getElementById('question' + i + "_" + j))
 							.click(function() {
-								var clicks = $(this).data('clicks');
 								$(this).next().toggle(0);
-								if (clicks) {
-									$("#title" + i + "_" + j).children().eq(0).text(question);
-								} else {
-									$("#title" + i + "_" + j).children().eq(0).text(oldQuestion);
-								}
-
-								$(this).data("clicks", !clicks);
 							});
 
 						$('<div class="answer" id="answer' + i + j +'"><center><p class="answerText">' + answer + '</p><p class="upvotes">+' + upvotes +'</p></center></div>')
@@ -132,7 +116,7 @@ function getAllLinks() {
 									deleteLink(link, i);
 								});
 							});          
-					}(i, j, onThisQuestion, question, oldQuestion, link));
+					}(i, j, onThisQuestion, question, link));
 				}
 			}
 
@@ -150,14 +134,13 @@ function getAllLinks() {
 			});
 
 
-
 			// TRY TO FORMAT CODE
 
 			// Need to include this code snippet, otherwise it'll also edit stackoverflow's divs
 			var currentURL = window.location.href.toString();
 			if (!(currentURL.indexOf("stackoverflow") >= 0)) {
 
-			// If there is a comment on a line by itself, then add a line break before it to show this
+				// If there is a comment on a line by itself, then add a line break before it to show this
 				for (var i = 0; i < $(".com").length; i++) {
 					if ( ($(".com").eq(i).prev().html() === "") ) {
 						$("<br>").insertBefore($(".com").eq(i));
@@ -168,11 +151,6 @@ function getAllLinks() {
 				}
 
 				for (var i = 0; i < $(".pln").length; i++) {
-					// // If there's a comment before the pln, add another line break
-					// if ($(".pln").eq(i).prev().hasClass("com")) {
-					// 	$("<br>").insertBefore($(".pln").eq(i))
-					// }
-
 					// If there's an empty pln, add another line break
 					if ( ($(".pln").eq(i).html() === "") && !($(".pln").eq(i).prev().is("br")) ) {
 						$("<br>").insertAfter($(".pln").eq(i))

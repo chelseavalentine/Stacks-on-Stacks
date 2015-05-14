@@ -346,7 +346,12 @@ Edit a project's title
 -------------------------------------------------------------------*/
 $("#edit")
 	.click(function() {
-		$("#saveEdits").show(0);
+		$(this).hide(0);
+		$("#saveEdits")
+			.show(0)
+			.css({
+				"left": "160px"
+			})
 
 		// Make all of the project headers, except for 'Unsorted' editable
 		for (var i = 1; i < $("input").length; i++) {
@@ -368,13 +373,15 @@ $("#edit")
 		// Remove the current 'go to' & 'delete' buttons
 		$(".deleteIcon, .goToIcon").remove();
 
-		// // Add in arrow buttons
-		// addUpArrows();
-		// addDownArrows();
+		// Add in pencil 'edit title' buttons
+		addPencils();
+		
 	})
 
 $("#saveEdits").click(function() {
-	$(this).hide(0)
+	//Show the edit button again & hide show button
+	$("#edit").show(0);
+	$(this).hide(0);
 
 	// Save each of the project headers
 	chrome.storage.local.get(null, function(item) {
@@ -408,6 +415,7 @@ $("#saveEdits").click(function() {
 // Drag & drop functions
 
 
-function addUpArrows() {}
-
-function addDownArrows() {}
+function addPencils() {
+	$("<img src='images/edit.svg' class='editIcon'>")
+		.appendTo($(".title"))
+}

@@ -117,9 +117,6 @@ $("#save").click(function() {
 				'questions': []
 			};
 			items['projects'].push(createdProject);
-			$(".newproject")
-				.eq(i)
-				.removeClass("newproject");
 		}
 		chrome.storage.local.set(items, function() {
 			console.log("New projects were set.");

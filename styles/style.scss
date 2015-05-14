@@ -36,13 +36,18 @@
 }
 
 .icon,
-.delete {
+.delete,
+.editIcon {
   cursor: pointer;
   float: right;
   height: 16px;
   margin-right: 5px;
   margin-top: 5px;
   vertical-align: text-top;
+}
+
+.editIcon {
+  vertical-align: middle;
 }
 
 .empty {
@@ -83,7 +88,7 @@
 
 // Mimic the way stackoverflow styles their code blocks
 .pln, .pun {
-  word-wrap: normal;
+  word-wrap: break-word;
   display: inline;
   white-space: pre-wrap;
   text-align: left;
@@ -114,4 +119,18 @@
 // Style type
 .typ {
   color: $pinkA200;
+}
+
+// Style class & id (html)
+.atn {
+  color: $lightgreen600;
+}
+
+// Style the value of the class & id (html)
+.atv {
+  color: $cyan500;
+}
+//Style tag (html)
+.tag {
+  color: $coral500;
 }
