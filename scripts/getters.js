@@ -150,7 +150,19 @@ function getAllLinks() {
 					}
 				}
 
+				for (var i = 0; i < $(".pun").length; i++) {
+					// If ; then make a line break after it
+					if ( ($(".pun").eq(i).text().indexOf(";") > -1) && !($(".pun").eq(i).next().next().hasClass("com")) && !($(".pun").eq(i).prev().is("br")) ) {
+						$("<br>").insertAfter($(".pun").eq(i));
+					}
+				}
+
 				for (var i = 0; i < $(".pln").length; i++) {
+					// // If there's a comment before the pln, add another line break
+					// if ($(".pln").eq(i).prev().hasClass("com")) {
+					// 	$("<br>").insertBefore($(".pln").eq(i))
+					// }
+
 					// If there's an empty pln, add another line break
 					if ( ($(".pln").eq(i).html() === "") && !($(".pln").eq(i).prev().is("br")) ) {
 						$("<br>").insertAfter($(".pln").eq(i))
@@ -159,11 +171,6 @@ function getAllLinks() {
 					// Put a line break before 'tab's, because that's usually indicates a new line
 					if ( ($(".pln").eq(i).html() === "  ") && !($(".pln").eq(i).prev().hasClass("com")) ) {
 						$("<br>").insertBefore($(".pln").eq(i));
-					}
-
-					// If ; then make a line break after it
-					if ( ($(".pun").eq(i).text().indexOf(";") > -1) && !($(".pun").eq(i).next().next().hasClass("com")) && !($(".pun").eq(i).prev().is("br")) ) {
-						$("<br>").insertAfter($(".pun").eq(i));
 					}
 
 					// Check whether the span contains a tab; if it does, put a line break before it

@@ -55,11 +55,11 @@ function showDefaultProject() {
 					.css({
 						"top": top - topOffset + height + 18 + "px",
 						"left": left - 16 + "px"
-					})
+					});
 			}, function() {
 				$(".helperText").remove();
-			})
-	})
+			});
+	});
 }
 
 
@@ -344,6 +344,9 @@ function setDefault(newDefault) {
 ********* EDITTING PROJECT HEADERS
 Edit a project's title
 -------------------------------------------------------------------*/
+// This will hold our current question IDs in their order
+var questions = [];
+
 $("#edit")
 	.click(function() {
 		$(this).hide(0);
@@ -351,57 +354,90 @@ $("#edit")
 			.show(0)
 			.css({
 				"left": "160px"
-			})
+			});
 
 		// Make all of the project headers, except for 'Unsorted' editable
 		for (var i = 1; i < $("input").length; i++) {
 			document.getElementsByTagName("input")[i].disabled = false;
 			$("input").eq(i).on('keyup', function(e) {
 				if (e.which == 13) {
-					$("#saveEdits").click()
+					$("#saveEdits").click();
 					this.disabled = true;
 				}
-			})
+			});
 		}
-
-		// Change the questions so you get a different cursor when you hover
-		$(".questionTitle, .title").unbind("click");
 		
+		$(".questionTitle, .title")
+			.unbind("click")
+			// Change the questions so you get a different cursor when you hover
+			.css({
+				"cursor": "move"
+			})
+			// make questions draggable
+			.attr("draggable", "true");
+		
+		$(".questions").sortable({
+			connectWith: '.questions'
+		});
 		// Make it so that double clicking on a header title won't hide all questions
 		$(".project").unbind("dblclick");
 
 		// Remove the current 'go to' & 'delete' buttons
 		$(".deleteIcon, .goToIcon").remove();
 
-		// Add in pencil 'edit title' buttons
-		addPencils();
-		
-	})
+		// Save a list of the questions' ID values so we know their ordering
+		questions = []; // reset the array of ID values
+		for (var i = 0; i < $(".question").length; i++) {
+			$(".question").eq(i).attr('id', i); // to make it easier, let's just assign it an integer
+			questions.push(parseInt($(".question").eq(i).attr('id')));
+		}
+	});
 
 $("#saveEdits").click(function() {
-	//Show the edit button again & hide show button
-	$("#edit").show(0);
-	$(this).hide(0);
+	saveEdits();
+});
 
+function saveEdits() {
+	// Show the edit button again & hide show button
+	$("#edit").show(0);
+	$("#saveEdits").hide(0);
+	console.log(questions);
+
+	// Get the changed order of the questions
+	var newOrder = []; // reset the array of ID values
+	for (var i = 0; i < $(".question").length; i++) {
+		newOrder.push(parseInt($(".question").eq(i).attr('id')));
+	}
+	console.log("vs");
+	console.log(newOrder);
 	// Save each of the project headers
 	chrome.storage.local.get(null, function(item) {
 		for (var i = 1; i < $("input").length; i++) {
 			item.projects[i].name = $("input").eq(i).val();
-			// console.log($("input").eq(i).val());
 		}
+		
+		// Save each of the link positions
+		// for each project's set of questions
+		for (var i = 0; i < $(".questions").length; i++) {
+			var theseQuestions = $(".questions").eq(i).children();
+			for (var j = 0; j < $(".questions").eq(i).children().length; j++) {
+				// console.log("Heey man... this is question " + j);
+				// console.log(theseQuestions[j].innerHTML);
+			}
+		}
+
 		chrome.storage.local.set(item, function() {
 			console.log("Your function names have successfully been changed.");
 		})
 	})
 
-	// Revert the cursor back
-	for (var i = 0; i < $(".questionTitle").length; i++) {
-		$(".questionTitle")
-			.eq(i)
-			.css({
-				"cursor": "crosshair"
-			})
-	}
+	// Revert the cursors back
+	$(".questionTitle, .title")
+		.attr("draggable", "false")
+		.unbind("sortable")
+		.css({
+			"cursor": "crosshair"
+		})
 
 	// Add the dbl click function back to the projects
 	$(".project").dblclick(function() {
@@ -409,13 +445,5 @@ $("#saveEdits").click(function() {
 	})
 
 	$("input").disabled = true;
-	window.location.reload();
-})
-
-// Drag & drop functions
-
-
-function addPencils() {
-	$("<img src='images/edit.svg' class='editIcon'>")
-		.appendTo($(".title"))
+	// window.location.reload();
 }
