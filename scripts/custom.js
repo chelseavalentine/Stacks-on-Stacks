@@ -387,9 +387,14 @@ $("#edit")
 
 		// Save a list of the questions' ID values so we know their ordering
 		questions = []; // reset the array of ID values
-		for (var i = 0; i < $(".question").length; i++) {
-			$(".question").eq(i).attr('id', i); // to make it easier, let's just assign it an integer
-			questions.push(parseInt($(".question").eq(i).attr('id')));
+		var questionNum = 0 ; // init
+
+		for (var i = 0; i < $(".questions").length; i++) {
+			questions.push([]);
+			for (var j = 0; j < $(".questions").eq(i).children().length; j++, questionNum++) {
+				$(".question").eq(questionNum).attr('id', i + "," + j); // to make it easier, let's just assign it an integer
+				questions[i].push([i, j]);
+			}
 		}
 	});
 
@@ -401,49 +406,71 @@ function saveEdits() {
 	// Show the edit button again & hide show button
 	$("#edit").show(0);
 	$("#saveEdits").hide(0);
-	console.log(questions);
 
 	// Get the changed order of the questions
 	var newOrder = []; // reset the array of ID values
-	for (var i = 0; i < $(".question").length; i++) {
-		newOrder.push(parseInt($(".question").eq(i).attr('id')));
+	var questionNum = 0; // init
+	for (var i = 0; i < $(".questions").length; i++) {
+		newOrder.push([]);
+		for (var j = 0; j < $(".questions").eq(i).children().length; j++, questionNum++) {
+			var newQuestionIndex = $(".question").eq(questionNum).attr('id'); // to make it easier, let's just assign it an integer
+			newOrder[i].push(newQuestionIndex);
+		}
 	}
-	console.log("vs");
-	console.log(newOrder);
-	// Save each of the project headers
+
+	var newQuestions = [];
+	var dimensions;
+	var firstNum;
+	var secondNum;
+
 	chrome.storage.local.get(null, function(item) {
+		// Save each of the project headers
 		for (var i = 1; i < $("input").length; i++) {
 			item.projects[i].name = $("input").eq(i).val();
 		}
-		
-		// Save each of the link positions
-		// for each project's set of questions
-		for (var i = 0; i < $(".questions").length; i++) {
-			var theseQuestions = $(".questions").eq(i).children();
-			for (var j = 0; j < $(".questions").eq(i).children().length; j++) {
-				// console.log("Heey man... this is question " + j);
-				// console.log(theseQuestions[j].innerHTML);
+
+		for (var i = 0; i < newOrder.length; i++) {
+			newQuestions.push([]);
+
+			for (var j = 0; j < newOrder[i].length; j++) {
+				dimensions = newOrder[i][j].split(',');
+
+				//get first number & last number
+				firstNum = parseInt(dimensions[0]);
+				secondNum = parseInt(dimensions[1]);
+
+				var addObject = item.projects[firstNum].questions[secondNum];
+				newQuestions[i].push(addObject);
 			}
 		}
 
+		for (var i = 0; i < item.projects.length; i++) {
+			item.projects[i].questions = newQuestions[i];
+		}
+		
+		// Set the reordered projects...
 		chrome.storage.local.set(item, function() {
 			console.log("Your function names have successfully been changed.");
 		})
 	})
 
-	// Revert the cursors back
-	$(".questionTitle, .title")
-		.attr("draggable", "false")
-		.unbind("sortable")
-		.css({
-			"cursor": "crosshair"
-		})
+	// // Revert the cursors back
+	// $(".questionTitle, .title")
+	// 	.attr("draggable", "false")
+	// 	.unbind("sortable")
+	// 	.css({
+	// 		"cursor": "crosshair"
+	// 	})
 
-	// Add the dbl click function back to the projects
-	$(".project").dblclick(function() {
-		$(this).children().next().toggle();
-	})
+	// // Add the dbl click function back to the projects
+	// $(".project").dblclick(function() {
+	// 	$(this).children().next().toggle();
+	// })
 
 	$("input").disabled = true;
-	// window.location.reload();
+	window.location.reload();
 }
+
+$(window).unload(function() {
+	saveEdits();
+})

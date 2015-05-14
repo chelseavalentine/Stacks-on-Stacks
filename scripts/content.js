@@ -29,7 +29,7 @@ function saveLink(link, question, answer, upvotes) {
 
 		var isDup = false;
 		for (var i = 0; i < item.projects[currentProject].questions.length; i++) {
-			if (item['projects'][currentProject]['questions'][i]['link'] === obj['link']) {
+			if (item.projects[currentProject].questions[i]['link'] === obj['link']) {
 				isDup = true;
 				break;
 			}
