@@ -454,19 +454,6 @@ function saveEdits() {
 		})
 	})
 
-	// // Revert the cursors back
-	// $(".questionTitle, .title")
-	// 	.attr("draggable", "false")
-	// 	.unbind("sortable")
-	// 	.css({
-	// 		"cursor": "crosshair"
-	// 	})
-
-	// // Add the dbl click function back to the projects
-	// $(".project").dblclick(function() {
-	// 	$(this).children().next().toggle();
-	// })
-
 	$("input").disabled = true;
 	window.location.reload();
 }

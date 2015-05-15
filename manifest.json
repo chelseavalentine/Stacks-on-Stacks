@@ -25,10 +25,10 @@
         "scripts/stylishjs.js"
       ]
     }
-  ],
-  "background": {
-    "scripts": [
-      "scripts/background.js"
-    ]
-  }
+  ]
+  // "background": {
+  //   "scripts": [
+  //     "scripts/background.js"
+  //   ]
+  // }
 }
