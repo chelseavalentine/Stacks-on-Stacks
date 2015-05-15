@@ -86,7 +86,6 @@ function getAllLinks() {
 
 					/////////////// DISPLAY THE DATA TO THE USER
 					// Create the dividers to display the data.
-
 					(function(i, j, onThisQuestion, question, link) {
 						$('<div class="question" id="question' + i + "_" + j +'"></div>')
 							.appendTo(document.getElementsByClassName('questions')[i]);
@@ -152,17 +151,12 @@ function getAllLinks() {
 
 				for (var i = 0; i < $(".pun").length; i++) {
 					// If ; then make a line break after it
-					if ( ($(".pun").eq(i).text().indexOf(";") > -1) && !($(".pun").eq(i).next().next().hasClass("com")) && !($(".pun").eq(i).prev().is("br")) ) {
+					if ( ($(".pun").eq(i).html().indexOf(";") > -1) && !($(".pun").eq(i).next().next().hasClass("com")) && !($(".pun").eq(i).prev().is("br")) ) {
 						$("<br>").insertAfter($(".pun").eq(i));
 					}
 				}
 
 				for (var i = 0; i < $(".pln").length; i++) {
-					// // If there's a comment before the pln, add another line break
-					// if ($(".pln").eq(i).prev().hasClass("com")) {
-					// 	$("<br>").insertBefore($(".pln").eq(i))
-					// }
-
 					// If there's an empty pln, add another line break
 					if ( ($(".pln").eq(i).html() === "") && !($(".pln").eq(i).prev().is("br")) ) {
 						$("<br>").insertAfter($(".pln").eq(i))

@@ -1,21 +1,30 @@
-// GET CURRENT URL
+/*===================================================================
+---------------------------------------------------------------------
+* INTERACTING WITH WEBPAGES
+-
+Grab question data from the Stack Overflow pages that you go to.
+---------------------------------------------------------------------
+===================================================================*/
+
+/////////////// DATA GRAB
+// Attempt to save the URL, Question title, Best answer, and Best Answer's number of upvotes.
 var currentURL = window.location.href;
 var title = document.getElementById('question-header').children[0].children[0].innerHTML;
 var firstAnswer = document.getElementsByClassName('answercell')[0].children[0].innerHTML;
 var topUpvotes = document.getElementsByClassName('vote-count-post')[1].textContent;
 
-var content = firstAnswer.split('share|improve this answer');
-firstAnswer = content[0];
+newQuestion(currentURL, title, firstAnswer, topUpvotes);
 
-saveLink(currentURL, title, firstAnswer, topUpvotes);
+/*-------------------------------------------------------------------
+********* SAVE A NEW QUESTION
+Add a new question to the user's collection.
+-------------------------------------------------------------------*/
+function newQuestion(link, question, answer, upvotes) {
+	// Clean up the data before we save it
+	question = question.replace(/\r?\n/g, '');
+	answer = answer.replace(/\r?\n/g, '');
 
-
-function saveLink(link, question, answer, upvotes) {
-	// prettify question & answer by taking out whitespaces, tabs, and null
-	question = question.split(/\s+/).filter(function(e){return e===0 || e}).join(' ');
-	answer = answer.replace(/\r?\n/g, '').substring(0, answer.length);
-
-	// check for duplicates
+	// Create the object that we will push to the collection, granted that it doesn't already exist.
 	obj = {
 		'question': question,
 		'link': link,
@@ -24,24 +33,20 @@ function saveLink(link, question, answer, upvotes) {
 	};
 
 	chrome.storage.local.get(null, function(item) {
-		var currentProject = item.settings['defaultProject'];
-		console.log("Current project we're adding into is " + currentProject);
+		var currentProject = item.settings.defaultProject; // Get user's current default project to add links to
 
+		// check for duplicates
 		var isDup = false;
 		for (var i = 0; i < item.projects[currentProject].questions.length; i++) {
-			if (item.projects[currentProject].questions[i]['link'] === obj['link']) {
+			if (item.projects[currentProject].questions[i].link === obj.link) {
 				isDup = true;
 				break;
 			}
 		}
 
 		if (!isDup) {
-			item['projects'][currentProject]['questions'].push(obj);
-			chrome.storage.local.set(item, function(){
-				console.log("We just added a question to " + currentProject);
-			});
-		} else {
-			console.log("You've already visited this page.");
+			item.projects[currentProject].questions.push(obj);
+			chrome.storage.local.set(item);
 		}
 	});
 }
