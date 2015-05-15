@@ -1,7 +1,3 @@
-//Project background colors
-var bgcolors = ['#00bcd4', '#ff436c', '#8bc34a', '#ff9800'];
-
-
 $("#create")
 	.click(function() {
 		$('<div class="project"><div class="projectHeader"><p class="projectTitle"></p></div><div class="questions"></div></div>')

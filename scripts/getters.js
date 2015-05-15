@@ -99,7 +99,7 @@ function getAllLinks() {
 				}
 			});
 
-			// Format <code> blocks so they're readable!!
+			// Format <code> blocks so they're readable!
 			formatCodeBlocks();
 		}
 	});
@@ -181,7 +181,7 @@ function formatCodeBlocks() {
 
 			// Check whether the span contains a tab; if it does, put a line break before it
 			if (($(".pln").eq(k).html().indexOf("    ") > -1) && !($(".pln").eq(k).prev().is("br")) ) {
-				$("<br>").insertBefore($(".pln").eq(i));
+				$("<br>").insertBefore($(".pln").eq(k));
 			}
 		}
 	}

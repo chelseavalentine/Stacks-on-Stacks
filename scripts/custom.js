@@ -1,3 +1,13 @@
+// INITIALIZE GLOBAL VARIABLES
+// Project background colors
+var bgcolors = ['#00bcd4', '#ff436c', '#8bc34a', '#ff9800'];
+var projectHeaders = document.getElementsByClassName('projectHeader');
+
+var starIcons = document.getElementsByClassName('star');
+var emptyIcons = document.getElementsByClassName('empty');
+var projectsToAddIcons = document.getElementsByClassName('addIcons');
+var helperTexts = document.getElementsByClassName('helperText');
+
 /*===================================================================
 ---------------------------------------------------------------------
 * VISUAL MANIPULATION
@@ -6,30 +16,24 @@ All of the functions that deal with changes of images, colors, etc.
 ---------------------------------------------------------------------
 ===================================================================*/
 
-
-/*===================================================================
-***** VISUAL MANIPULATION: VISUAL CHANGES
-===================================================================*/
-
 /*-------------------------------------------------------------------
 ********* COLOR PROJECT HEADERS
 -------------------------------------------------------------------*/
 function colorHeaders() {
-	var headers = $(".projectHeader").length;
-	for (var i = 0; i < headers; i++) {
-		$(".projectHeader")
-			.eq(i)
-			.css({
-				"background-color": bgcolors[i%bgcolors.length]
-			});
+	for (var i = 0; i < projectHeaders.length; i++) {
+		projectHeaders[i].style.background = bgcolors[i%bgcolors.length];
 	}
 }
 
-/*-------------------------------------------------------------------
-********* SHOW NEW DEFAULT CHOICE
+/*===================================================================
+***** SHOW NEW DEFAULT CHOICE
 When projects are loaded in, show the project which is the default
 project that links are added into by replacing its star with a star
 that doesn't change to an unfilled star when hovered over.
+===================================================================*/
+
+/*-------------------------------------------------------------------
+********* SHOW NEW DEFAULT CHOICE [MAIN]
 -------------------------------------------------------------------*/
 function showDefaultProject() {
 	chrome.storage.local.get(null, function(item) {
@@ -37,29 +41,52 @@ function showDefaultProject() {
 		var currentDefault = item.settings.defaultProject;
 
 		// remove the current star of the current project
-		$(".star").eq(currentDefault).remove();
+		starIcons[currentDefault].parentNode.removeChild(starIcons[currentDefault]);
 
-		//add a new function-less star
-		$("<img src='images/star-chosen.svg' class='star'>")
-			.appendTo($(".addIcons").eq(currentDefault))
-			// add helper text to clarify that this is the default place links are added to
-			.hover(function() {
-				var top = $(".star").eq(currentDefault).offset().top;
-				var left = $(".star").eq(currentDefault).offset().left;
+		/////////////// REPLACE IT WITH A FUNCTIONLESS STAR
+		// create the functionless star to be added to the body
+		var chosenStar = document.createElement('img');
+		chosenStar.src = 'images/star-chosen.svg';
+		chosenStar.classList.add('star');
 
-				var height = $(".projectHeader").eq(currentDefault).height();
-				var topOffset = $("#emptyUnsorted").offset().top;
+		// Add star to the body
+		projectsToAddIcons[currentDefault].appendChild(chosenStar);
 
-				$('<p class="helperText">This is the default project.</p>')
-					.appendTo("body")
-					.css({
-						"top": top - topOffset + height + 18 + "px",
-						"left": left - 16 + "px"
-					});
-			}, function() {
-				$(".helperText").remove();
-			});
+		// Set activities that'll occur upon user hover
+		chosenStar.addEventListener('mouseenter', function() {hoverChosenStar(currentDefault);}, false);
+		chosenStar.addEventListener('mouseout', function() {removeHelperText();}, false);
 	});
+}
+
+/*-------------------------------------------------------------------
+********* SHOW NEW DEFAULT CHOICE: Upon hovering over star
+Display helper text to indicate the action that'll occur upon click
+-------------------------------------------------------------------*/
+function hoverChosenStar(currentDefault) {
+	// Initialize variables
+	var unsortedEmptyIcon = document.getElementById("emptyUnsorted");
+	var top = starIcons[currentDefault].getBoundingClientRect().top; // get the star's offset from the top
+	var left = starIcons[currentDefault].getBoundingClientRect().left; // get the star's offset from the left
+
+	var height = projectHeaders[currentDefault].offsetHeight;
+	var topOffset = unsortedEmptyIcon.getBoundingClientRect().top; // get the Unsorted empty icon's offset from the top
+
+	// Create and style helper text, before adding it to the page
+	var helperText = document.createElement('p');
+	helperText.textContent = "This is the default project";
+	helperText.classList.add('helperText');
+	helperText.style.top = top - topOffset + height + 18 + "px";
+	helperText.style.left = left - 16 + "px";
+	document.body.appendChild(helperText);
+}
+
+/*-------------------------------------------------------------------
+********* SHOW NEW DEFAULT CHOICE: Remove all helper text
+-------------------------------------------------------------------*/
+function removeHelperText() {
+	for (var i = 0; i < helperTexts.length; i++) {
+		helperTexts[i].parentNode.removeChild(helperTexts[i]);
+	}
 }
 
 
@@ -76,78 +103,77 @@ star a filled-in one.
 /*-------------------------------------------------------------------
 ********* ADD 'UNSORTED' EMPTY ICON
 -------------------------------------------------------------------*/
-function addUnsortedEmpty(i) {
-	$("<img src='images/empty.svg' class='empty' id='emptyUnsorted'>")
-		.appendTo($(".addIcons").eq(i))
-		.hover(function() {
-			changeEmptyIconStart(i);
-		}, function() {
-			changeEmptyIconEnd(i);
-		})
-		.click(function() {
-			emptyProject(i);
-		});
+function addUnsortedEmpty(projectPos) {
+	// Create unsorted's empty icons & add it to the 'Unsorted' project header
+	var emptyUnsortedIcon = document.createElement('img');
+	emptyUnsortedIcon.src = 'images/empty.svg';
+	emptyUnsortedIcon.classList.add('empty');
+	emptyUnsortedIcon.id = 'emptyUnsorted';
+	projectsToAddIcons[projectPos].appendChild(emptyUnsortedIcon);
+
+	// Set activities that'll occur upon user hover & click
+	emptyUnsortedIcon.addEventListener('mouseenter', function() { changeEmptyIconStart(projectPos); }, false);
+	emptyUnsortedIcon.addEventListener('mouseout', function() { changeEmptyIconEnd(projectPos); }, false);
+	emptyUnsortedIcon.addEventListener('click', function() { emptyProject(projectPos); }, false);
 }
 
 /*-------------------------------------------------------------------
 ********* ADD EMPTY ICON
 -------------------------------------------------------------------*/
-function addEmpty(i) {
-	$("<img src='images/empty.svg' class='empty' id='emptyUnsorted'>")
-		.appendTo($(".addIcons").eq(i))
-		.hover(function() {
-			changeEmptyIconStart(i);
-		}, function() {
-			changeEmptyIconEnd(i);
-		})
-		.click(function() {
-			emptyProject(i);
-		});
+function addEmpty(projectPos) {
+	// Create unsorted's empty icons & add it to the 'Unsorted' project header
+	var emptyIcon = document.createElement('img');
+	emptyIcon.src = 'images/empty.svg';
+	emptyIcon.classList.add('empty');
+	projectsToAddIcons[projectPos].appendChild(emptyIcon);
+
+	// Set activities that'll occur upon user hover & click
+	emptyIcon.addEventListener('mouseenter', function() { changeEmptyIconStart(projectPos); }, false);
+	emptyIcon.addEventListener('mouseout', function() { changeEmptyIconEnd(projectPos); }, false);
+	emptyIcon.addEventListener('click', function() { emptyProject(projectPos); }, false);
 }
 
 /*-------------------------------------------------------------------
 ********* Empty icon: Upon hover
 When you hover over an empty icon, change the image to the black 'x'
 -------------------------------------------------------------------*/
-function changeEmptyIconStart(i) {
-	$(".empty").eq(i).attr("src", "images/empty-hover.svg");
-	
-	//Get position of 'empty' icon to position helper text
-	var top = $(".empty").eq(i).offset().top;
-	var left = $(".empty").eq(i).offset().left;
+function changeEmptyIconStart(projectPos) {
+	emptyIcons[projectPos].src = 'images/empty-hover.svg'; // change to black 'x'
+
+	// Initialize variables
+	var top = emptyIcons[projectPos].getBoundingClientRect().top;
+	var left = emptyIcons[projectPos].getBoundingClientRect().left;
 	var topOffset = 0;
 
-	if (i !== 0) {
-		var height = $(".projectHeader").eq(0).height(); // Get the height of a projectHeader
+	// Create helper text
+	var helperText = document.createElement('p');
+	helperText.classList.add('helperText');
+	helperText.style.left = left - 4 + "px";
 
-		//Get the X position of the emptyUnsorted icon so that we can position the other helpertext boxes relative to that
-		topOffset = $("#emptyUnsorted").offset().top;
+	if (projectPos !== 0) {
+		var height = projectHeaders[0].offsetHeight; // Get the height of a projectHeader
+		var unsortedEmptyIcon = document.getElementById("emptyUnsorted");
+		topOffset = unsortedEmptyIcon.getBoundingClientRect().top; // get the Unsorted empty icon's offset from the top
 
-		$('<p class="helperText">Delete project</p>')
-			.appendTo("body")
-			.css({
-				"top": top - topOffset + height + 16 + "px",
-				"left": left - 4 + "px"
-		});
-		console.log("mofoooo " + topOffset);
+		// Edit helper text before adding it to the page
+		helperText.textContent = 'Delete project';
+		helperText.style.top = top - topOffset + height + 16 + "px";
 	} else {
-		$('<p class="helperText">Delete project</p>')
-		.appendTo("body")
-		.css({
-			"top": top - topOffset - 23 + "px",
-			"left": left - 4 + "px"
-		});
+		// Edit helper text before adding it to the page
+		helperText.textContent = 'Empty this project';
+		helperText.style.top = top - topOffset - 23 + "px";
 	}
+
+	document.body.appendChild(helperText);
 }
 
 /*-------------------------------------------------------------------
 ********* Empty icon: After hover
-When you stop hovering over the empty icon, restore the image to the
-white 'x'
+When you stop hovering over the empty icon, image is a white 'x'
 -------------------------------------------------------------------*/
-function changeEmptyIconEnd(i) {
-	$(".empty").eq(i).attr("src", "images/empty.svg");
-	$(".helperText").remove();
+function changeEmptyIconEnd(projectPos) {
+	emptyIcons[projectPos].src = 'images/empty.svg';
+	removeHelperText();
 }
 
 
@@ -171,28 +197,22 @@ Permanent changes, such as deleting a question/project.
 Search the storage for a link that matches the one that is passed in,
 and delete the match.
 -------------------------------------------------------------------*/
-function deleteLink(link, projectIndex) {
-	// Initialize variable(s).
+function deleteLink(link, projectPos) {
 	var found = false;
 
 	chrome.storage.local.get(null, function(item) {
-
 		//Search through all of the links in the desired project
-		for (var i = 0; i < item.projects[projectIndex].questions.length; i++ ) {
-			if (link === JSON.stringify(item.projects[projectIndex].questions[i].link)) {
+		for (var i = 0; i < item.projects[projectPos].questions.length; i++ ) {
+			if (link === JSON.stringify(item.projects[projectPos].questions[i].link)) {
 				// found object to delete from storage
-				item.projects[projectIndex].questions.splice(i, 1);
+				item.projects[projectPos].questions.splice(i, 1);
 				found = true;
 				break;
 			}
 		}
 	
 		if (found) {
-			chrome.storage.local.set(item, function() {
-				console.log(link + ' has been deleted from the storage.');
-			});
-		} else {
-			console.log(link + ' was not found in the storage.');
+			chrome.storage.local.set(item);
 		}
 	});
 }
@@ -232,9 +252,7 @@ function emptyProject(i) {
 					//Clear all of the questions
 					item.projects[0].questions.splice(0, len);
 
-					chrome.storage.local.set(item, function() {
-						console.log("All of the links in " + projectName + " were sucessfully deleted from storage.");
-					});
+					chrome.storage.local.set(item);
 
 					// Visually clear the questions in 'Unsorted'
 					$(".questions").eq(0).empty();
@@ -242,9 +260,7 @@ function emptyProject(i) {
 					// Delete the project
 					item.projects.splice(thisIndex, 1);
 
-					chrome.storage.local.set(item, function() {
-						console.log("The project '" + projectName + "'' was successfully deleted from storage.");
-					});
+					chrome.storage.local.set(item);
 
 					// Visually delete the project from view
 					$(".project").eq(thisIndex).remove();
@@ -398,6 +414,11 @@ $("#edit")
 		}
 	});
 
+// var saveEditsButton = document.getElementById('saveEdits');
+// saveEditsButton.click(function() {
+// 	saveEdits();
+// });
+
 $("#saveEdits").click(function() {
 	saveEdits();
 });
@@ -451,8 +472,8 @@ function saveEdits() {
 		// Set the reordered projects...
 		chrome.storage.local.set(item, function() {
 			console.log("Your function names have successfully been changed.");
-		})
-	})
+		});
+	});
 
 	$("input").disabled = true;
 	window.location.reload();
@@ -460,4 +481,4 @@ function saveEdits() {
 
 $(window).unload(function() {
 	saveEdits();
-})
+});

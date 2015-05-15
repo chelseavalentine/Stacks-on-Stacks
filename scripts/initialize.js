@@ -53,13 +53,9 @@ function settingsInit() {
 				'settings':{
 					'defaultProject': 0
 				}
-			}, function(){
-				console.log('Your settings have been initialized.');
 			});
 
 			window.location.reload(); // Refresh window.
-		} else {
-			//console.log("Your settings have been initialized before.");
 		}
 	});
 }
