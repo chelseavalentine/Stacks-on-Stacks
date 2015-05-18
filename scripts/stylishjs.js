@@ -1,3 +1,4 @@
+var inputs = document.getElementsByTagName('input');
 $("#create")
 	.click(function() {
 		$('<div class="project"><div class="projectHeader"><p class="projectTitle"></p></div><div class="questions"></div></div>')
@@ -10,14 +11,13 @@ $("#create")
 			.on('keyup', function(e) {
 				if (e.which == 13) {
 					$("#save").click()
-					this.disabled = true;
 				}
 			})
 
 		$("#save").show(0)
 
 		$("<img src='images/empty.svg' class='empty'>")
-			.appendTo(lastProjectTitle)
+			.appendTo($(".projectTitle").eq($(".projectTitle").length-1))
 			.hover(function() {
 				$(this).attr("src", "images/empty-hover.svg");
 				
@@ -38,23 +38,19 @@ $("#create")
 				$(".helperText").remove();
 			})
 			.click(function() {
-				var thisIndex = $(this).index(".empty") - 1;
+				var thisIndex = $(this).index(".empty");
 
 				//Confirm deletion
 				chrome.storage.local.get(null, function(item) {
 					var projectName = item['projects'][thisIndex]['name'];
 
-					$('<div class="cover"></div>')
-						.appendTo("body")
+					document.body.appendChild(coverup);
 					$('<div class="modal"><center id="modalCenter"><p class="modalText">Are you sure you want to delete <i>' + projectName + '</i>?</p><br></center></div>')
 						.appendTo("body")
-
-					var confirmation = false;
 
 					$('<button class="confirmProjectDelete flatButton">DELETE</button>')
 						.appendTo("#modalCenter")
 						.click(function () {
-							confirmation = true;
 							$(".cover, .modal").remove();
 
 							chrome.storage.local.get(null, function(item) {
@@ -72,7 +68,6 @@ $("#create")
 					$('<button class="confirmKeep flatButton">NO</button>')
 						.appendTo("#modalCenter")
 						.click(function () {
-							confirmation = false;
 							$(".cover, .modal").remove();
 						})
 				})
@@ -114,14 +109,15 @@ $("#save").click(function() {
 			};
 			items['projects'].push(createdProject);
 		}
-		chrome.storage.local.set(items, function() {
-			console.log("New projects were set.");
-			window.location.reload(); // Refresh window.
-		})
+		chrome.storage.local.set(items)
 	})
 
 	colorHeaders(); // Color all of the new projects too
+	this.style.display = 'none';
 
-	$(this).hide(0)	
+	// disable all input fields
+	for (var i = 0; i < inputs.length; i++) {
+		inputs[i].disabled = true;
+	}
 })
 

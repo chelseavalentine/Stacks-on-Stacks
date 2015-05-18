@@ -88,15 +88,13 @@ body {
 input {
   background-color: transparent;
   border: 0;
+  color: #fff;
   font-family: Consolas;
   font-size: 1em;
   font-weight: 600;
+  height: fit;
   text-align: center;
   word-wrap: normal;
-  height: fit; }
-
-.newproject {
-  color: #fff;
   width: 100%; }
 
 .cover {
@@ -121,7 +119,7 @@ input {
   left: 45px;
   opacity: 1;
   padding: 7.5px;
-  position: absolute;
+  position: fixed;
   top: 150px;
   width: 240px;
   z-index: 6; }
@@ -150,6 +148,9 @@ input {
 
 .upvotes:hover {
   opacity: .2; }
+
+img {
+  max-width: 100%; }
 
 .stacks, h1, h2, h3, h4, h5, h6, body, p, button, ul,
 ol, a {

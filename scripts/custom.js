@@ -3,10 +3,15 @@
 var bgcolors = ['#00bcd4', '#ff436c', '#8bc34a', '#ff9800'];
 var projectHeaders = document.getElementsByClassName('projectHeader');
 
+// Element references
 var starIcons = document.getElementsByClassName('star');
 var emptyIcons = document.getElementsByClassName('empty');
 var projectsToAddIcons = document.getElementsByClassName('addIcons');
 var helperTexts = document.getElementsByClassName('helperText');
+
+// Element creations
+var coverup = document.createElement('div'); // A dark black semi-opaque background that goes behind modal
+coverup.classList.add('cover');
 
 /*===================================================================
 ---------------------------------------------------------------------
@@ -222,31 +227,29 @@ function deleteLink(link, projectPos) {
 If the project is the 'Unsorted' project, clear the links. If it is 
 any other project, then delete the project entirely.
 -------------------------------------------------------------------*/
-function emptyProject(i) {
-	// Get this icon's index, which is also the index of the project
-	var thisIndex = i;
-
+function emptyProject(projectPos) {
 	// Confirm deletion
 	chrome.storage.local.get(null, function(item) {
-		var projectName = item.projects[thisIndex].name;
+		var projectName = item.projects[projectPos].name;
 
 		// Partially conceal the extension w/ a dark background
-		$('<div class="cover"></div>').appendTo("body");
+		document.body.appendChild(coverup);
 
 		// Add modal asking for deletion confirmation
-		$('<div class="modal"><center id="modalCenter"><p class="modalText">Are you sure you want to delete <i>' + projectName + '</i>?</p><br></center></div>').appendTo("body");
+		$('<div class="modal"><center id="modalCenter"><p class="modalText">Are you sure you want to delete <i>' + projectName + '</i>?</p><br></center></div>')
+			.appendTo("body");
 
-		var confirmation = false;
+		var modals = document.getElementsByClassName('modal')[0];
 
 		// Add flat delete button
 		$('<button class="confirmProjectDelete flatButton">DELETE</button>')
 			.appendTo("#modalCenter")
 			.click(function () {
-				confirmation = true;
-				$(".cover, .modal").remove();
+				coverup.parentNode.removeChild(coverup);
+				modals.parentNode.removeChild(modals);
 
 				//Change behavior depending on whether this is the 'Unsorted' project
-				if (i === 0) {
+				if (projectPos === 0) {
 					var numQuestions = Object.keys(item.projects[0].questions.length);
 
 					//Clear all of the questions
@@ -258,12 +261,13 @@ function emptyProject(i) {
 					$(".questions").eq(0).empty();
 				} else {
 					// Delete the project
-					item.projects.splice(thisIndex, 1);
+					item.projects.splice(projectPos, 1);
 
 					chrome.storage.local.set(item);
 
-					// Visually delete the project from view
-					$(".project").eq(thisIndex).remove();
+					// Visually delete the project from view & recolor headers
+					$(".project").eq(projectPos).remove();
+					colorHeaders();
 				}
 			});
 
@@ -271,8 +275,8 @@ function emptyProject(i) {
 		$('<button class="confirmKeep flatButton">NO</button>')
 			.appendTo("#modalCenter")
 			.click(function () {
-				confirmation = false;
-				$(".cover, .modal").remove();
+				coverup.parentNode.removeChild(coverup);
+				modals.parentNode.removeChild(modals);
 			});
 	});
 }

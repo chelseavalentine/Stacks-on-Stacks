@@ -1,3 +1,8 @@
+var aTag = document.getElementsByTagName('a');
+var pTag = document.getElementsByTagName('p');
+var questionHolder = document.getElementsByClassName('questions');
+var divHelper = document.getElementById('helpInsertProjects');
+
 /*===================================================================
 ---------------------------------------------------------------------
 * GET FROM THE STORAGE
@@ -22,29 +27,49 @@ function getProjects() {
 			for (var i = 0; i < items.projects.length; i++) {
 				var name =  JSON.stringify(items.projects[i].name);
 
+				// Create what a project looks like
+				var divProject = document.createElement('div');
+				divProject.classList.add('project');
+
+				var divProjectHeader = document.createElement('div');
+				divProjectHeader.classList.add('projectHeader');
+
+				var pProjectName = document.createElement('p');
+				pProjectName.classList.add('projectTitle', 'addIcons');
+
+				var inputProjectName = document.createElement('input');
+				inputProjectName.value = name;
+				inputProjectName.disabled = true;
+				pProjectName.appendChild(inputProjectName);
+				divProjectHeader.appendChild(pProjectName);
+				divProject.appendChild(divProjectHeader);
+
+				var divQuestions = document.createElement('div');
+				divQuestions.classList.add('questions');
+				divProject.appendChild(divQuestions);
+
+				var divAnswers = document.createElement('div');
+				divAnswers.classList.add('answers');
+				divProject.appendChild(divAnswers);
+
 				// If it's the first project being loaded, then it is the 'Unsorted' project, and we want that to be first.
 				if (i === 0) {
-					$('<div class="project"><div class="projectHeader"><p class="projectTitle addIcons"><input class="newproject" value=' + name + ' disabled></p></div><div class="questions"></div></div><div class="answers"></div>')
-						.insertAfter("#helpInsertProjects")
-						.load(
-							colorHeaders(),
-							addUnsortedEmpty(i), // add emptyUnsorted icon
-							addStar(i, filled) // add star icon
-						);
+					// Insert project after the helper divider
+					divHelper.parentNode.insertBefore(divProject, divHelper.nextSibling);
+
+					// Execute functions that will fill the project up
+					divProject.addEventListener("load", colorHeaders(), addUnsortedEmpty(i), addStar(i));
 				} else {
 					// Load all of the projects that aren't 'Unsorted' in a slightly different manner
 
 					// Place the project after the current last project
-					var placing = $(".project").eq($(".project").length - 1);
+					var projects = document.getElementsByClassName('project');
+					console.log(projects.length - 1);
+					var placing = projects[(projects.length - 1)]; // Place it last in the list of projects
 
-					$('<div class="project"><div class="projectHeader"><p class="projectTitle addIcons"><input class="newproject" value=' + name + ' disabled></p></div><div class="questions"></div></div><div class="answers"></div>')
-						.insertAfter(placing)
-						.load(
-							// Do these when the project loads in.
-							colorHeaders(),
-							addEmpty(i), // add emptyUnsorted icon
-							addStar(i, filled) // add star icon
-						);
+					// Insert project after the placing
+					placing.parentNode.insertBefore(divProject, placing.nextSibling);
+					divProject.addEventListener("load", colorHeaders(), addEmpty(i), addStar(i));
 				}
 			}
 
@@ -90,14 +115,15 @@ function getAllLinks() {
 			}
 
 			//Add open in new tab property to every <a>
+			// aTag.target = "_blank";
 			$("a").attr("target", "_blank");
 			
 			//get rid of empty <p> tags
-			$("p").each(function() {
-				if ($(this).html().replace(/\s|&nbsp;/g, '').length === 0) {
-					$(this).remove();
+			for (var k = 0; k < pTag.length; k++) {
+				if (pTag[k].innerHTML.replace(/\s|&nbsp;/g, '').length === 0) {
+					pTag[k].parentNode.removeChild(pTag[k]);
 				}
-			});
+			}
 
 			// Format <code> blocks so they're readable!
 			formatCodeBlocks();
@@ -112,7 +138,7 @@ This header is used to denote a function.
 -------------------------------------------------------------------*/
 function displayQuestionData (i, j, onThisQuestion, question, link, answer, upvotes) {
 	$('<div class="question" id="question' + i + "_" + j +'"></div>')
-		.appendTo(document.getElementsByClassName('questions')[i]);
+		.appendTo(questionHolder[i]);
 
 	$('<div class="title" id="title' + i + "_" + j + '"><p class="questionTitle">' + question + '</p><a target="_blank" href=' + link + '><img src="images/go.svg" class="icon goToIcon"></a></div>')
 		.appendTo(document.getElementById('question' + i + "_" + j))

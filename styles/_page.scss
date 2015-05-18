@@ -108,16 +108,13 @@ body {
 input {
   background-color: transparent;
   border: 0;
+  color: $white;
   font-family: Consolas;
   font-size: 1em;
   font-weight: 600;
+  height: fit;
   text-align: center;
   word-wrap: normal;
-  height: fit;
-}
-
-.newproject {
-  color: $white;
   width: 100%;
 }
 
@@ -144,7 +141,7 @@ input {
   left: 45px;
   opacity: 1;
   padding: 7.5px;
-  position: absolute;
+  position: fixed;
   top: 150px;
   width: 240px;
   z-index: 6;
@@ -179,4 +176,8 @@ input {
 
 .upvotes:hover {
   opacity: .2;
+}
+
+img {
+  max-width: 100%;
 }
