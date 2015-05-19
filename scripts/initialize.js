@@ -11,10 +11,10 @@ it will create the data table for you.
 ********* STARTING FUNCTIONS
 Execute these functions when jQuery loads/at the very beginning.
 -------------------------------------------------------------------*/
-$(function beginning() {
+(function beginning() {
 	settingsInit();
 	projectsInit();
-});
+})();
 
 /*-------------------------------------------------------------------
 ********* INITIALIZE PROJECTS
@@ -32,7 +32,7 @@ function projectsInit() {
 			}, function(){
 				console.log('The projects have been initialized.');
 			});
-			window.location.reload(); // Refresh window.
+			window.location.href = window.location.href; // Refresh window.
 		} else { // projects exist
 			getProjects(); // load in the projects
 			getAllLinks(); // load in the projects' links
@@ -55,7 +55,7 @@ function settingsInit() {
 				}
 			});
 
-			window.location.reload(); // Refresh window.
+			window.location.href = window.location.href; // Refresh window.
 		}
 	});
 }

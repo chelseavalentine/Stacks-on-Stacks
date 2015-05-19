@@ -3,6 +3,11 @@ var pTag = document.getElementsByTagName('p');
 var questionHolder = document.getElementsByClassName('questions');
 var divHelper = document.getElementById('helpInsertProjects');
 
+var com = document.getElementsByClassName('com'); // Stack overflow code format class
+var pln = document.getElementsByClassName('pln'); // Stack overflow code format class
+var pun = document.getElementsByClassName('pun'); // Stack overflow code format class
+
+
 /*===================================================================
 ---------------------------------------------------------------------
 * GET FROM THE STORAGE
@@ -25,7 +30,7 @@ function getProjects() {
 
 			// Iterate through the projects in the storage
 			for (var i = 0; i < items.projects.length; i++) {
-				var name =  JSON.stringify(items.projects[i].name);
+				var name =  items.projects[i].name;
 
 				// Create what a project looks like
 				var divProject = document.createElement('div');
@@ -64,7 +69,6 @@ function getProjects() {
 
 					// Place the project after the current last project
 					var projects = document.getElementsByClassName('project');
-					console.log(projects.length - 1);
 					var placing = projects[(projects.length - 1)]; // Place it last in the list of projects
 
 					// Insert project after the placing
@@ -77,10 +81,21 @@ function getProjects() {
 
 			// When you double click on a project header, it will hide the questions
 			$(".projectHeader").dblclick(function() {
-				$(this).next().toggle(0);
-			});
-		} else {
-			console.log("Welps. I failed to get all of the projects you requested.");
+				 $(this).next().toggle(0);
+				});
+			// THIS DON'T WORK FOR SOME REASON for (var k = 0; k < questionHolder.length; k++) {
+			// 	var thisquestion = questionHolder[k];
+			// 	console.log(questionHolder[k].style.display);
+			// 	projectHeaders[k].addEventListener("dblclick", function() {
+			// 		// If the questions are shown, hide them
+			// 		if (thisquestion.style.display !== 'none') {
+			// 			questionHolder[k].style.display = 'none';
+			// 		} else {
+			// 			// Otherwise, the questions are hidden. Show them.
+			// 			questionHolder[k].style.display = '';
+			// 		}
+			// 	})
+			// }
 		}
 	});
 }
@@ -116,17 +131,18 @@ function getAllLinks() {
 
 			//Add open in new tab property to every <a>
 			// aTag.target = "_blank";
-			$("a").attr("target", "_blank");
+			for (var k = 0; k < aTag.length; k++ ) {
+				aTag[k].target = '_blank';
+			}
 			
 			//get rid of empty <p> tags
-			for (var k = 0; k < pTag.length; k++) {
-				if (pTag[k].innerHTML.replace(/\s|&nbsp;/g, '').length === 0) {
-					pTag[k].parentNode.removeChild(pTag[k]);
+			for (var l = 0; l < pTag.length; l++) {
+				if (pTag[l].innerHTML.replace(/\s|&nbsp;/g, '').length === 0) {
+					pTag[l].parentNode.removeChild(pTag[l]);
 				}
 			}
 
-			// Format <code> blocks so they're readable!
-			formatCodeBlocks();
+			formatCodeBlocks(); // Format <code> blocks so they're readable!
 		}
 	});
 }
@@ -137,34 +153,79 @@ function getAllLinks() {
 This header is used to denote a function.
 -------------------------------------------------------------------*/
 function displayQuestionData (i, j, onThisQuestion, question, link, answer, upvotes) {
-	$('<div class="question" id="question' + i + "_" + j +'"></div>')
-		.appendTo(questionHolder[i]);
+	// Create & add the question divider
+	var divQuestion = document.createElement('div');
+	divQuestion.classList.add('question');
+	divQuestion.id = 'question' + i + '_' + j;
 
-	$('<div class="title" id="title' + i + "_" + j + '"><p class="questionTitle">' + question + '</p><a target="_blank" href=' + link + '><img src="images/go.svg" class="icon goToIcon"></a></div>')
-		.appendTo(document.getElementById('question' + i + "_" + j))
-		.click(function() {
-			$(this).next().toggle(0);
-		});
+	questionHolder[i].appendChild(divQuestion);
 
-	$('<div class="answer" id="answer' + i + j +'"><center><p class="answerText">' + answer + '</p><p class="upvotes">+' + upvotes +'</p></center></div>')
-		.insertAfter($("#title" + i + "_" + j));
+	// Fill in the question divider
+	var divTitle = document.createElement('div');
+	divTitle.classList.add('title');
+	divTitle.id = 'title' + i + '_' + j;
 
-	$(".upvotes")
-		.eq(onThisQuestion)
-		.css({
-			"top": 0,
-			"right": "5px"
-		});
+	var pQuestionTitle = document.createElement('p');
+	pQuestionTitle.classList.add('questionTitle');
+	pQuestionTitle.innerHTML = question;
+	divTitle.appendChild(pQuestionTitle);
 
+	var goToIcon = document.createElement('img');
+	goToIcon.classList.add('icon', 'goToIcon');
+	goToIcon.src = 'images/go.svg';
 
-	$('<img src="/images/delete.svg" class="icon deleteIcon"></div>')
-		.appendTo(document.getElementsByClassName('title')[onThisQuestion]).click(function() {
-			var deleteTest;
-			chrome.storage.local.get(null, function(item) { 
-				$("#question" + i + "_" + j).remove();
-				deleteLink(link, i);
-			});
-		});          
+	var questionLink = document.createElement('a');
+	questionLink.target = '_blank';
+	questionLink.href = link;
+	questionLink.appendChild(goToIcon);
+	divTitle.appendChild(questionLink);
+
+	divTitle.addEventListener("click", function() {
+		$(this).next().toggle(0);
+	});
+
+	var destinationQuestion = document.getElementById('question' + i + '_' + j);
+	destinationQuestion.appendChild(divTitle);
+
+	// Create & fill in the answer divider before adding it after the question
+	var divAnswer = document.createElement('div');
+	divAnswer.classList.add('answer');
+	divAnswer.id = 'answer' + i + '_' + j;
+
+	var center = document.createElement('center');
+
+	var pAnswer = document.createElement('p');
+	pAnswer.innerHTML = answer;
+	center.appendChild(pAnswer);
+
+	var pUpvotes = document.createElement('p');
+	pUpvotes.classList.add('upvotes');
+	pUpvotes.innerHTML = upvotes;
+	center.appendChild(pUpvotes);
+	divAnswer.appendChild(center);
+
+	var answerDestination = document.getElementById('question' + i + '_' + j);
+	answerDestination.appendChild(divAnswer);
+
+	var upvote = document.getElementsByClassName('upvotes')[onThisQuestion];
+	upvote.style.top = 0;
+	upvote.style.right = '5px';
+
+	// Create & add delete icon to question
+	var deleteIcon = document.createElement('img');
+	deleteIcon.src = '/images/delete.svg';
+	deleteIcon.classList.add('icon', 'deleteIcon');
+
+	deleteIcon.addEventListener("click", function() {
+		var deleteTest;
+		chrome.storage.local.get(null, function(item) {
+			var removedVisual = document.getElementById('question' + i + '_' + j);
+			removedVisual.parentNode.removeChild(removedVisual);
+			deleteLink(link, i);
+		})
+	})
+
+	document.getElementsByClassName('title')[onThisQuestion].appendChild(deleteIcon);       
 	}
 
 
@@ -175,10 +236,12 @@ This header is used to denote a function.
 function formatCodeBlocks() {
 	// Need to include this code snippet, otherwise it'll also edit Stack Overflow's <span>'s (Should probably put in logic for metaexchange later too)
 	var currentURL = window.location.href.toString().indexOf("stackoverflow") >= 0;
+	var br = document.createElement('br');
 
+	// Can't figure out how to rewrite this in pure JS
 	if (!(currentURL)) {
 		// If there is a comment on a line by itself, then add a line break before it to show this
-		for (var i = 0; i < $(".com").length; i++) {
+		for (var i = 0; i < com.length; i++) {
 			if ( ($(".com").eq(i).prev().html() === "") ) {
 				$("<br>").insertBefore($(".com").eq(i));
 			}
@@ -187,14 +250,14 @@ function formatCodeBlocks() {
 			}
 		}
 
-		for (var j = 0; j < $(".pun").length; j++) {
+		for (var j = 0; j < pun.length; j++) {
 			// If ; then make a line break after it
 			if ( ($(".pun").eq(j).html().indexOf(";") > -1) && !($(".pun").eq(j).next().next().hasClass("com")) && !($(".pun").eq(j).prev().is("br")) ) {
 				$("<br>").insertAfter($(".pun").eq(j));
 			}
 		}
 
-		for (var k = 0; k < $(".pln").length; k++) {
+		for (var k = 0; k < pln.length; k++) {
 			// If there's an empty pln, add another line break
 			if ( ($(".pln").eq(k).html() === "") && !($(".pln").eq(k).prev().is("br")) ) {
 				$("<br>").insertAfter($(".pln").eq(k));

@@ -355,7 +355,7 @@ function setDefault(newDefault) {
 
 			// derp derp, idk how to solve the problem of visually representing the change
 			// without doing a refresh;
-			window.location.reload();
+			window.location.href = window.location.href
 		});
 	});	
 }
@@ -480,7 +480,7 @@ function saveEdits() {
 	});
 
 	$("input").disabled = true;
-	window.location.reload();
+	window.location.href = window.location.href; // refresh
 }
 
 $(window).unload(function() {
