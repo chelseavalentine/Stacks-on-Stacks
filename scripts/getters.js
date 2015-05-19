@@ -141,8 +141,6 @@ function getAllLinks() {
 					pTag[l].parentNode.removeChild(pTag[l]);
 				}
 			}
-
-			formatCodeBlocks(); // Format <code> blocks so they're readable!
 		}
 	});
 }
@@ -222,8 +220,8 @@ function displayQuestionData (i, j, onThisQuestion, question, link, answer, upvo
 			var removedVisual = document.getElementById('question' + i + '_' + j);
 			removedVisual.parentNode.removeChild(removedVisual);
 			deleteLink(link, i);
-		})
-	})
+		});
+	});
 
 	document.getElementsByClassName('title')[onThisQuestion].appendChild(deleteIcon);       
 	}
@@ -274,4 +272,5 @@ function formatCodeBlocks() {
 			}
 		}
 	}
-}
+};
+setTimeout(formatCodeBlocks, 500);
