@@ -10,11 +10,10 @@ Grab question data from the Stack Overflow pages that you go to.
 // Attempt to save the URL, Question title, Best answer, and Best Answer's number of upvotes.
 var currentURL = window.location.href;
 var title = document.getElementById('question-header').children[0].children[0].innerHTML;
-var firstAnswer = document.getElementsByClassName('answercell')[0].children[0].innerHTML;
+var firstAnswer = document.getElementsByClassName('answercell')[0].children[0].outerHTML;
 var topUpvotes = document.getElementsByClassName('vote-count-post')[1].textContent;
 
 newQuestion(currentURL, title, firstAnswer, topUpvotes);
-
 /*-------------------------------------------------------------------
 ********* SAVE A NEW QUESTION
 Add a new question to the user's collection.
@@ -23,9 +22,6 @@ function newQuestion(link, question, answer, upvotes) {
 	// Clean up the data before we save it
 	question = question.replace(/\r?\n/g, '');
 	answer = answer.replace(/\r?\n/g, '');
-	console.log("Checkpoint 2");
-	console.log(firstAnswer);
-
 
 	// Format the answer before we save it
 
@@ -55,3 +51,5 @@ function newQuestion(link, question, answer, upvotes) {
 		}
 	});
 }
+
+function formatCodeBlocks() {}
