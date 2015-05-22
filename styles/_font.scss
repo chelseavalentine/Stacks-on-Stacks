@@ -103,6 +103,7 @@ button {
 
 a {
   @extend %font;
+  word-wrap: break-word;
 }
 
 // Links

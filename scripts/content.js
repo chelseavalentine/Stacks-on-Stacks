@@ -23,6 +23,11 @@ function newQuestion(link, question, answer, upvotes) {
 	// Clean up the data before we save it
 	question = question.replace(/\r?\n/g, '');
 	answer = answer.replace(/\r?\n/g, '');
+	console.log("Checkpoint 2");
+	console.log(firstAnswer);
+
+
+	// Format the answer before we save it
 
 	// Create the object that we will push to the collection, granted that it doesn't already exist.
 	obj = {

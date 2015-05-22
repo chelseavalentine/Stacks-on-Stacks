@@ -2,11 +2,11 @@
   "manifest_version": 2,
   "name": "Stacks on Stacks",
   "version": "0.1",
+  // "icons": {
+  //   "128": ""
+  // },
   "permissions": [
-    "tabs",
-    "storage",
-    "activeTab",
-    "https://ajax.googleapis.com/"
+    "storage"
   ],
   "browser_action": {
     "default_title": "Stacks on Stacks",
@@ -17,18 +17,15 @@
     {
       "matches": ["http://*.stackoverflow.com/questions/*", "http://stackoverflow.com/questions/*", "https://stackoverflow.com/questions/*", "http://*.stackexchange.com/questions/*"],
       "js": [
-        "scripts/jquery.min.js",
-        "scripts/content.js",
-        "scripts/initialize.js",
-        "scripts/getters.js",
-        "scripts/custom.js",
-        "scripts/stylishjs.js"
+        "scripts/ext/jquery.min.js",
+        "scripts/content.js"
       ]
     }
   ]
   // "background": {
   //   "scripts": [
   //     "scripts/background.js"
-  //   ]
+  //   ],
+  //   "persistent": false
   // }
 }

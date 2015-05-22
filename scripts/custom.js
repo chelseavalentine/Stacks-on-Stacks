@@ -236,48 +236,54 @@ function emptyProject(projectPos) {
 		document.body.appendChild(coverup);
 
 		// Add modal asking for deletion confirmation
-		$('<div class="modal"><center id="modalCenter"><p class="modalText">Are you sure you want to delete <i>' + projectName + '</i>?</p><br></center></div>')
-			.appendTo("body");
+		var modal = document.createElement('div');
+		modal.classList.add('modal');
+		modal.innerHTML = '<p><center id="modalCenter">Are you sure you want to delete <i>' + projectName + '</i>?<br><br></center></p>';
+		document.body.appendChild(modal);
 
 		var modals = document.getElementsByClassName('modal')[0];
+		var deleteButton = document.createElement('button');
+		deleteButton.classList.add('confirmProjectDelete', 'flatButton');
+		deleteButton.innerHTML = 'DELETE';
+		deleteButton.addEventListener("click", function () {
+			coverup.parentNode.removeChild(coverup);
+			modals.parentNode.removeChild(modals);
 
-		// Add flat delete button
-		$('<button class="confirmProjectDelete flatButton">DELETE</button>')
-			.appendTo("#modalCenter")
-			.click(function () {
-				coverup.parentNode.removeChild(coverup);
-				modals.parentNode.removeChild(modals);
+			//Change behavior depending on whether this is the 'Unsorted' project
+			var questions = document.getElementsByClassName('questions');
 
-				//Change behavior depending on whether this is the 'Unsorted' project
-				if (projectPos === 0) {
-					var numQuestions = Object.keys(item.projects[0].questions.length);
+			if (projectPos === 0) {
+				var numQuestions = item.projects[0].questions.length;
 
-					//Clear all of the questions
-					item.projects[0].questions.splice(0, len);
+				//Clear all of the questions
+				item.projects[0].questions.splice(0, numQuestions);
 
-					chrome.storage.local.set(item);
+				chrome.storage.local.set(item);
 
-					// Visually clear the questions in 'Unsorted'
-					$(".questions").eq(0).empty();
-				} else {
-					// Delete the project
-					item.projects.splice(projectPos, 1);
+				// Visually clear the questions in 'Unsorted'
+				questions[0].innerHTML = '';
+			} else {
+				// Delete the project
+				item.projects.splice(projectPos, 1);
 
-					chrome.storage.local.set(item);
+				chrome.storage.local.set(item);
 
-					// Visually delete the project from view & recolor headers
-					$(".project").eq(projectPos).remove();
-					colorHeaders();
-				}
-			});
+				// Visually delete the project from view & recolor headers
+				questions[projectPos].parentNode.removeChild(questions[projectPos]);
+				colorHeaders();
+			}
+		})
+		modalCenter = document.getElementById('modalCenter');
+		modalCenter.appendChild(deleteButton);
 
-		// Add flat keep button
-		$('<button class="confirmKeep flatButton">NO</button>')
-			.appendTo("#modalCenter")
-			.click(function () {
-				coverup.parentNode.removeChild(coverup);
-				modals.parentNode.removeChild(modals);
-			});
+		var keepButton = document.createElement('button');
+		keepButton.classList.add('confirmKeep', 'flatButton');
+		keepButton.innerHTML = 'NO';
+		keepButton.addEventListener("click", function () {
+			coverup.parentNode.removeChild(coverup);
+			modals.parentNode.removeChild(modals);
+		})
+		modalCenter.appendChild(keepButton);
 	});
 }
 
@@ -366,15 +372,16 @@ Edit a project's title
 -------------------------------------------------------------------*/
 // This will hold our current question IDs in their order
 var questions = [];
+var editButton = document.getElementById('edit');
+var saveEditsButton = document.getElementById('saveEdits');
+
 
 $("#edit")
 	.click(function() {
-		$(this).hide(0);
-		$("#saveEdits")
-			.show(0)
-			.css({
-				"left": "160px"
-			});
+		// Switch button shown from edit --> save button
+		editButton.style.display = 'none';
+		saveEditsButton.style.display = 'block';
+		saveEditsButton.style.left = '160px';
 
 		// Make all of the project headers, except for 'Unsorted' editable
 		for (var i = 1; i < $("input").length; i++) {
@@ -443,10 +450,10 @@ function saveEdits() {
 		}
 	}
 
-	var newQuestions = [];
-	var dimensions;
-	var firstNum;
-	var secondNum;
+	var newQuestions = [],
+		dimensions,
+		firstNum,
+		secondNum;
 
 	chrome.storage.local.get(null, function(item) {
 		// Save each of the project headers
@@ -482,6 +489,10 @@ function saveEdits() {
 	$("input").disabled = true;
 	window.location.href = window.location.href; // refresh
 }
+
+// window.onbeforeunload = function() {
+// 	saveEdits();
+// }
 
 $(window).unload(function() {
 	saveEdits();

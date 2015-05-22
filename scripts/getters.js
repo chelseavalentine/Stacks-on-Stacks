@@ -83,19 +83,6 @@ function getProjects() {
 			$(".projectHeader").dblclick(function() {
 				 $(this).next().toggle(0);
 				});
-			// THIS DON'T WORK FOR SOME REASON for (var k = 0; k < questionHolder.length; k++) {
-			// 	var thisquestion = questionHolder[k];
-			// 	console.log(questionHolder[k].style.display);
-			// 	projectHeaders[k].addEventListener("dblclick", function() {
-			// 		// If the questions are shown, hide them
-			// 		if (thisquestion.style.display !== 'none') {
-			// 			questionHolder[k].style.display = 'none';
-			// 		} else {
-			// 			// Otherwise, the questions are hidden. Show them.
-			// 			questionHolder[k].style.display = '';
-			// 		}
-			// 	})
-			// }
 		}
 	});
 }
@@ -144,7 +131,6 @@ function getAllLinks() {
 		}
 	});
 }
-
 
 /*-------------------------------------------------------------------
 ********* DISPLAY QUESTION DATA
@@ -272,5 +258,6 @@ function formatCodeBlocks() {
 			}
 		}
 	}
-};
-setTimeout(formatCodeBlocks, 500);
+}
+
+// setTimeout(formatCodeBlocks, 500);
