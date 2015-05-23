@@ -249,6 +249,12 @@ pre {
   white-space: pre-line;
   word-wrap: break-word; }
 
+pre {
+  width: 98%;
+  margin-right: auto;
+  margin-left: auto;
+  display: block; }
+
 hr {
   border: 0;
   border-bottom: 1px solid #eee;
@@ -263,6 +269,13 @@ ol {
 
 li {
   margin-left: -10px; }
+
+blockquote {
+  background-color: #fff;
+  padding: 1%;
+  margin-left: 1.5%;
+  width: 95%;
+  box-shadow: 0 0 6px 1px rgba(0, 0, 0, 0.075); }
 
 .pln, .pun {
   word-wrap: break-word;

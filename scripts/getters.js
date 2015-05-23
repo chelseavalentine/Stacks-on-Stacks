@@ -4,10 +4,6 @@ var pTag = document.getElementsByTagName('p');
 var questionHolder = document.getElementsByClassName('questions');
 var divHelper = document.getElementById('helpInsertProjects');
 
-var com = document.getElementsByClassName('com'); // Stack overflow code format class
-var pln = document.getElementsByClassName('pln'); // Stack overflow code format class
-
-
 /*===================================================================
 ---------------------------------------------------------------------
 * GET FROM THE STORAGE
@@ -240,58 +236,82 @@ function formatCodeBlocksOoO() {
 	var currentURL = window.location.href.toString().indexOf("stackoverflow") >= 0;
 	var br = document.createElement('br');
 
-	// Can't figure out how to rewrite this in pure JS
 	if (!(currentURL)) {
-		// If there is a comment on a line by itself, then add a line break before it to show this
-		// for (var i = 0; i < com.length; i++) {
-		// 	if ( ($(".com").eq(i).prev().html() === "") ) {
-		// 		$("<br>").insertBefore($(".com").eq(i));
-		// 	}
-		// 	if ( ($(".com").eq(i).prev().html() === "  ") ) {
-		// 		$("<br>").insertBefore($(".com").eq(i));
-		// 	}
-		// }
-
+		var com = document.getElementsByClassName('com'); // Stack overflow code format class
+		var pln = document.getElementsByClassName('pln'); // Stack overflow code format class
 		var pun = document.getElementsByClassName('pun'); // Stack overflow code format class
+		var nextIsComment, prevIsComment, prevIsBR, isSmIndent, isLgIndent;
+
+		// If there is a comment on a line by itself, then add a line break before it to show this
+		for (var i = 0; i < com.length; i++) {
+			// If the thing before it is empty, add a break before the comment.
+			if (com[i].previousSibling !== null) {
+				if ( (com[i].previousSibling.textContent = '') || (com[i].previousSibling.textContent = '  ')) {
+					com[i].previousSibling.innerHTML += "<br>";
+				}
+			}
+		}
 
 		for (var j = 0; j < pun.length; j++) {
 			// If ; then make a line break after it
 			var hasSemicolon = pun[j].textContent.indexOf(';') > -1;
-			var nextIsComment, prevIsBR;
+			
 			if (pun[j].nextSibling !== null) {
-				if (pun[j].nextSibling.nextSibling !== null)
+				if (pun[j].nextSibling.nextSibling !== null) {
 					nextIsComment = pun[j].nextSibling.nextSibling.classList.contains('com');
+				} else {
+					nextIsComment = false;
+				}
+			} else {
+				nextIsComment = false;
 			}
-			prevIsBR = (pun[j].previousSibling === br);
+
+			if (pun[j].previousSibling !== null) {
+				prevIsBR = (pun[j].previousSibling === br);
+			} else {
+				prevIsBR = false;
+			}
 
 			if ( hasSemicolon && !nextIsComment && !prevIsBR) {
 				pun[j].innerHTML += "<br>";
 			}
 		}
 
-		// for (var j = 0; j < pun.length; j++) {
-		// 	// If ; then make a line break after it
-		// 	if (!($(".pun").eq(j).prev().is("br")) ) {
-		// 		$("<br>").insertAfter($(".pun").eq(j));
-		// 	}
-		// }
+		for (var k = 0; k < pln.length; k++) {
+			// If there's an empty pln, add another line break
+			var isEmpty = (pln[k].textContent === '');
+			if (pln[k].previousSibling !== null) {
+				prevIsBR = (pln[k].previousSibling === br);
+			} else {
+				prevIsBR = false;
+			}
 
-		// for (var k = 0; k < pln.length; k++) {
-		// 	// If there's an empty pln, add another line break
-		// 	if ( ($(".pln").eq(k).html() === "") && !($(".pln").eq(k).prev().is("br")) ) {
-		// 		$("<br>").insertAfter($(".pln").eq(k));
-		// 	}
+			if ( isEmpty && !prevIsBR ) {
+				pln[k].innerHTML += "<br>";
+			}
 
-		// 	// Put a line break before 'tab's, because that's usually indicates a new line
-		// 	if ( ($(".pln").eq(k).html() === "  ") && !($(".pln").eq(k).prev().hasClass("com")) ) {
-		// 		$("<br>").insertBefore($(".pln").eq(k));
-		// 	}
+			// Put a line break before 'tab's, because that's usually indicates a new line
+			if (pln[k].previousSibling !== null) {
+				prevIsComment = ( pln[k].previousSibling.classList.contains('com') );
+				isSmIndent = ( pln[k].textContent === '  ' );
+				if ( isSmIndent && !prevIsComment ) {
+					pln[k].previousSibling.innerHTML += "<br>";
+				}
+			} else {
+				prevIsComment = false;
+			}
+			
+			
+// <span class="pln">    $</span>
+			// Check whether the span contains a tab; if it does, put a line break before it
+			isLgIndent = ( pln[k].textContent.indexOf('    ') > -1 );
+			prevIsBR = (pln[k].previousSibling === br);
+			console.log(prevIsBR);
 
-		// 	// Check whether the span contains a tab; if it does, put a line break before it
-		// 	if (($(".pln").eq(k).html().indexOf("    ") > -1) && !($(".pln").eq(k).prev().is("br")) ) {
-		// 		$("<br>").insertBefore($(".pln").eq(k));
-		// 	}
-		// }
+			if ( isLgIndent && !prevIsBR ) {
+				pln[k].previousSibling.innerHTML += "<br>";
+			}
+		}
 	}
 }
 // setTimeout(formatCodeBlocks, 500);
