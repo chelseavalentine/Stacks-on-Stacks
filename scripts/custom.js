@@ -37,53 +37,7 @@ project that links are added into by replacing its star with a star
 that doesn't change to an unfilled star when hovered over.
 ===================================================================*/
 
-/*-------------------------------------------------------------------
-********* SHOW NEW DEFAULT CHOICE [MAIN]
--------------------------------------------------------------------*/
-function showDefaultProject() {
-	chrome.storage.local.get(null, function(item) {
-		// get index of current default project
-		var currentDefault = item.settings.defaultProject;
 
-		// remove the current star of the current project
-		starIcons[currentDefault].parentNode.removeChild(starIcons[currentDefault]);
-
-		/////////////// REPLACE IT WITH A FUNCTIONLESS STAR
-		// create the functionless star to be added to the body
-		var chosenStar = document.createElement('img');
-		chosenStar.src = 'images/star-chosen.svg';
-		chosenStar.classList.add('star');
-
-		// Add star to the body
-		projectsToAddIcons[currentDefault].appendChild(chosenStar);
-
-		// Set activities that'll occur upon user hover
-		chosenStar.addEventListener('mouseenter', function() {hoverChosenStar(currentDefault);}, false);
-		chosenStar.addEventListener('mouseout', function() {removeHelperText();}, false);
-	});
-}
-
-/*-------------------------------------------------------------------
-********* SHOW NEW DEFAULT CHOICE: Upon hovering over star
-Display helper text to indicate the action that'll occur upon click
--------------------------------------------------------------------*/
-function hoverChosenStar(currentDefault) {
-	// Initialize variables
-	var unsortedEmptyIcon = document.getElementById("emptyUnsorted");
-	var top = starIcons[currentDefault].getBoundingClientRect().top; // get the star's offset from the top
-	var left = starIcons[currentDefault].getBoundingClientRect().left; // get the star's offset from the left
-
-	var height = projectHeaders[currentDefault].offsetHeight;
-	var topOffset = unsortedEmptyIcon.getBoundingClientRect().top; // get the Unsorted empty icon's offset from the top
-
-	// Create and style helper text, before adding it to the page
-	var helperText = document.createElement('p');
-	helperText.textContent = "This is the default project";
-	helperText.classList.add('helperText');
-	helperText.style.top = top - topOffset + height + 18 + "px";
-	helperText.style.left = left - 16 + "px";
-	document.body.appendChild(helperText);
-}
 
 /*-------------------------------------------------------------------
 ********* SHOW NEW DEFAULT CHOICE: Remove all helper text
@@ -293,78 +247,6 @@ function emptyProject(projectPos) {
 Reorganization changes, such as moving around links, & reordering
 projects.
 ===================================================================*/
-function addStar(i) {
-	$("<img src='images/star.svg' class='star'>")
-		.appendTo($(".addIcons").eq(i))
-		.hover(function() {
-			$(this).attr("src", "images/star-chosen.svg");
-
-			// Get the position of the 'empty' icon so we can accurately position the
-			// helper text
-			var top = $(".star").eq(i).offset().top;
-			var left = $(".star").eq(i).offset().left;
-
-			var height = $(".projectHeader").eq(i).height(); // Get the height of a projectHeader
-			var topOffset = 0;
-
-			if (i !== 0) {
-				// Get the X position of the emptyUnsorted icon so that we can position the other helpertext boxes relative to that
-				topOffset = $("#emptyUnsorted").offset().top;
-
-				$('<p class="helperText">Make default</p>')
-				.appendTo("body")
-				.css({
-					"top": top - topOffset + height + 18 + "px",
-					"left": left - 16 + "px"
-				});
-			} else {
-				$('<p class="helperText">Make default</p>')
-				.appendTo("body")
-				.css({
-					"top": top - topOffset - 21 + "px",
-					"left": left - 16 + "px"
-				});
-			}			
-		}, function() {
-			$(this).attr("src", "images/star.svg");
-			$(".helperText").remove();
-		})
-		.click(function() {
-			setDefault(i);
-		});
-}
-
-/*-------------------------------------------------------------------
-********* SET DEFAULT PROJECT
-Change the project that links are automatically added to.
--------------------------------------------------------------------*/
-function setDefault(newDefault) {
-	chrome.storage.local.get(null, function(item) {
-		// Hold on to the previous default project
-		var prevDefault = item.settings.defaultProject;
-		console.log("Previous default was " + prevDefault);
-		console.log("New default is " + newDefault);
-
-		// Replace the star of the previous default so that things happen when you hover, click, etc.
-		$(".star").eq(prevDefault).remove();
-
-		// +1 because the 'Unsorted' divider doesn't have the class addIcons, but we need to place this star as if it did
-		showDefaultProject();
-		addStar(prevDefault);
-
-		// Change the current default project to the user selection
-		item.settings.defaultProject = newDefault;
-		console.log("You switched the project that links will automatically be added to. Now, new links are automatically added to " + item.projects[newDefault].name + " (Project #" + (newDefault + 1) + ").");
-
-		chrome.storage.local.set(item, function() {
-			console.log("Your new default project has been saved.");
-
-			// derp derp, idk how to solve the problem of visually representing the change
-			// without doing a refresh;
-			window.location.href = window.location.href
-		});
-	});	
-}
 
 /*-------------------------------------------------------------------
 ********* EDITTING PROJECT HEADERS
@@ -487,7 +369,7 @@ function saveEdits() {
 	});
 
 	$("input").disabled = true;
-	window.location.href = window.location.href; // refresh
+	// window.location.href = window.location.href; // refresh
 }
 
 // window.onbeforeunload = function() {
