@@ -241,21 +241,47 @@ function formatCodeBlocks() {
 		var pun = document.getElementsByClassName('pun'); // Stack overflow code format class
 		var nextIsComment, prevIsComment, prevIsBR, isSmIndent, isLgIndent, br, nextIsPLN;
 
-		/////////////// IF COMMENT ON LINE BY ITSELF, ADD LINE BREAK BEFORE IT
-		// If thing before it is empty.
+		/////////////// COM blocks
 		for (var i = 0; i < com.length; i++) {
+
+			/////////////// IF COMMENT ON LINE BY ITSELF, ADD LINE BREAK BEFORE IT
+			// If thing before it is empty.
 			br = document.createElement('br');
 			br.classList.add('br');
-			var prevIsEmpty = (com[i].previousElementSibling.textContent === '');
-			var prevIsTab = (com[i].previousElementSibling.textContent === '  ');
-			if ( prevIsEmpty || prevIsTab) {
+
+			if (com[i].previousElementSibling !== null ) {
+				var prevIsEmpty = (com[i].previousElementSibling.textContent === '');
+				var prevIsTab = (com[i].previousElementSibling.textContent === '  ');
+			} else {
+				prevIsEmpty = true;
+				prevIsTab = false;
+			}
+			
+			if ( prevIsEmpty && !prevIsTab) {
 				com[i].previousElementSibling.parentNode.insertBefore(br, com[i]);
+			}
+
+			/////////////// IF PLN AFTER COMMENT, ADD BREAK AFTER PLN
+			// 
+			br = document.createElement('br');
+			br.classList.add('br');
+
+			if (com[i].nextSibling !== null) {
+				nextIsPLN = com[i].nextElementSibling.classList.contains('pln');
+			} else {
+				nextIsPLN = false;
+			}
+
+			if (nextIsPLN) {
+				com[i].parentNode.insertBefore(br, com[i].nextElementSibling);
 			}
 		}
 
-		/////////////// IF ;, THEN MAKE A LINE BREAK AFTER IT
-		// Unless the next block is a comment, the previous block is a break, or it has text after the ;
+		/////////////// PUN blocks
 		for (var j = 0; j < pun.length; j++) {
+
+			/////////////// IF ;, THEN MAKE A LINE BREAK AFTER IT
+			// Unless the next block is a comment, the previous block is a break, or it has text after the ;
 			br = document.createElement('br');
 			br.classList.add('br');
 			var hasSemicolon = pun[j].textContent.indexOf(';') > -1;
@@ -266,10 +292,8 @@ function formatCodeBlocks() {
 				} else {
 					nextIsComment = false;
 				}
-				// nextIsPLN = pun[j].nextSibling.classList.contains('pln');
 			} else {
 				nextIsComment = false;
-				// nextIsPLN = false;
 			}
 
 			if (pun[j].previousSibling !== null) {
@@ -278,7 +302,7 @@ function formatCodeBlocks() {
 				prevIsBR = false;
 			}
 
-			if ( hasSemicolon && !nextIsComment && !prevIsBR && !nextIsPLN ) {
+			if ( hasSemicolon && !nextIsComment && !prevIsBR ) {
 				pun[j].parentNode.insertBefore(br, pun[j].nextSibling);
 			}
 		}
@@ -338,6 +362,12 @@ function formatCodeBlocks() {
 			// Significant details of a function can go here
 			// Check whether the span contains a tab; if it does, put a line break before it
 			isLgIndent = ( pln[k].textContent.indexOf('    ') > -1 );
+
+			if (pln[k].nextSibling !== null) {
+				nextIsComment = pln[k].nextElementSibling.classList.contains('com');
+				isLgIndent = (isLgIndent && !nextIsComment); // We only want it to register this as a large indent if the next block isn't a comment
+			}
+
 			br = document.createElement('br');
 			br.classList.add('br');
 			if (pln[k].previousSibling !== null) {
