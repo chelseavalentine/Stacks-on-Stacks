@@ -31,6 +31,7 @@ function addStar(index) {
 
         if (index !== 0) {
             // get X pos of emptyUnsorted icon to position helper texts relative to that
+            var unsortedEmptyIcon = document.getElementById("emptyUnsorted");
             topOffset = unsortedEmptyIcon.getBoundingClientRect().top;
 
             // Position helper text            
@@ -48,7 +49,6 @@ function addStar(index) {
     // Add the star to the project header
     projectsToAddIcons[index].appendChild(star);
 }
-
 
 /*-------------------------------------------------------------------
 ********* SHOW NEW DEFAULT CHOICE: Upon hovering over star
@@ -71,7 +71,6 @@ function hoverChosenStar(currentDefault) {
     helperText.style.left = left - 16 + "px";
     document.body.appendChild(helperText);
 }
-
 
 /*-------------------------------------------------------------------
 ********* SET DEFAULT PROJECT
@@ -98,7 +97,10 @@ function setDefault(newDefault) {
 }
 
 /*-------------------------------------------------------------------
-********* SHOW NEW DEFAULT CHOICE [MAIN]
+********* SHOW DEFAULT
+When projects are loaded in, show the project which is the default
+project that links are added into by replacing its star with a filled
+star that doesn't change to an unfilled star when hovered over.
 -------------------------------------------------------------------*/
 function showDefaultProject() {
     chrome.storage.local.get(null, function(item) {

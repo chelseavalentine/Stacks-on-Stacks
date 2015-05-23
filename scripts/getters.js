@@ -21,9 +21,6 @@ our questions will get appended to.
 function getProjects() {
 	return chrome.storage.local.get(null, function(items) {
 		if (!chrome.runtime.error) {
-			// We want the appended stars to be unfilled
-			var filled = false;
-
 			// Iterate through the projects in the storage
 			for (var i = 0; i < items.projects.length; i++) {
 				var name =  items.projects[i].name;

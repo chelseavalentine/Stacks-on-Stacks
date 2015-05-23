@@ -1,101 +1,52 @@
 var inputs = document.getElementsByTagName('input');
-$("#create")
-	.click(function() {
-		$('<div class="project"><div class="projectHeader"><p class="projectTitle"></p></div><div class="questions"></div></div>')
-			.insertAfter($(".project").eq($(".project").length-1))
-		var lastProjectTitle = $(".projectTitle").eq($(".projectTitle").length-1);
+var projects = document.getElementById('projects');
 
-		$('<input value="" maxlength="21" class="newproject">')
-			.appendTo(lastProjectTitle)
-			.focus()
-			.on('keyup', function(e) {
-				if (e.which == 13) {
-					$("#save").click()
-				}
-			})
+/*-------------------------------------------------------------------
+********* CREATE PROJECT
+-------------------------------------------------------------------*/
+function createProject() {
+	/////////////// CREATE A PROJECT
+	// Project > (Project header > [Project Name > Input Project] & [Questions])
 
-		$("#save").show(0)
+	// Project
+	var divProject = document.createElement('div');
+	divProject.classList.add('project');
 
-		$("<img src='images/empty.svg' class='empty'>")
-			.appendTo($(".projectTitle").eq($(".projectTitle").length-1))
-			.hover(function() {
-				$(this).attr("src", "images/empty-hover.svg");
-				
-				//Get the position of the 'empty' icon so we can accurately position the
-				//helper text
-				var position = $(this).offset();
-				var top = position.top;
-				var left = position.left;
+	// Project header
+	var divProjectHeader = document.createElement('div');
+	divProjectHeader.classList.add('projectHeader');
 
-				$('<p class="helperText">Delete project</p>')
-					.appendTo("body")
-					.css({
-						"top": top - topIconPosX - 19 + "px",
-						"left": left - 4 + "px"
-					})
-			}, function() {
-				$(this).attr("src", "images/empty.svg");
-				$(".helperText").remove();
-			})
-			.click(function() {
-				var thisIndex = $(this).index(".empty");
+	// Project name
+	var pProjectName = document.createElement('p');
+	pProjectName.classList.add('projectTitle', 'addIcons');
 
-				//Confirm deletion
-				chrome.storage.local.get(null, function(item) {
-					var projectName = item['projects'][thisIndex]['name'];
+	// Input project
+	var inputProjectName = document.createElement('input');
+	inputProjectName.maxlength = 21;
+	inputProjectName.classList.add('newproject');
 
-					document.body.appendChild(coverup);
-					$('<div class="modal"><center id="modalCenter"><p class="modalText">Are you sure you want to delete <i>' + projectName + '</i>?</p><br></center></div>')
-						.appendTo("body")
+	// Also save the project if the user presses enter
+	inputProjectName.addEventListener('keyup', function(e) {
+		if (e.which === 13) {
+			document.getElementById('save').click();
+		}
+	});
 
-					$('<button class="confirmProjectDelete flatButton">DELETE</button>')
-						.appendTo("#modalCenter")
-						.click(function () {
-							$(".cover, .modal").remove();
+	// Add input project, project name, & project header to project
+	pProjectName.appendChild(inputProjectName);
+	divProjectHeader.appendChild(pProjectName);
+	divProject.appendChild(divProjectHeader);
 
-							chrome.storage.local.get(null, function(item) {
-								console.log(projectName);
-								item['projects'].splice(thisIndex, 1);
-								chrome.storage.local.set(item, function() {
-									console.log(projectName + " was successfully deleted from storage.")
-								})
-							});
+	projects.appendChild(divProject);
+	inputProjectName.focus();
 
-							//Visually delete the project from view
-							$(".project").eq(thisIndex + 1).remove();
-						})
+	// Add 'Empty' and 'Star' icons
+	var thisProjectIndex = inputs.length - 1;
+	addEmpty(thisProjectIndex);
+	addStar(thisProjectIndex);
 
-					$('<button class="confirmKeep flatButton">NO</button>')
-						.appendTo("#modalCenter")
-						.click(function () {
-							$(".cover, .modal").remove();
-						})
-				})
-			})
-
-		$("<img src='images/star.svg' class='star'>")
-			.appendTo(lastProjectTitle)
-			.hover(function() {
-				$(this).attr("src", "images/star-chosen.svg");
-
-				//Get the position of the 'empty' icon so we can accurately position the
-				//helper text
-				var position = $(this).offset();
-				var top = position.top;
-				var left = position.left;
-
-				$('<p class="helperText">Make default</p>')
-					.appendTo("body")
-					.css({
-						"top": top - topIconPosX - 17 + "px",
-						"left": left - 16 + "px"
-					})
-
-			}, function() {
-				$(this).attr("src", "images/star.svg");
-				$(".helperText").remove();
-			})
-})
+	document.getElementById('save').style.display = 'block'; // Show save button
+}
 
 
 $("#save").click(function() {

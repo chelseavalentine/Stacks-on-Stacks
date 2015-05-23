@@ -36,6 +36,10 @@ function projectsInit() {
 		} else { // projects exist
 			getProjects(); // load in the projects
 			getAllLinks(); // load in the projects' links
+
+			// attach functions to admin buttons
+			var createButton = document.getElementById('create');
+			createButton.addEventListener('click', function() {createProject();});
 		}
 	});
 }
