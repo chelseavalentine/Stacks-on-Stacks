@@ -234,26 +234,26 @@ This header is used to denote a function.
 function formatCodeBlocksOoO() {
 	// Need to include this code snippet, otherwise it'll also edit Stack Overflow's <span>'s (Should probably put in logic for metaexchange later too)
 	var currentURL = window.location.href.toString().indexOf("stackoverflow") >= 0;
-	var br = document.createElement('br');
 
 	if (!(currentURL)) {
 		var com = document.getElementsByClassName('com'); // Stack overflow code format class
 		var pln = document.getElementsByClassName('pln'); // Stack overflow code format class
 		var pun = document.getElementsByClassName('pun'); // Stack overflow code format class
-		var nextIsComment, prevIsComment, prevIsBR, isSmIndent, isLgIndent;
+		var nextIsComment, prevIsComment, prevIsBR, isSmIndent, isLgIndent, br;
 
 		// If there is a comment on a line by itself, then add a line break before it to show this
 		for (var i = 0; i < com.length; i++) {
 			// If the thing before it is empty, add a break before the comment.
-			if (com[i].previousSibling !== null) {
-				if ( (com[i].previousSibling.textContent = '') || (com[i].previousSibling.textContent = '  ')) {
-					com[i].previousSibling.innerHTML += "<br>";
-				}
+			br = document.createElement('br');
+
+			if ( (com[i].previousElementSibling.textContent = '') || (com[i].previousElementSibling.textContent = '  ')) {
+				com[i].previousElementSibling.parentNode.insertBefore(br, com[i]);
 			}
 		}
 
 		for (var j = 0; j < pun.length; j++) {
 			// If ; then make a line break after it
+			br = document.createElement('br');
 			var hasSemicolon = pun[j].textContent.indexOf(';') > -1;
 			
 			if (pun[j].nextSibling !== null) {
@@ -273,13 +273,16 @@ function formatCodeBlocksOoO() {
 			}
 
 			if ( hasSemicolon && !nextIsComment && !prevIsBR) {
-				pun[j].innerHTML += "<br>";
+				pun[j].parentNode.insertBefore(br, pun[j].nextSibling);
+				console.log("It's true but I didn't fire");
 			}
 		}
 
 		for (var k = 0; k < pln.length; k++) {
 			// If there's an empty pln, add another line break
+			br = document.createElement('br');
 			var isEmpty = (pln[k].textContent === '');
+			
 			if (pln[k].previousSibling !== null) {
 				prevIsBR = (pln[k].previousSibling === br);
 			} else {
@@ -287,31 +290,29 @@ function formatCodeBlocksOoO() {
 			}
 
 			if ( isEmpty && !prevIsBR ) {
-				pln[k].innerHTML += "<br>";
+				pln[k].parentNode.insertBefore(br, pln[k].nextSibling);
 			}
 
 			// Put a line break before 'tab's, because that's usually indicates a new line
+			br = document.createElement('br');
 			if (pln[k].previousSibling !== null) {
 				prevIsComment = ( pln[k].previousSibling.classList.contains('com') );
 				isSmIndent = ( pln[k].textContent === '  ' );
 				if ( isSmIndent && !prevIsComment ) {
-					pln[k].previousSibling.innerHTML += "<br>";
+					pln[k].previousElementSibling.parentNode.insertBefore(br, pln[k]);
 				}
 			} else {
 				prevIsComment = false;
 			}
 			
-			
-// <span class="pln">    $</span>
 			// Check whether the span contains a tab; if it does, put a line break before it
 			isLgIndent = ( pln[k].textContent.indexOf('    ') > -1 );
+			br = document.createElement('br');
 			prevIsBR = (pln[k].previousSibling === br);
-			console.log(prevIsBR);
 
 			if ( isLgIndent && !prevIsBR ) {
-				pln[k].previousSibling.innerHTML += "<br>";
+				pln[k].previousElementSibling.parentNode.insertBefore(br, pln[k]);
 			}
 		}
 	}
 }
-// setTimeout(formatCodeBlocks, 500);
