@@ -132,7 +132,7 @@ function getAllLinks() {
 				}
 			}
 
-			formatCodeBlocksOoO();
+			formatCodeBlocks();
 		}
 	});
 }
@@ -231,7 +231,7 @@ function displayQuestionData (i, j, onThisQuestion, question, link, answer, upvo
 ********* FORMAT <CODE> BLOCKS
 This header is used to denote a function.
 -------------------------------------------------------------------*/
-function formatCodeBlocksOoO() {
+function formatCodeBlocks() {
 	// Need to include this code snippet, otherwise it'll also edit Stack Overflow's <span>'s (Should probably put in logic for metaexchange later too)
 	var currentURL = window.location.href.toString().indexOf("stackoverflow") >= 0;
 
@@ -239,11 +239,11 @@ function formatCodeBlocksOoO() {
 		var com = document.getElementsByClassName('com'); // Stack overflow code format class
 		var pln = document.getElementsByClassName('pln'); // Stack overflow code format class
 		var pun = document.getElementsByClassName('pun'); // Stack overflow code format class
-		var nextIsComment, prevIsComment, prevIsBR, isSmIndent, isLgIndent, br;
+		var nextIsComment, prevIsComment, prevIsBR, isSmIndent, isLgIndent, br, nextIsPLN;
 
-		// If there is a comment on a line by itself, then add a line break before it to show this
+		/////////////// IF COMMENT ON LINE BY ITSELF, ADD LINE BREAK BEFORE IT
+		// If thing before it is empty.
 		for (var i = 0; i < com.length; i++) {
-			// If the thing before it is empty, add a break before the comment.
 			br = document.createElement('br');
 			br.classList.add('br');
 
@@ -252,8 +252,9 @@ function formatCodeBlocksOoO() {
 			}
 		}
 
+		/////////////// IF ;, THEN MAKE A LINE BREAK AFTER IT
+		// Unless the next block is a comment, the previous block is a break, or it has text after the ;
 		for (var j = 0; j < pun.length; j++) {
-			// If ; then make a line break after it
 			br = document.createElement('br');
 			br.classList.add('br');
 			var hasSemicolon = pun[j].textContent.indexOf(';') > -1;
@@ -264,8 +265,10 @@ function formatCodeBlocksOoO() {
 				} else {
 					nextIsComment = false;
 				}
+				nextIsPLN = pun[j].nextSibling.classList.contains('pln');
 			} else {
 				nextIsComment = false;
+				nextIsPLN = false;
 			}
 
 			if (pun[j].previousSibling !== null) {
@@ -274,42 +277,60 @@ function formatCodeBlocksOoO() {
 				prevIsBR = false;
 			}
 
-			if ( hasSemicolon && !nextIsComment && !prevIsBR) {
+			if ( hasSemicolon && !nextIsComment && !prevIsBR && !nextIsPLN ) {
 				pun[j].parentNode.insertBefore(br, pun[j].nextSibling);
-				console.log("It's true but I didn't fire");
 			}
 		}
 
+		/////////////// PLN blocks
 		for (var k = 0; k < pln.length; k++) {
-			// If there's an empty pln, add another line break
+
+			/////////////// IF EMPTY PLN, ADD LINE BREAK AFTER IT
+			// Unless the next is a line break, or the previous block is a break.
 			br = document.createElement('br');
 			br.classList.add('br');
 			var isEmpty = (pln[k].textContent === '');
+			var nextIsBracket;
+
+			if (pln[k].nextSibling !== null) {
+				nextIsBracket = (pln[k].nextElementSibling.textContent.indexOf('{') > -1);
+			} else {
+				nextIsBracket = false;
+			}
 			
 			if (pln[k].previousSibling !== null) {
 				prevIsBR = (pln[k].previousElementSibling.classList.contains('br'));
-				console.log(prevIsBR);
 			} else {
 				prevIsBR = false;
 			}
 
-			if ( isEmpty && !prevIsBR ) {
+			if ( isEmpty && !prevIsBR && !nextIsBracket ) {
 				pln[k].parentNode.insertBefore(br, pln[k].nextSibling);
 			}
 
-			// Put a line break before 'tab's, because that's usually indicates a new line
+			/////////////// IF TAB, PUT LINE BREAK BEFORE IT
+			// Significant details of a function can go here
 			br = document.createElement('br');
 			br.classList.add('br');
+
+			if (pln[k].previousSibling !== null) {
+				prevIsBR = (pln[k].previousElementSibling.classList.contains('br'));
+			} else {
+				prevIsBR = false;
+			}
+
 			if (pln[k].previousSibling !== null) {
 				prevIsComment = ( pln[k].previousSibling.classList.contains('com') );
-				isSmIndent = ( pln[k].textContent === '  ' );
-				if ( isSmIndent && !prevIsComment ) {
+				isSmIndent = ( pln[k].textContent === '  ' || pln[k].textContent === '   ' );
+				if ( isSmIndent && !prevIsComment && !prevIsBR ) {
 					pln[k].previousElementSibling.parentNode.insertBefore(br, pln[k]);
 				}
 			} else {
 				prevIsComment = false;
 			}
-			
+
+			/////////////// HEADER 4
+			// Significant details of a function can go here
 			// Check whether the span contains a tab; if it does, put a line break before it
 			isLgIndent = ( pln[k].textContent.indexOf('    ') > -1 );
 			br = document.createElement('br');
