@@ -246,8 +246,9 @@ function formatCodeBlocks() {
 		for (var i = 0; i < com.length; i++) {
 			br = document.createElement('br');
 			br.classList.add('br');
-
-			if ( (com[i].previousElementSibling.textContent = '') || (com[i].previousElementSibling.textContent = '  ')) {
+			var prevIsEmpty = (com[i].previousElementSibling.textContent === '');
+			var prevIsTab = (com[i].previousElementSibling.textContent === '  ');
+			if ( prevIsEmpty || prevIsTab) {
 				com[i].previousElementSibling.parentNode.insertBefore(br, com[i]);
 			}
 		}
@@ -265,10 +266,10 @@ function formatCodeBlocks() {
 				} else {
 					nextIsComment = false;
 				}
-				nextIsPLN = pun[j].nextSibling.classList.contains('pln');
+				// nextIsPLN = pun[j].nextSibling.classList.contains('pln');
 			} else {
 				nextIsComment = false;
-				nextIsPLN = false;
+				// nextIsPLN = false;
 			}
 
 			if (pun[j].previousSibling !== null) {
@@ -309,24 +310,28 @@ function formatCodeBlocks() {
 			}
 
 			/////////////// IF TAB, PUT LINE BREAK BEFORE IT
-			// Significant details of a function can go here
+			// Except if the next/prev block is a comment, or the previous block is an break 
 			br = document.createElement('br');
 			br.classList.add('br');
 
-			if (pln[k].previousSibling !== null) {
-				prevIsBR = (pln[k].previousElementSibling.classList.contains('br'));
+			isSmIndent = ( pln[k].textContent === '  ' || pln[k].textContent === '   ' );
+
+			if (pln[k].nextSibling !== null) {
+				nextIsComment = pln[k].nextElementSibling.classList.contains('com');
 			} else {
-				prevIsBR = false;
+				nextIsComment = false;
 			}
 
 			if (pln[k].previousSibling !== null) {
-				prevIsComment = ( pln[k].previousSibling.classList.contains('com') );
-				isSmIndent = ( pln[k].textContent === '  ' || pln[k].textContent === '   ' );
-				if ( isSmIndent && !prevIsComment && !prevIsBR ) {
-					pln[k].previousElementSibling.parentNode.insertBefore(br, pln[k]);
-				}
+				prevIsComment = ( pln[k].previousElementSibling.classList.contains('com') );
+				prevIsBR = (pln[k].previousElementSibling.classList.contains('br'));
 			} else {
 				prevIsComment = false;
+				prevIsBR = false;
+			}
+
+			if ( isSmIndent && !prevIsComment && !prevIsBR && !nextIsComment) {
+				pln[k].previousElementSibling.parentNode.insertBefore(br, pln[k]);
 			}
 
 			/////////////// HEADER 4
@@ -337,11 +342,13 @@ function formatCodeBlocks() {
 			br.classList.add('br');
 			if (pln[k].previousSibling !== null) {
 				prevIsBR = (pln[k].previousSibling.classList.contains('br'));
+				var prevIsString = ( pln[k].previousElementSibling.classList.contains('str') );
 			} else {
+				prevIsString = false;
 				prevIsBR = false;
 			}
 
-			if ( isLgIndent && !prevIsBR ) {
+			if ( isLgIndent && !prevIsBR && !prevIsString) {
 				pln[k].previousElementSibling.parentNode.insertBefore(br, pln[k]);
 			}
 		}
