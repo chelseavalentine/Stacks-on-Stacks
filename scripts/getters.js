@@ -245,6 +245,7 @@ function formatCodeBlocksOoO() {
 		for (var i = 0; i < com.length; i++) {
 			// If the thing before it is empty, add a break before the comment.
 			br = document.createElement('br');
+			br.classList.add('br');
 
 			if ( (com[i].previousElementSibling.textContent = '') || (com[i].previousElementSibling.textContent = '  ')) {
 				com[i].previousElementSibling.parentNode.insertBefore(br, com[i]);
@@ -254,6 +255,7 @@ function formatCodeBlocksOoO() {
 		for (var j = 0; j < pun.length; j++) {
 			// If ; then make a line break after it
 			br = document.createElement('br');
+			br.classList.add('br');
 			var hasSemicolon = pun[j].textContent.indexOf(';') > -1;
 			
 			if (pun[j].nextSibling !== null) {
@@ -267,7 +269,7 @@ function formatCodeBlocksOoO() {
 			}
 
 			if (pun[j].previousSibling !== null) {
-				prevIsBR = (pun[j].previousSibling === br);
+				prevIsBR = (pun[j].previousElementSibling.classList.contains('br'));
 			} else {
 				prevIsBR = false;
 			}
@@ -281,10 +283,12 @@ function formatCodeBlocksOoO() {
 		for (var k = 0; k < pln.length; k++) {
 			// If there's an empty pln, add another line break
 			br = document.createElement('br');
+			br.classList.add('br');
 			var isEmpty = (pln[k].textContent === '');
 			
 			if (pln[k].previousSibling !== null) {
-				prevIsBR = (pln[k].previousSibling === br);
+				prevIsBR = (pln[k].previousElementSibling.classList.contains('br'));
+				console.log(prevIsBR);
 			} else {
 				prevIsBR = false;
 			}
@@ -295,6 +299,7 @@ function formatCodeBlocksOoO() {
 
 			// Put a line break before 'tab's, because that's usually indicates a new line
 			br = document.createElement('br');
+			br.classList.add('br');
 			if (pln[k].previousSibling !== null) {
 				prevIsComment = ( pln[k].previousSibling.classList.contains('com') );
 				isSmIndent = ( pln[k].textContent === '  ' );
@@ -308,7 +313,12 @@ function formatCodeBlocksOoO() {
 			// Check whether the span contains a tab; if it does, put a line break before it
 			isLgIndent = ( pln[k].textContent.indexOf('    ') > -1 );
 			br = document.createElement('br');
-			prevIsBR = (pln[k].previousSibling === br);
+			br.classList.add('br');
+			if (pln[k].previousSibling !== null) {
+				prevIsBR = (pln[k].previousSibling.classList.contains('br'));
+			} else {
+				prevIsBR = false;
+			}
 
 			if ( isLgIndent && !prevIsBR ) {
 				pln[k].previousElementSibling.parentNode.insertBefore(br, pln[k]);
