@@ -1,10 +1,13 @@
 /////////////// GLOBAL VARIABLES
 var inputs = document.getElementsByTagName('input');
 var projects = document.getElementById('projects');
+var project = document.getElementsByClassName('project');
 var createButton = document.getElementById('create');
 var editButton = document.getElementById('edit');
 var saveButton = document.getElementById('save');
 var saveEditsButton = document.getElementById('saveEdits');
+var deleteIcons = document.getElementsByClassName('deleteIcon');
+var goToIcons = document.getElementsByClassName('goToIcon');
 
 /*-------------------------------------------------------------------
 ********* CREATE PROJECT
@@ -105,23 +108,28 @@ function editProjects() {
     var questionTitles = document.getElementsByClassName('questionTitle');
     var titles = document.getElementsByClassName('title');
 
-    $(".questionTitle, .title")
-        .unbind("click")
-        // Change the questions so you get a different cursor when you hover
-        .css({
-            "cursor": "move"
-        })
-        // make questions draggable
-        .attr("draggable", "true");
-    
+    for (var j = 0; j < questionTitles.length; j++) {
+        questionTitles[j].removeEventListener('click');
+        questionTitles[j].style.cursor = 'move'; // Indicate that questions are draggable
+        questionTitles[j].draggable = true; // Make questions draggable
+
+        titles[j].removeEventListener('click');
+        titles[j].style.cursor = 'move'; // Indicate that questions are draggable
+        titles[j].draggable = true; // Make questions draggable
+    }
+
     $(".questions").sortable({
         connectWith: '.questions'
     });
+
     // Make it so that double clicking on a header title won't hide all questions
-    $(".project").unbind("dblclick");
+    for (var k = 0; k < project.length; k++) {
+        project[k].removeEventListener('dblclick');
+    }
 
     // Remove the current 'go to' & 'delete' buttons
-    $(".deleteIcon, .goToIcon").remove();
+    $(".deleteIcon").remove();
+    $(".goToIcon").remove();
 
     // Save a list of the questions' ID values so we know their ordering
     questions = []; // reset the array of ID values
