@@ -4,6 +4,19 @@ body, .container, button {
   position: relative;
   top: 0; }
 
+body {
+  background: #f5f5f5;
+  display: block;
+  height: 600px;
+  position: relative;
+  width: 350px;
+  z-index: 1; }
+
+.container {
+  padding-bottom: 100px;
+  text-align: left;
+  width: 90%; }
+
 #helpInsertProjects {
   display: block;
   height: 70px;
@@ -20,146 +33,14 @@ body, .container, button {
   width: 100%;
   z-index: 4; }
 
-body {
-  background: #f5f5f5;
-  display: block;
-  height: 600px;
-  position: relative;
-  width: 350px;
-  z-index: 1; }
-
-.container {
-  text-align: left;
-  width: 90%;
-  padding-bottom: 100px; }
-
-.project {
-  box-shadow: 0 0 6px 1px rgba(0, 0, 0, 0.08);
-  margin-bottom: 20px;
-  width: 100%; }
-
-.projectHeader {
-  background-color: #00bcd4;
-  position: relative;
-  width: 100%; }
-
-.projectTitle {
-  color: #fff;
-  font-size: 1.2em;
-  font-weight: 600;
-  margin-bottom: 0;
-  padding: 5px;
-  text-align: center; }
-
-#newproject {
-  background-color: #757575; }
-
-.title {
-  background-color: #fafafa;
-  border-bottom: 1px solid #e0e0e0;
-  margin-bottom: 0;
-  width: 100%; }
-
-.title:hover {
-  background-color: #fff; }
-
-.questionTitle {
-  cursor: crosshair;
-  display: inline-block;
-  font-size: .9em;
-  font-weight: 600;
-  margin-bottom: 0;
-  padding: 5px;
-  width: 265px; }
-
-.answer {
-  background-color: #fff;
-  display: none;
-  max-height: 250px;
-  overflow-y: scroll;
-  padding-top: 5px;
-  position: relative; }
-
-.answerText {
-  font-size: .85em;
-  max-width: 270px;
-  padding: 5px; }
-
-input {
-  background-color: transparent;
-  border: 0;
-  color: #fff;
-  font-family: Consolas;
-  font-size: 1em;
-  font-weight: 600;
-  height: fit;
-  text-align: center;
-  word-wrap: normal;
-  width: 100%; }
-
-.cover {
-  background-color: #000;
-  display: flex;
-  height: 100%;
-  justify-content: center;
-  left: 0;
-  opacity: .8;
-  position: fixed;
-  top: 0;
-  width: 100%;
-  z-index: 5; }
-
-.modal {
-  align-items: center;
-  background-color: #fff;
-  border-radius: 1px;
-  display: flex;
-  height: 100px;
-  justify-content: center;
-  left: 45px;
-  opacity: 1;
-  padding: 7.5px;
-  position: fixed;
-  top: 150px;
-  width: 240px;
-  z-index: 6; }
-
-.modalText {
-  text-align: center; }
-
-.confirmDelete,
-.confirmProjectDelete {
-  color: #f44336; }
-
-.confirmKeep {
-  color: #4caf50; }
-
-.upvotes {
-  background-color: #4dd0e1;
-  border: 0;
-  color: #fff;
-  font-size: 1em;
-  margin: 0;
-  margin-top: 3px;
-  padding-left: 3px;
-  padding-right: 3px;
-  position: absolute;
-  width: fit-content; }
-
-.upvotes:hover {
-  opacity: .2; }
-
-img {
-  max-width: 100%; }
-
-.stacks, h1, h2, h3, h4, h5, h6, body, p, button, ul,
+h1, .stacks, h2, h3, h4, h5, h6, body, p, button, ul,
 ol, a {
   font-family: Consolas, sans-serif;
   margin-bottom: 0;
   margin-top: 0;
   text-align: left; }
 
-.stacks, h1, h2, h3, h4, h5, h6 {
+h1, .stacks, h2, h3, h4, h5, h6 {
   color: #616161;
   font-weight: 700;
   margin-bottom: 5px;
@@ -172,20 +53,19 @@ ol {
 body {
   font-size: 1em; }
 
-.stacks {
-  border: 0;
-  color: #424242;
-  display: inline-block;
-  font-size: 1.5em;
-  font-weight: 700;
-  margin: 0;
-  padding: 10px; }
-
 h1 {
   border-bottom: 1px solid #9e9e9e;
   font-size: 1.3em;
   margin-bottom: 10px;
   max-width: 285px; }
+
+.stacks {
+  border: 0;
+  color: #424242;
+  display: inline-block;
+  font-size: 1.5em;
+  margin-bottom: 0;
+  padding: 10px; }
 
 h2 {
   border-bottom: 1px solid #bdbdbd;
@@ -226,6 +106,11 @@ button {
 ::selection {
   background-color: #f5f5f5; }
 
+hr {
+  border: 0;
+  border-bottom: 1px solid #eee;
+  width: 95%; }
+
 a {
   word-wrap: break-word; }
 
@@ -243,22 +128,17 @@ code,
 pre {
   background-color: #eee;
   display: inline-block;
-  max-width: 275px;
+  max-width: S275px;
   padding: 2px 4px 4px 2px;
   text-align: left;
   white-space: pre-line;
   word-wrap: break-word; }
 
 pre {
-  width: 98%;
-  margin-right: auto;
+  display: block;
   margin-left: auto;
-  display: block; }
-
-hr {
-  border: 0;
-  border-bottom: 1px solid #eee;
-  width: 95%; }
+  margin-right: auto;
+  width: 98%; }
 
 ul,
 ol {
@@ -272,9 +152,149 @@ li {
 
 blockquote {
   background-color: #fafafa;
-  padding: 1%;
   margin-left: 1.5%;
+  padding: 1%;
   width: 95%; }
+
+img {
+  max-width: 100%; }
+
+input {
+  background-color: transparent;
+  border: 0;
+  color: #fff;
+  font-family: Consolas;
+  font-size: 1em;
+  font-weight: 600;
+  height: fit;
+  text-align: center;
+  word-wrap: normal;
+  width: 100%; }
+
+.helperText {
+  background-color: #000;
+  color: #fff;
+  display: block;
+  font-size: .7em;
+  max-width: 200px;
+  padding: 3px;
+  position: absolute;
+  width: fit-content; }
+
+.project {
+  box-shadow: 0 0 6px 1px rgba(0, 0, 0, 0.08);
+  margin-bottom: 20px;
+  width: 100%; }
+  .project .projectHeader {
+    background-color: #00bcd4;
+    position: relative;
+    width: 100%; }
+    .project .projectHeader .projectTitle {
+      color: #fff;
+      font-size: 1.2em;
+      font-weight: 600;
+      margin-bottom: 0;
+      padding: 5px;
+      text-align: center; }
+      .project .projectHeader .projectTitle .empty {
+        height: 10px;
+        left: 4px;
+        position: absolute;
+        top: 4px;
+        z-index: 2; }
+      .project .projectHeader .projectTitle .star {
+        height: 13px;
+        left: 16px;
+        position: absolute;
+        top: 2px;
+        z-index: 2; }
+
+.question .title {
+  background-color: #fafafa;
+  border-bottom: 1px solid #e0e0e0;
+  margin-bottom: 0;
+  width: 100%; }
+  .question .title :hover {
+    background-color: #fff; }
+  .question .title .questionTitle {
+    cursor: crosshair;
+    display: inline-block;
+    font-size: .9em;
+    font-weight: 600;
+    margin-bottom: 0;
+    padding: 5px;
+    width: 265px; }
+  .question .title .icon,
+  .question .title .delete,
+  .question .title .editIcon {
+    cursor: pointer;
+    float: right;
+    height: 16px;
+    margin-right: 5px;
+    margin-top: 5px;
+    vertical-align: text-top; }
+  .question .title .editIcon {
+    vertical-align: middle; }
+.question .answer {
+  background-color: #fff;
+  display: none;
+  max-height: 250px;
+  overflow-y: scroll;
+  padding-top: 5px;
+  position: relative; }
+  .question .answer .upvotes {
+    background-color: #4dd0e1;
+    border: 0;
+    color: #fff;
+    font-size: 1em;
+    margin: 0;
+    margin-top: 3px;
+    padding-left: 3px;
+    padding-right: 3px;
+    position: absolute;
+    width: fit-content; }
+    .question .answer .upvotes :hover {
+      opacity: .2; }
+
+.cover {
+  background-color: #000;
+  display: flex;
+  height: 100%;
+  justify-content: center;
+  left: 0;
+  opacity: .8;
+  position: fixed;
+  top: 0;
+  width: 100%;
+  z-index: 5; }
+
+.modal {
+  align-items: center;
+  background-color: #fff;
+  border-radius: 1px;
+  display: flex;
+  height: 100px;
+  justify-content: center;
+  left: 45px;
+  opacity: 1;
+  padding: 7.5px;
+  position: fixed;
+  top: 150px;
+  width: 240px;
+  z-index: 6; }
+  .modal .modalText {
+    text-align: center; }
+  .modal .flatButton {
+    background-color: transparent;
+    display: inline-block;
+    font-weight: 600;
+    margin: 0;
+    padding: 0; }
+  .modal .confirmDelete,
+  .modal .confirmProjectDelete {
+    color: #f44336; }
+  .modal .confirmKeep {
+    color: #4caf50; }
 
 .pln, .pun {
   word-wrap: break-word;
@@ -305,76 +325,5 @@ blockquote {
 
 .tag {
   color: #ff436c; }
-
-.admin {
-  left: 300px;
-  opacity: .9;
-  position: fixed;
-  top: 555px;
-  z-index: 4; }
-
-.admin:hover {
-  background-color: #212121; }
-
-#save,
-#saveEdits {
-  background-color: #ef5350;
-  display: none;
-  left: 65px;
-  opacity: .95; }
-
-#save:hover,
-#saveEdits:hover {
-  background-color: #f44336; }
-
-#edit {
-  left: 160px; }
-
-#create {
-  left: 255px; }
-
-.icon,
-.delete,
-.editIcon {
-  cursor: pointer;
-  float: right;
-  height: 16px;
-  margin-right: 5px;
-  margin-top: 5px;
-  vertical-align: text-top; }
-
-.editIcon {
-  vertical-align: middle; }
-
-.empty {
-  height: 10px;
-  left: 4px;
-  position: absolute;
-  top: 4px;
-  z-index: 2; }
-
-.star {
-  height: 13px;
-  left: 16px;
-  position: absolute;
-  top: 2px;
-  z-index: 2; }
-
-.flatButton {
-  background-color: transparent;
-  display: inline-block;
-  font-weight: 600;
-  margin: 0;
-  padding: 0; }
-
-.helperText {
-  background-color: #000;
-  color: #fff;
-  display: block;
-  font-size: .7em;
-  max-width: 200px;
-  padding: 3px;
-  position: absolute;
-  width: fit-content; }
 
 /*# sourceMappingURL=style.css.map */

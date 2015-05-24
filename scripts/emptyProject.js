@@ -129,11 +129,9 @@ function emptyProject(projectPos) {
 
                 //Clear all of the questions
                 item.projects[0].questions.splice(0, numQuestions);
+                questions[0].innerHTML = '';
 
                 chrome.storage.local.set(item);
-
-                // Visually clear the questions in 'Unsorted'
-                questions[0].innerHTML = '';
             } else {
                 // Delete the project
                 item.projects.splice(projectPos, 1);
@@ -144,6 +142,8 @@ function emptyProject(projectPos) {
                 var ourProjects = document.getElementsByClassName('project');
                 ourProjects[projectPos].parentNode.removeChild(ourProjects[projectPos]);
                 colorHeaders();
+
+                window.location.href = window.location.href; // refresh the page
             }
         });
         modalCenter = document.getElementById('modalCenter');
@@ -158,4 +158,6 @@ function emptyProject(projectPos) {
         });
         modalCenter.appendChild(keepButton);
     });
+
+    
 }

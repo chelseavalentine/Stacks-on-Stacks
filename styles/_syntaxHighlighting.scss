@@ -1,6 +1,5 @@
 @import 'color';
 
-
 // Mimic the way stackoverflow styles their code blocks
 .pln, .pun {
   word-wrap: break-word;
@@ -43,6 +42,7 @@
 .atv {
   color: $cyan500;
 }
+
 //Style tag (html)
 .tag {
   color: $coral500;

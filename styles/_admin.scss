@@ -1,0 +1,32 @@
+.admin {
+  left: 300px;
+  opacity: .9;
+  position: fixed;
+  top: 555px;
+  z-index: 4;
+}
+
+.admin:hover {
+  background-color: $grey900;
+}
+
+#save,
+#saveEdits {
+  background-color: $red400;
+  display: none;
+  left: 65px;
+  opacity: .95;
+}
+
+#save:hover,
+#saveEdits:hover {
+  background-color: $red500;
+}
+
+#edit {
+  left: 160px;
+}
+
+#create {
+  left: 255px;
+}

@@ -1,5 +1,6 @@
 @import 'color';
 
+// BASIC FONT STYLES //
 %font {
   font-family: Consolas, sans-serif;
   margin-bottom: 0;
@@ -25,23 +26,24 @@ body {
   font-size: 1em;
 }
 
-.stacks {
-  @extend %header;
-  border: 0;
-  color: $grey800;
-  display: inline-block;
-  font-size: 1.5em;
-  font-weight: 700;
-  margin: 0;
-  padding: 10px;
-}
-
 h1 {
   @extend %header;
   border-bottom: 1px solid $grey500;
   font-size: 1.3em;
   margin-bottom: 10px;
   max-width: 285px;
+}
+
+
+// TITLE: STACKS ON STACKS //
+.stacks {
+  @extend %header;
+  border: 0;
+  color: $grey800;
+  display: inline-block;
+  font-size: 1.5em;
+  margin-bottom: 0;
+  padding: 10px;
 }
 
 h2 {
@@ -72,6 +74,8 @@ h6 {
   font-size: .9em;
 }
 
+
+// PARAGRAPHS //
 p {
   @extend %text;
   font-size: 13.6px;
@@ -82,6 +86,8 @@ p+p {
   margin-bottom: 15px;
 }
 
+
+// BUTTONS //
 button {
   @extend %text;
   @extend %remove;
@@ -96,17 +102,25 @@ button {
   text-transform: uppercase;
 }
 
-//Special text
+
+// SPECIAL TEXT //
 ::selection {
   background-color: $grey100;
 }
 
+hr {
+  border: 0;
+  border-bottom: 1px solid $grey200;
+  width: 95%;
+}
+
+
+// LINKS
 a {
   @extend %font;
   word-wrap: break-word;
 }
 
-// Links
 a:link,
 a:visited {
   color: $cyan500;
@@ -119,29 +133,28 @@ a:active {
   text-decoration: underline;
 }
 
+
+// CODE BLOCKS
 code,
 pre {
   background-color: $grey200;
   display: inline-block;
-  max-width: 275px;
+  max-width: S275px;
   padding: 2px 4px 4px 2px; // bottom-left-right-top
   text-align: left;
   white-space: pre-line;
   word-wrap: break-word;
 }
+
 pre {
-  width: 98%;
-  margin-right: auto;
-  margin-left: auto;
   display: block;
+  margin-left: auto;
+  margin-right: auto;
+  width: 98%;
 }
 
-hr {
-  border: 0;
-  border-bottom: 1px solid $grey200;
-  width: 95%;
-}
 
+// LISTS
 ul,
 ol {
   @extend %text;
@@ -155,9 +168,11 @@ li {
   margin-left: -10px;
 }
 
+
+// OTHER ELEMENTS
 blockquote {
   background-color: $grey50;
-  padding: 1%;
   margin-left: 1.5%;
+  padding: 1%;
   width: 95%;
 }

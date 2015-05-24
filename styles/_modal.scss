@@ -1,0 +1,50 @@
+// EDIT LESSON MODAL
+.cover {
+  background-color: $black;
+  display: flex;
+  height: 100%;
+  justify-content: center;
+  left: 0;
+  opacity: .8;
+  position: fixed;
+  top: 0;
+  width: 100%;
+  z-index: 5;
+}
+
+.modal {
+  align-items: center;
+  background-color: $white;
+  border-radius: 1px;
+  display: flex;
+  height: 100px;
+  justify-content: center;
+  left: 45px;
+  opacity: 1;
+  padding: 7.5px;
+  position: fixed;
+  top: 150px;
+  width: 240px;
+  z-index: 6;
+
+  .modalText {
+    text-align: center;
+  }
+
+  .flatButton {
+    background-color: transparent;
+    display: inline-block;
+    font-weight: 600;
+    margin: 0;
+    padding: 0;
+  }
+
+  .confirmDelete,
+  .confirmProjectDelete {
+    color: $red500;
+  }
+
+  .confirmKeep {
+    color: $green500;
+  }
+}

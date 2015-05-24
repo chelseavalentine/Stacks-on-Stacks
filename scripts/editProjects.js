@@ -69,15 +69,15 @@ function saveNewProjects() {
                 'questions': []
             };
 
-            items['projects'].push(createdProject);
+            items.projects.push(createdProject);
             $(".newproject").eq(i).removeClass("newproject");
         }
 
         chrome.storage.local.set(items);
-    })
+    });
 
     colorHeaders(); // color all of the new projects too
-    
+
     saveButton.style.display = 'none';
 
     // disable all input fields
@@ -146,11 +146,11 @@ function editProjects() {
     var questionses = document.getElementsByClassName('questions');
     var ourQuestions = document.getElementsByClassName('question');
 
-    for (var i = 0; i < questionses.length; i++) {
+    for (var m = 0; m < questionses.length; m++) {
         questions.push([]);
-        for (var j = 0; j < questionses[i].children.length; j++, questionNum++) {
-            ourQuestions[questionNum].id = i + ',' + j; // to make it easier, let's just assign it an integer
-            questions[i].push([i, j]);
+        for (var n = 0; n < questionses[m].children.length; n++, questionNum++) {
+            ourQuestions[questionNum].id = m + ',' + n; // to make it easier, let's just assign it an integer
+            questions[m].push([m, n]);
         }
     }
 }
@@ -216,10 +216,3 @@ function saveEdits() {
 
     // window.location.href = window.location.href; // refresh
 }
-
-/*-------------------------------------------------------------------
-********* SAVE EDITS WHEN WINDOW CLOSES
--------------------------------------------------------------------*/
-$(window).unload(function() {
-    saveEdits();
-});
