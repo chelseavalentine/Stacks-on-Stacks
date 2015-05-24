@@ -13,6 +13,7 @@ var title = document.getElementById('question-header').children[0].children[0].i
 var firstAnswer = document.getElementsByClassName('answercell')[0].children[0].outerHTML;
 var topUpvotes = document.getElementsByClassName('vote-count-post')[1].textContent;
 
+console.log(firstAnswer);
 firstAnswer = formatCodeBlocks(firstAnswer); // format code blocks prior to saving answers
 
 newQuestion(currentURL, title, firstAnswer, topUpvotes); // Try to save a new question
@@ -61,10 +62,10 @@ Format the <code> blocks by putting line breaks in logical places
 -------------------------------------------------------------------*/
 function formatCodeBlocks(originalAnswer) {
 	// Create an invisible holder div for us to format in
+	// console.log(originalAnswer);
 	var invisDiv = document.createElement('div');
 	invisDiv.innerHTML = originalAnswer;
-	console.log("before");
-	console.log(invisDiv.innerHTML);
+	// console.log("before");
 
 	// StackOverflow code block formatting classes
 	var com = invisDiv.getElementsByClassName('com'),

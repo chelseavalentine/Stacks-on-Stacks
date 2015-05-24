@@ -140,7 +140,6 @@ hr {
   border: 0;
   border-bottom: 1px solid $grey200;
   width: 95%;
-
 }
 
 ul,
@@ -157,9 +156,8 @@ li {
 }
 
 blockquote {
-  background-color: $white;
+  background-color: $grey50;
   padding: 1%;
   margin-left: 1.5%;
   width: 95%;
-  box-shadow: 0 0 6px 1px rgba(0, 0, 0, .075);
 }

@@ -39,7 +39,14 @@ function projectsInit() {
 
 			// attach functions to admin buttons
 			var createButton = document.getElementById('create');
+			var editButton = document.getElementById('edit');
+			var saveButton = document.getElementById('save');
+			var saveEditsButton = document.getElementById('saveEdits');
+
 			createButton.addEventListener('click', function() {createProject();});
+			editButton.addEventListener('click', function() {editProjects();});
+			saveButton.addEventListener('click', function() {saveNewProjects();});
+			saveEditsButton.addEventListener('click', function() {saveEdits();});
 		}
 	});
 }

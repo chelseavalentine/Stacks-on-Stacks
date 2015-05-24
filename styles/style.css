@@ -271,11 +271,10 @@ li {
   margin-left: -10px; }
 
 blockquote {
-  background-color: #fff;
+  background-color: #fafafa;
   padding: 1%;
   margin-left: 1.5%;
-  width: 95%;
-  box-shadow: 0 0 6px 1px rgba(0, 0, 0, 0.075); }
+  width: 95%; }
 
 .pln, .pun {
   word-wrap: break-word;
