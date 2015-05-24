@@ -1,0 +1,174 @@
+@import 'color';
+
+// BASIC FONT STYLES //
+%font {
+  font-family: Consolas, sans-serif;
+  margin-bottom: 0;
+  margin-top: 0;
+  text-align: left;
+}
+
+%header {
+  @extend %font;
+  color: $grey700;
+  font-weight: 700;
+  margin-bottom: 5px;
+  padding-left: 5px;
+}
+
+%text {
+  @extend %font;
+  font-weight: 400;
+}
+
+body {
+  @extend %text;
+  font-size: 1em;
+}
+
+h1 {
+  @extend %header;
+  border-bottom: 1px solid $grey500;
+  font-size: 1.3em;
+  margin-bottom: 10px;
+}
+
+
+// TITLE: STACKS ON STACKS //
+.stacks {
+  @extend %header;
+  border: 0;
+  color: $grey800;
+  display: inline-block;
+  font-size: 1.5em;
+  margin-bottom: 0;
+  padding: 10px;
+}
+
+h2 {
+  @extend %header;
+  border-bottom: 1px solid $grey400;
+  font-size: 1.2em;
+  margin-bottom: 7.5px;
+}
+
+h3 {
+  @extend %header;
+  border-bottom: 1px solid $grey300;
+  font-size: 1.15em;
+}
+
+h4 {
+  @extend %header;
+  font-size: 1.05em;
+}
+
+h5 {
+  @extend %header;
+  font-size: 1em;
+}
+
+h6 {
+  @extend %header;
+  font-size: .9em;
+}
+
+
+// PARAGRAPHS //
+p {
+  @extend %text;
+  font-size: 13.6px;
+}
+
+p+p {
+  margin-bottom: 15px;
+}
+
+
+// BUTTONS //
+button {
+  @extend %text;
+  @extend %remove;
+  background-color: $grey800;
+  border: 0;
+  color: $white;
+  cursor: pointer;
+  font-size: 1em;
+  min-width: 85px;
+  padding: 7px;
+  text-align: center;
+  text-transform: uppercase;
+}
+
+
+// SPECIAL TEXT //
+::selection {
+  background-color: $grey100;
+}
+
+hr {
+  border: 0;
+  border-bottom: 1px solid $grey200;
+  width: 95%;
+}
+
+
+// LINKS
+a {
+  @extend %font;
+  word-wrap: break-word;
+}
+
+a:link,
+a:visited {
+  color: $cyan500;
+  text-decoration: none;
+}
+
+a:hover,
+a:active {
+  color: $grey800;
+  text-decoration: underline;
+}
+
+
+// CODE BLOCKS
+code,
+pre {
+  background-color: $grey200;
+  display: inline-block;
+  padding: 2px 4px 4px 2px; // bottom-left-right-top
+  text-align: left;
+  white-space: pre-line;
+  word-wrap: break-word;
+}
+
+pre {
+  display: block;
+  margin-left: auto;
+  margin-right: auto;
+  width: 98%;
+}
+
+
+// LISTS
+ul,
+ol {
+  @extend %text;
+  font-size: .85em;
+  margin: 0;
+  margin-bottom: 15px;
+}
+
+li {
+  margin-left: -10px;
+}
+
+
+// OTHER ELEMENTS
+blockquote {
+  background-color: $grey50;
+  margin-left: 1.5%;
+  padding: 1%;
+  width: 95%;
+}

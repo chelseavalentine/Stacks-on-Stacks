@@ -1,0 +1,49 @@
+@import 'color';
+
+// Mimic the way stackoverflow styles their code blocks
+.pln, .pun {
+  word-wrap: break-word;
+  display: inline;
+  white-space: pre-wrap;
+  text-align: left; 
+}
+
+// Style keywords
+.kwd {
+  color: $lightblue700;
+}
+
+// Style strings
+.str {
+  color: $purple400;
+}
+
+// Style comments
+.com {
+  color: $grey500;
+}
+
+// Style integers/numbers
+.lit {
+  color: $orange600;
+}
+
+// Style type
+.typ {
+  color: $pinkA200;
+}
+
+// Style class & id (html)
+.atn {
+  color: $lightgreen600;
+}
+
+// Style the value of the class & id (html)
+.atv {
+  color: $cyan500;
+}
+
+//Style tag (html)
+.tag {
+  color: $coral500;
+}

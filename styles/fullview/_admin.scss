@@ -1,9 +1,15 @@
+@import 'color';
+
 .admin {
-  left: 300px;
+  display: block;
+  font-size: 1.2em;
+  font-weight: 700;
+  height: 40px;
   opacity: .9;
   position: fixed;
-  top: 555px;
+  right: 300px;
   z-index: 4;
+  top: 95%;
 }
 
 .admin:hover {
@@ -14,7 +20,7 @@
 #saveEdits {
   background-color: $red400;
   display: none;
-  left: 65px;
+  left: 200px;
   opacity: .95;
 }
 
@@ -24,9 +30,9 @@
 }
 
 #edit {
-  left: 160px;
+  left: 105px;
 }
 
 #create {
-  left: 255px;
+  left: 10px;
 }

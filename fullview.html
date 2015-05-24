@@ -4,6 +4,7 @@
     <meta charset="UTF-8">
     <title>Stacks on Stacks</title>
     <link rel="stylesheet" type="text/css" href="styles/fullview/style.css">
+    <link rel="icon" href="duck.png" type="image/png" sizes="16x16">
     <script src="scripts/ext/jquery.min.js"></script>
     <script src="scripts/ext/jquery.sortable.min.js"></script>
 </head>
@@ -14,9 +15,11 @@
 
     <center>
     <div class="container">
-        <!--Need a reference point to insert projects after & this takes up the space that the header takes up-->
-        <div id="helpInsertProjects"></div>
-        
+        <div class="projects">
+            <!--Need a reference point to insert projects after & this takes up the space that the header takes up-->
+            <div id="helpInsertProjects"></div>
+        </div>
+
         <button class="admin" id="save">SAVE</button>
         <button class="admin" id="saveEdits">SAVE</button>
         <button class="admin" id="edit">EDIT</button>
@@ -25,8 +28,10 @@
     </center>
     
     <script src="scripts/initialize.js"></script>
+    <script src="scripts/main.js"></script>
+    <script src="scripts/defaultProject.js"></script>
+    <script src="scripts/emptyProject.js"></script>
     <script src="scripts/getters.js"></script>
-    <script src="scripts/custom.js"></script>
-    <script src="scripts/stylishjs.js"></script>
+    <script src="scripts/editProjects.js"></script>
 </body>
 </html>

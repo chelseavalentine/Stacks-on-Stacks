@@ -1,0 +1,120 @@
+@import 'color';
+
+// The text that appears when you hover
+.helperText {
+  background-color: $black;
+  color: $white;
+  display: block;
+  font-size: .7em;
+  max-width: 200px;
+  padding: 3px;
+  position: absolute;
+  width: fit-content;
+}
+
+// PROJECT > PROJECT HEADER > QUESTIONS > QUESTION // 
+.project {
+  box-shadow: 0 0 6px 1px rgba(0, 0, 0, .08);
+  margin-bottom: 20px;
+
+  .projectHeader {
+    display: block;
+    background-color: $cyan500;
+    position: relative;
+
+    .projectTitle {
+      color: $white;
+      display: block;
+      font-size: 1.2em;
+      font-weight: 600;
+      margin-bottom: 0;
+      padding: 5px;
+      text-align: center;
+      min-width: 400px;
+      width: 90%;
+      max-width: 800px;
+      left: auto;
+
+    }
+  }
+}
+
+.empty {
+  height: 10px;
+  left: 4px;
+  position: absolute;
+  top: 4px;
+  z-index: 2;
+}
+
+.star {
+  height: 13px;
+  left: 16px;
+  position: absolute;
+  top: 2px;
+  z-index: 2;
+}
+
+.question {
+  .title {
+    background-color: $grey50;
+    border-bottom: 1px solid $grey300;
+    margin-bottom: 0;
+    width: 100%;
+
+    :hover {
+      background-color: $white;
+    }
+
+    .questionTitle {
+      cursor: crosshair;
+      display: inline-block;
+      font-size: .9em;
+      font-weight: 600;
+      margin-bottom: 0;
+      padding: 5px;
+      width: 265px;
+    }
+
+    .icon,
+    .delete,
+    .editIcon {
+      cursor: pointer;
+      float: right;
+      height: 16px;
+      margin-right: 5px;
+      margin-top: 5px;
+      vertical-align: text-top;
+    }
+
+    .editIcon {
+      vertical-align: middle;
+    }
+  }
+
+  .answer {
+    background-color: $white;
+    display: none;
+    max-height: 250px;
+    overflow-y: scroll;
+    padding-top: 5px;
+    position: relative;
+
+    .upvotes {
+      background-color: $cyan300;
+      border: 0;
+      color: $white;
+      font-size: 1em;
+      margin: 0;
+      margin-top: 3px;
+      padding-left: 3px;
+      padding-right: 3px;
+      position: absolute;
+      width: fit-content;
+
+      :hover {
+        opacity: .2;
+      }
+    }
+  }
+}
