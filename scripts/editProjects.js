@@ -53,28 +53,32 @@ function createProject() {
     addEmpty(thisProjectIndex);
     addStar(thisProjectIndex);
 
-    document.getElementById('save').style.display = 'block'; // Show save button
+    saveButton.style.display = 'block'; // Show save button
 }
 
 /*-------------------------------------------------------------------
 ********* SAVE NEW PROJECTS
 -------------------------------------------------------------------*/
 function saveNewProjects() {
-    var newProjects = document.getElementsByClassName('.newproject');
+    var newProjects = $('.newproject');
 
     chrome.storage.local.get(null, function(items) {
         for (var i = 0; i < newProjects.length; i++) {
             var createdProject = {
-                'name': newProjects[i].value,
+                'name': newProjects.eq(i).val(),
                 'questions': []
             };
-            items.projects.push(createdProject);
-        }
-        chrome.storage.local.set(items);
-    });
 
-    colorHeaders(); // Color all of the new projects too
-    this.style.display = 'none';
+            items['projects'].push(createdProject);
+            $(".newproject").eq(i).removeClass("newproject");
+        }
+
+        chrome.storage.local.set(items);
+    })
+
+    colorHeaders(); // color all of the new projects too
+    
+    saveButton.style.display = 'none';
 
     // disable all input fields
     for (var j = 0; j < inputs.length; j++) {
@@ -97,7 +101,7 @@ function editProjects() {
     // Make all of the project headers, except for 'Unsorted' editable
     for (var i = 1; i < inputs.length; i++) {
         inputs[i].disabled = false;
-        input[i].addEventListener('keyup', function(e) {
+        inputs[i].addEventListener('keyup', function(e) {
             if (e.which == 13) {
                 saveEditsButton.click();
                 this.disabled = true;
@@ -130,15 +134,22 @@ function editProjects() {
     // Remove the current 'go to' & 'delete' buttons
     $(".deleteIcon").remove();
     $(".goToIcon").remove();
+    for (var l = 0; l < deleteIcons.length; l++) {
+        console.log(l);
+        deleteIcons[l].parentNode.removeChild(deleteIcons[l]);
+        goToIcons[l].parentNode.removeChild(goToIcons[l]);
+    }
 
     // Save a list of the questions' ID values so we know their ordering
     questions = []; // reset the array of ID values
     var questionNum = 0 ; // init
+    var questionses = document.getElementsByClassName('questions');
+    var ourQuestions = document.getElementsByClassName('question');
 
-    for (var i = 0; i < $(".questions").length; i++) {
+    for (var i = 0; i < questionses.length; i++) {
         questions.push([]);
-        for (var j = 0; j < $(".questions").eq(i).children().length; j++, questionNum++) {
-            $(".question").eq(questionNum).attr('id', i + "," + j); // to make it easier, let's just assign it an integer
+        for (var j = 0; j < questionses[i].children.length; j++, questionNum++) {
+            ourQuestions[questionNum].id = i + ',' + j; // to make it easier, let's just assign it an integer
             questions[i].push([i, j]);
         }
     }
@@ -148,17 +159,19 @@ function editProjects() {
 ********* SAVE EDITS TO PROJECTS
 -------------------------------------------------------------------*/
 function saveEdits() {
+    var questionses = document.getElementsByClassName('questions');
+
     // Show the edit button again & hide show button
-    $("#edit").show(0);
-    $("#saveEdits").hide(0);
+    editButton.style.display = 'block';
+    saveEditsButton.style.display = 'none';
 
     // Get the changed order of the questions
     var newOrder = []; // reset the array of ID values
     var questionNum = 0; // init
-    for (var i = 0; i < $(".questions").length; i++) {
+    for (var i = 0; i < questionses.length; i++) {
         newOrder.push([]);
-        for (var j = 0; j < $(".questions").eq(i).children().length; j++, questionNum++) {
-            var newQuestionIndex = $(".question").eq(questionNum).attr('id'); // to make it easier, let's just assign it an integer
+        for (var j = 0; j < questionses[i].children.length; j++, questionNum++) {
+            var newQuestionIndex = document.getElementsByClassName('question')[questionNum].id; // to make it easier, let's just assign it an integer
             newOrder[i].push(newQuestionIndex);
         }
     }
@@ -170,36 +183,37 @@ function saveEdits() {
 
     chrome.storage.local.get(null, function(item) {
         // Save each of the project headers
-        for (var i = 1; i < $("input").length; i++) {
-            item.projects[i].name = $("input").eq(i).val();
+        for (var k = 1; k < inputs.length; k++) {
+            item.projects[k].name = inputs[k].value;
         }
 
-        for (var i = 0; i < newOrder.length; i++) {
+        for (var l = 0; l < newOrder.length; l++) {
             newQuestions.push([]);
 
-            for (var j = 0; j < newOrder[i].length; j++) {
-                dimensions = newOrder[i][j].split(',');
+            for (var m = 0; m < newOrder[l].length; m++) {
+                dimensions = newOrder[l][m].split(',');
 
                 //get first number & last number
                 firstNum = parseInt(dimensions[0]);
                 secondNum = parseInt(dimensions[1]);
 
                 var addObject = item.projects[firstNum].questions[secondNum];
-                newQuestions[i].push(addObject);
+                newQuestions[l].push(addObject);
             }
         }
 
-        for (var i = 0; i < item.projects.length; i++) {
-            item.projects[i].questions = newQuestions[i];
+        for (var n = 0; n < item.projects.length; n++) {
+            item.projects[n].questions = newQuestions[n];
         }
         
         // Set the reordered projects...
-        chrome.storage.local.set(item, function() {
-            console.log("Your function names have successfully been changed.");
-        });
+        chrome.storage.local.set(item);
     });
 
-    $("input").disabled = true;
+    for (var o = 0; o < inputs.length; o++) {
+        inputs[o].disabled = true;
+    }
+
     // window.location.href = window.location.href; // refresh
 }
 
