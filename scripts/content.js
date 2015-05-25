@@ -10,10 +10,15 @@ Grab question data from the Stack Overflow pages that you go to.
 // Save URL, question title, best answer, and best answer's number of upvotes.
 var currentURL = window.location.href;
 var title = document.getElementById('question-header').children[0].children[0].innerHTML;
-var firstAnswer = document.getElementsByClassName('answercell')[0].children[0].outerHTML;
+var firstAnswer = document.getElementsByClassName('answercell')[0].children[0];
 var topUpvotes = document.getElementsByClassName('vote-count-post')[1].textContent;
 
 console.log(firstAnswer);
+
+firstAnswer = firstAnswer.outerHTML;
+
+console.log(firstAnswer);
+
 firstAnswer = formatCodeBlocks(firstAnswer); // format code blocks prior to saving answers
 
 newQuestion(currentURL, title, firstAnswer, topUpvotes); // Try to save a new question

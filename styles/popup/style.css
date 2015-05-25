@@ -362,12 +362,13 @@ body {
 .adminText {
   font-size: 0.9em;
   top: 527px;
-  display: none; }
+  display: none;
+  position: fixed; }
 
 #createAdminText {
-  left: 182px; }
+  left: 192px; }
 
 #editAdminText {
-  left: 222px; }
+  left: 232px; }
 
 /*# sourceMappingURL=style.css.map */
