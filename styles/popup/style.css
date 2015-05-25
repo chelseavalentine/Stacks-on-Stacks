@@ -1,30 +1,3 @@
-.admin {
-  left: 300px;
-  opacity: .9;
-  position: fixed;
-  top: 555px;
-  z-index: 4; }
-
-.admin:hover {
-  background-color: #212121; }
-
-#save,
-#saveEdits {
-  background-color: #ef5350;
-  display: none;
-  left: 65px;
-  opacity: .95; }
-
-#save:hover,
-#saveEdits:hover {
-  background-color: #f44336; }
-
-#edit {
-  left: 160px; }
-
-#create {
-  left: 255px; }
-
 img {
   max-width: 100%; }
 
@@ -249,7 +222,6 @@ body {
   color: #fff;
   display: block;
   font-size: .7em;
-  max-width: 200px;
   padding: 3px;
   position: absolute;
   width: fit-content; }
@@ -359,5 +331,43 @@ body {
 
 .tag {
   color: #ff436c; }
+
+.admin {
+  left: 300px;
+  opacity: .9;
+  position: fixed;
+  top: 555px;
+  z-index: 4; }
+
+.admin:hover {
+  background-color: #212121; }
+
+#save,
+#saveEdits {
+  background-color: #ef5350;
+  display: none;
+  left: 65px;
+  opacity: .95; }
+
+#save:hover,
+#saveEdits:hover {
+  background-color: #f44336; }
+
+#edit {
+  left: 160px; }
+
+#create {
+  left: 255px; }
+
+.adminText {
+  font-size: 0.9em;
+  top: 527px;
+  display: none; }
+
+#createAdminText {
+  left: 182px; }
+
+#editAdminText {
+  left: 222px; }
 
 /*# sourceMappingURL=style.css.map */

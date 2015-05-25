@@ -44,7 +44,21 @@ function projectsInit() {
 			var saveEditsButton = document.getElementById('saveEdits');
 
 			createButton.addEventListener('click', function() {createProject();});
+			createButton.addEventListener('mouseenter', function() {
+				document.getElementById('createAdminText').style.display = 'block';
+			});
+			createButton.addEventListener('mouseleave', function() {
+				document.getElementById('createAdminText').style.display = 'none';
+			});
+
 			editButton.addEventListener('click', function() {editProjects();});
+			editButton.addEventListener('mouseenter', function() {
+				document.getElementById('editAdminText').style.display = 'block';
+			});
+			editButton.addEventListener('mouseleave', function() {
+				document.getElementById('editAdminText').style.display = 'none';
+			});
+			
 			saveButton.addEventListener('click', function() {saveNewProjects();});
 			saveEditsButton.addEventListener('click', function() {saveEdits();});
 		}
