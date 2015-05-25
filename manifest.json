@@ -2,15 +2,15 @@
   "manifest_version": 2,
   "name": "Stacks on Stacks",
   "version": "1.0",
-  // "icons": {
-  //   "128": ""
-  // },
+  "icons": {
+    "128": "icon128.png"
+  },
   "permissions": [
     "storage"
   ],
   "browser_action": {
     "default_title": "Stacks on Stacks",
-    "default_icon": "duck.png",
+    "default_icon": "duckie.png",
     "default_popup": "popup.html"
   },
   "content_scripts":
