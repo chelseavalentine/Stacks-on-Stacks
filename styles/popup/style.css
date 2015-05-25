@@ -92,7 +92,8 @@ h6 {
   font-size: .9em; }
 
 p {
-  font-size: 13.6px; }
+  font-size: 13.6px;
+  max-width: 295px; }
 
 p + p {
   margin-bottom: 15px; }
@@ -216,7 +217,7 @@ body {
 .container {
   padding-bottom: 100px;
   text-align: left;
-  width: 90%; }
+  width: 95%; }
 
 #helpInsertProjects {
   display: block;
@@ -233,6 +234,15 @@ body {
   top: 0;
   width: 100%;
   z-index: 4; }
+
+.sortable-placeholder {
+  background-color: #fff59d;
+  margin-bottom: 0;
+  width: 99%;
+  height: 35px;
+  display: block;
+  position: relative;
+  border: #ffee58 dashed 2px; }
 
 .helperText {
   background-color: #000;
@@ -272,13 +282,14 @@ body {
         top: 2px;
         z-index: 2; }
 
+.questionTitle:hover {
+  background-color: #fff; }
+
 .question .title {
   background-color: #fafafa;
   border-bottom: 1px solid #e0e0e0;
   margin-bottom: 0;
   width: 100%; }
-  .question .title :hover {
-    background-color: #fff; }
   .question .title .questionTitle {
     cursor: crosshair;
     display: inline-block;

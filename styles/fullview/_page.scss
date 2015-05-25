@@ -17,6 +17,7 @@ body {
 
 .container {
   @extend %remove;
+  max-width: 1000px;
   min-width: 600px;
   padding-bottom: 100px;
   text-align: left;
@@ -26,14 +27,14 @@ body {
 // Divider to fill space covered by 'Stack on Stacks' //
 #helpInsertProjects {
   display: block;
-  height: 70px;
+  height: 90px;
   position: relative;
   width: 100%;
 }
 
 // Header that holds 'Stacks on Stacks' //
 .header {
-  background-color: $grey200;
+  background-color: $black;
   box-shadow: 0 0 6px 1px rgba(0, 0, 0, .18);
   display: block;
   left: 0;
@@ -41,4 +42,6 @@ body {
   top: 0;
   width: 100%;
   z-index: 4;
+  opacity: 0.95;
 }
+

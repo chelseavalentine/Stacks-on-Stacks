@@ -39,9 +39,9 @@ h1 {
 .stacks {
   @extend %header;
   border: 0;
-  color: $grey800;
+  color: $grey100;
   display: inline-block;
-  font-size: 1.5em;
+  font-size: 1.4em;
   margin-bottom: 0;
   padding: 10px;
 }
@@ -79,7 +79,7 @@ h6 {
 p {
   @extend %text;
   font-size: 13.6px;
-  max-width: 290px;
+  max-width: 95%;
 }
 
 p+p {

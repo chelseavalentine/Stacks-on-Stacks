@@ -37,11 +37,32 @@ function removeHelperText() {
 	}
 }
 
+/*-------------------------------------------------------------------
+********* HOVERED QUESTIONS ARE WHITE
+-------------------------------------------------------------------*/
+function makeWhite() {
+	var questionDivs = document.getElementsByClassName('question');
+	var questionTitles = document.getElementsByClassName('questionTitle');
+
+	for (var i = 0; i < questionDivs.length; i++) {
+		questionDivs[i].style.backgroundColor = 'white';
+		questionTitles[i].style.backgroundColor = 'white';
+	}
+}
+
+function notWhite() {
+	var questionDivs = document.getElementsByClassName('question');
+	var questionTitles = document.getElementsByClassName('questionTitle');
+
+	for (var i = 0; i < questionDivs.length; i++) {
+		questionDivs[i].style.backgroundColor = '#fafafa';
+		questionTitles[i].style.backgroundColor = '#fafafa';
+	}
+}
+
 /*===================================================================
 ---------------------------------------------------------------------
 * MANIPULATING DATA
--
-Functions that deal with editing, deleting data, etc.
 ---------------------------------------------------------------------
 ===================================================================*/
 

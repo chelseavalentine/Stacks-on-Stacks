@@ -1,7 +1,7 @@
 {
   "manifest_version": 2,
   "name": "Stacks on Stacks",
-  "version": "0.1",
+  "version": "1.0",
   // "icons": {
   //   "128": ""
   // },
@@ -13,19 +13,11 @@
     "default_icon": "duck.png",
     "default_popup": "popup.html"
   },
-  "content_scripts": [
-    {
+  "content_scripts":
+    [{
       "matches": ["http://*.stackoverflow.com/questions/*", "http://stackoverflow.com/questions/*", "https://stackoverflow.com/questions/*", "http://*.stackexchange.com/questions/*"],
       "js": [
-        "scripts/ext/jquery.min.js",
         "scripts/content.js"
       ]
-    }
-  ]
-  // "background": {
-  //   "scripts": [
-  //     "scripts/background.js"
-  //   ],
-  //   "persistent": false
-  // }
+    }]
 }

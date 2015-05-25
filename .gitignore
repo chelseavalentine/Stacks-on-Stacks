@@ -1,1 +1,3 @@
 *.sublime-workspace
+styles/.sass-cache
+*/style.css.map

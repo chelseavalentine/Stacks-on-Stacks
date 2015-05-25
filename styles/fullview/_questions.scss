@@ -15,7 +15,7 @@
 // PROJECT > PROJECT HEADER > QUESTIONS > QUESTION // 
 .project {
   box-shadow: 0 0 6px 1px rgba(0, 0, 0, .08);
-  margin-bottom: 20px;
+  margin-bottom: 35px;
 
   .projectHeader {
     display: block;
@@ -32,9 +32,8 @@
       text-align: center;
       min-width: 400px;
       width: 90%;
-      max-width: 800px;
+      max-width: 1000px;
       left: auto;
-
     }
   }
 }
@@ -73,7 +72,9 @@
       font-weight: 600;
       margin-bottom: 0;
       padding: 5px;
-      width: 265px;
+      min-width: 500px;
+      width: 90%;
+      max-width: 900px;
     }
 
     .icon,
@@ -95,7 +96,7 @@
   .answer {
     background-color: $white;
     display: none;
-    max-height: 250px;
+    width: 100%;
     overflow-y: scroll;
     padding-top: 5px;
     position: relative;
@@ -111,6 +112,7 @@
       padding-right: 3px;
       position: absolute;
       width: fit-content;
+      min-width: fit-content;
 
       :hover {
         opacity: .2;

@@ -117,6 +117,17 @@ function getAllLinks() {
 				}
 			}
 
+			// Attach event handlers to make visual change when questions are hovered over
+			var questionDivs = document.getElementsByClassName('question');
+			var questionTitles = document.getElementsByClassName('questionTitle');
+
+			// for (var m = 0; m < questionDivs.length; m++) {
+			// 	questionDivs[m].addEventListener('mouseenter', function() {makeWhite();});
+			// 	questionDivs[m].addEventListener('mouseleave', function() {notWhite();});
+			// 	questionTitles[m].addEventListener('mouseenter', function() {makeWhite();});
+			// 	questionTitles[m].addEventListener('mouseleave', function() {notWhite();});
+			// }
+
 			// Add open in new tab property to every <a>
 			for (var k = 0; k < aTag.length; k++ ) {
 				aTag[k].target = '_blank';

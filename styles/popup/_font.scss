@@ -78,6 +78,7 @@ h6 {
 p {
   @extend %text;
   font-size: 13.6px;
+  max-width: 295px;
 }
 
 p+p {

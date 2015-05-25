@@ -50,16 +50,16 @@
   }
 }
 
+.questionTitle:hover {
+  background-color: $white;
+}
+
 .question {
   .title {
     background-color: $grey50;
     border-bottom: 1px solid $grey300;
     margin-bottom: 0;
     width: 100%;
-
-    :hover {
-      background-color: $white;
-    }
 
     .questionTitle {
       cursor: crosshair;

@@ -37,7 +37,7 @@ input {
   border: 0;
   color: #fff;
   font-family: Consolas;
-  font-size: 1em;
+  font-size: 1.3em;
   font-weight: 600;
   height: fit;
   display: inline-block;
@@ -74,9 +74,9 @@ h1 {
 
 .stacks {
   border: 0;
-  color: #424242;
+  color: #f5f5f5;
   display: inline-block;
-  font-size: 1.5em;
+  font-size: 1.4em;
   margin-bottom: 0;
   padding: 10px; }
 
@@ -100,7 +100,7 @@ h6 {
 
 p {
   font-size: 13.6px;
-  max-width: 290px; }
+  max-width: 95%; }
 
 p + p {
   margin-bottom: 15px; }
@@ -222,6 +222,7 @@ body {
   z-index: 1; }
 
 .container {
+  max-width: 1000px;
   min-width: 600px;
   padding-bottom: 100px;
   text-align: left;
@@ -229,19 +230,20 @@ body {
 
 #helpInsertProjects {
   display: block;
-  height: 70px;
+  height: 90px;
   position: relative;
   width: 100%; }
 
 .header {
-  background-color: #eee;
+  background-color: #000;
   box-shadow: 0 0 6px 1px rgba(0, 0, 0, 0.18);
   display: block;
   left: 0;
   position: fixed;
   top: 0;
   width: 100%;
-  z-index: 4; }
+  z-index: 4;
+  opacity: 0.95; }
 
 .helperText {
   background-color: #000;
@@ -255,7 +257,7 @@ body {
 
 .project {
   box-shadow: 0 0 6px 1px rgba(0, 0, 0, 0.08);
-  margin-bottom: 20px; }
+  margin-bottom: 35px; }
   .project .projectHeader {
     display: block;
     background-color: #00bcd4;
@@ -270,7 +272,7 @@ body {
       text-align: center;
       min-width: 400px;
       width: 90%;
-      max-width: 800px;
+      max-width: 1000px;
       left: auto; }
 
 .empty {
@@ -301,7 +303,9 @@ body {
     font-weight: 600;
     margin-bottom: 0;
     padding: 5px;
-    width: 265px; }
+    min-width: 500px;
+    width: 90%;
+    max-width: 900px; }
   .question .title .icon,
   .question .title .delete,
   .question .title .editIcon {
@@ -316,7 +320,7 @@ body {
 .question .answer {
   background-color: #fff;
   display: none;
-  max-height: 250px;
+  width: 100%;
   overflow-y: scroll;
   padding-top: 5px;
   position: relative; }
@@ -330,7 +334,8 @@ body {
     padding-left: 3px;
     padding-right: 3px;
     position: absolute;
-    width: fit-content; }
+    width: fit-content;
+    min-width: fit-content; }
     .question .answer .upvotes :hover {
       opacity: .2; }
 
