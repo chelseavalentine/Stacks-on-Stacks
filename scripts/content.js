@@ -1,34 +1,15 @@
-/*===================================================================
----------------------------------------------------------------------
-* INTERACTING WITH STACKOVERFLOW WEBPAGES
--
-Grab question data from the Stack Overflow pages that you go to.
----------------------------------------------------------------------
-===================================================================*/
+(function collectData(){
+	var currentURL = window.location.href,
+		title = document.getElementById('question-header').children[0].children[0].innerHTML,
+		firstAnswer = document.getElementsByClassName('answercell')[0].children[0].innerHTML,
+		topUpvotes = document.getElementsByClassName('vote-count-post')[1].textContent;
 
-/////////////// DATA GRAB
-// Save URL, question title, best answer, and best answer's number of upvotes.
-var currentURL = window.location.href;
-var title = document.getElementById('question-header').children[0].children[0].innerHTML;
-var firstAnswer = document.getElementsByClassName('answercell')[0].children[0];
-var topUpvotes = document.getElementsByClassName('vote-count-post')[1].textContent;
-
-console.log(firstAnswer);
-
-firstAnswer = firstAnswer.outerHTML;
-
-console.log(firstAnswer);
-
-firstAnswer = formatCodeBlocks(firstAnswer); // format code blocks prior to saving answers
-
-newQuestion(currentURL, title, firstAnswer, topUpvotes); // Try to save a new question
+	firstAnswer = formatCodeBlocks(firstAnswer);
+	createNewQuestion(currentURL, title, firstAnswer, topUpvotes);
+})();
 
 
-/*-------------------------------------------------------------------
-********* SAVE A NEW QUESTION
-Add a new question to the user's collection.
--------------------------------------------------------------------*/
-function newQuestion(link, question, answer, upvotes) {
+function createNewQuestion(link, question, answer, upvotes) {
 	// Clean up the data before we save it
 	question = question.replace(/\r?\n/g, '');
 	answer = answer.replace(/\r?\n/g, '');
@@ -61,21 +42,14 @@ function newQuestion(link, question, answer, upvotes) {
 }
 
 
-/*-------------------------------------------------------------------
-********* FORMAT <CODE> BLOCKS
-Format the <code> blocks by putting line breaks in logical places
--------------------------------------------------------------------*/
 function formatCodeBlocks(originalAnswer) {
-	// Create an invisible holder div for us to format in
-	// console.log(originalAnswer);
-	var invisDiv = document.createElement('div');
-	invisDiv.innerHTML = originalAnswer;
-	// console.log("before");
+	var formattedAnswer = document.createElement('div');
+	formattedAnswer.innerHTML = originalAnswer;
 
 	// StackOverflow code block formatting classes
-	var com = invisDiv.getElementsByClassName('com'),
-		pln = invisDiv.getElementsByClassName('pln'),
-		pun = invisDiv.getElementsByClassName('pun');
+	var com = formattedAnswer.getElementsByClassName('com'),
+		pln = formattedAnswer.getElementsByClassName('pln'),
+		pun = formattedAnswer.getElementsByClassName('pun');
 	var prevIsComment, prevIsBR, prevIsString, prevIsTab, prevIsEmpty, isEmpty, isSmIndent, isLgIndent, br, hasSemicolon, nextIsPLN, nextIsBracket, nextIsComment;
 
 	/////////////// COM blocks
@@ -89,14 +63,16 @@ function formatCodeBlocks(originalAnswer) {
 		if (com[i].previousElementSibling !== null ) {
 			prevIsEmpty = (com[i].previousElementSibling.textContent === '');
 			prevIsTab = (com[i].previousElementSibling.textContent === '  ');
+
+			if ( prevIsEmpty && !prevIsTab) {
+				com[i].previousElementSibling.parentNode.insertBefore(br, com[i]);
+			}
 		} else {
 			prevIsEmpty = true;
 			prevIsTab = false;
 		}
 		
-		if ( prevIsEmpty && !prevIsTab) {
-			com[i].previousElementSibling.parentNode.insertBefore(br, com[i]);
-		}
+		
 
 		/////////////// IF PLN AFTER COMMENT, ADD BREAK AFTER PLN
 		nextIsPLN = false;
@@ -215,5 +191,5 @@ function formatCodeBlocks(originalAnswer) {
 			pln[k].previousElementSibling.parentNode.insertBefore(br, pln[k]);
 		}
 	}
-	return invisDiv.innerHTML;
+	return formattedAnswer.innerHTML;
 }
