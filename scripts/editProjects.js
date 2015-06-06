@@ -1,15 +1,3 @@
-/////////////// GLOBAL VARIABLES
-var inputs = document.getElementsByTagName('input');
-
-var project = document.getElementsByClassName('project');
-var createButton = document.getElementById('create');
-var editButton = document.getElementById('edit');
-var saveButton = document.getElementById('save');
-var saveEditsButton = document.getElementById('saveEdits');
-var deleteIcons = document.getElementsByClassName('deleteIcon');
-var goToIcons = document.getElementsByClassName('goToIcon');
-
-
 function buildProjectShell(project) {
     var projects = document.getElementById('projects'),
         saveButton = document.getElementById('save'),
@@ -82,10 +70,10 @@ function saveNewProjects() {
         chrome.storage.local.set(items);
     });
 
-    clearNewProjectUI();
+    exitNewProjectUI();
 }
 
-function clearNewProjectUI() {
+function exitNewProjectUI() {
     colorHeaders();
     disableInputFields();
     saveButton.style.display = 'none';
@@ -190,64 +178,73 @@ function createListOfQuestionIDs() {
 }
 
 
-/*-------------------------------------------------------------------
-********* SAVE EDITS TO PROJECTS
--------------------------------------------------------------------*/
-function saveEdits() {
-    var questionses = document.getElementsByClassName('questions');
 
-    // Show the edit button again & hide show button
+function saveProjectEdits() {
+    var newQuestionOrder = [];
+
+    exitEditProjectUI();
+    newQuestionOrder = getChangedQuestionOrder();
+
+    saveProjectTitles();
+    saveNewQuestionOrder(newQuestionOrder);
+    disableInputFields();
+}
+
+function exitEditProjectUI() {
+    var editButton = document.getElementById('edit'),
+        saveEditsButton = document.getElementById('saveEdits');
+
     editButton.style.display = 'block';
     saveEditsButton.style.display = 'none';
+}
 
-    // Get the changed order of the questions
-    var newOrder = []; // reset the array of ID values
-    var questionNum = 0; // init
-    for (var i = 0; i < questionses.length; i++) {
-        newOrder.push([]);
-        for (var j = 0; j < questionses[i].children.length; j++, questionNum++) {
-            var newQuestionIndex = document.getElementsByClassName('question')[questionNum].id; // to make it easier, let's just assign it an integer
-            newOrder[i].push(newQuestionIndex);
+function getChangedQuestionOrder() {
+    var groupsOfQuestions = document.getElementsByClassName('questions'),
+        questionNumber = 0,
+        questions = document.getElementsByClassName('question'),
+        currentQuestionOrder = [],
+        newQuestionIndex;
+
+    for (var i = 0; i < groupsOfQuestions.length; i++) {
+        currentQuestionOrder.push([]);
+
+        for (var j = 0; j < groupsOfQuestions[i].children.length; j++, questionNumber++) {
+            newQuestionIndex = questions[i].id;
+            currentQuestionOrder[i].push(newQuestionIndex);
         }
     }
+}
 
-    var newQuestions = [],
-        dimensions,
-        firstNum,
-        secondNum;
+function saveProjectTitles() {
+    var projectTitles = document.getElementsByTagName('input');
 
     chrome.storage.local.get(null, function(item) {
-        // Save each of the project headers
-        for (var k = 1; k < inputs.length; k++) {
-            item.projects[k].name = inputs[k].value;
+        for (var i = 1; i < projectTitles.length; i++) {
+            item.projects[i].name = projectTitles[i].value;
         }
 
-        for (var l = 0; l < newOrder.length; l++) {
-            newQuestions.push([]);
+        chrome.storage.local.set(item);
+    })
+}
 
-            for (var m = 0; m < newOrder[l].length; m++) {
-                dimensions = newOrder[l][m].split(',');
+function saveNewQuestionOrder(newQuestionOrder) {
+    var questions = [],
+        projectIndex, questionIndex;
 
-                //get first number & last number
-                firstNum = parseInt(dimensions[0]);
-                secondNum = parseInt(dimensions[1]);
-
-                var addObject = item.projects[firstNum].questions[secondNum];
-                newQuestions[l].push(addObject);
+    chrome.storage.local.get(null, function(item) {
+        for (var i = 0; i < newQuestionOrder.length; i++) {
+            for (var j = 0; j < newQuestionOrder[i].length; j++) {
+                questionCoordinates = newQuestionOrder[i][j].split(',');
+                projectIndex = parseInt(questionCoordinates[0]);
+                questionIndex = parseInt(questionCoordinates[1]);
+                questions.push(item.projects[projectIndex].questions[questionIndex]);
             }
         }
 
-        for (var n = 0; n < item.projects.length; n++) {
-            item.projects[n].questions = newQuestions[n];
+        for (var k = 0; k < item.projects.length; k++) {
+            item.projects[k].questions = questions[k];
         }
 
-        // Set the reordered projects...
         chrome.storage.local.set(item);
     });
-
-    for (var o = 0; o < inputs.length; o++) {
-        inputs[o].disabled = true;
-    }
-
-    // window.location.href = window.location.href; // refresh
 }
