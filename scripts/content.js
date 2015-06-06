@@ -47,59 +47,82 @@ function formatCodeBlocks(originalAnswer) {
 	formattedAnswer.innerHTML = originalAnswer;
 
 	// StackOverflow code block formatting classes
-	var com = formattedAnswer.getElementsByClassName('com'),
-		pln = formattedAnswer.getElementsByClassName('pln'),
-		pun = formattedAnswer.getElementsByClassName('pun');
-	var prevIsComment, prevIsBR, prevIsString, prevIsTab, prevIsEmpty, isEmpty, isSmIndent, isLgIndent, br, hasSemicolon, nextIsPLN, nextIsBracket, nextIsComment;
+	var comments = formattedAnswer.getElementsByClassName('com'),
+		statements = formattedAnswer.getElementsByClassName('pln'),
+		whitespaces = formattedAnswer.getElementsByClassName('pun');
+	var prevIsComment, prevIsString, isSmIndent, isLgIndent;
 
-	/////////////// COM blocks
-	for (var i = 0; i < com.length; i++) {
+	formatCommentBlocks(comments);
+	formatCodeStatements(statements);
+	formatWhitespaceBlocks(whitespaces);
 
-		/////////////// IF COMMENT ON LINE BY ITSELF, ADD LINE BREAK BEFORE IT
-		// If thing before it is empty.
+	return formattedAnswer.innerHTML;
+}
+
+
+function formatCommentBlocks(comments) {
+	addLineBeforeStandaloneComments(comments);
+	addLineAfterCommentIfCodeNext(comments);
+}
+
+function addLineBeforeStandaloneComments(comments) {
+	var br, prevIsTab, prevIsEmpty;
+
+	for (var i = 0; i < comments.length; i++) {
+		// This occurs when the <span> before it is empty.
 		br = document.createElement('br');
 		br.classList.add('br');
 
-		if (com[i].previousElementSibling !== null ) {
-			prevIsEmpty = (com[i].previousElementSibling.textContent === '');
-			prevIsTab = (com[i].previousElementSibling.textContent === '  ');
+		if (comments[i].previousElementSibling !== null ) {
+			prevIsEmpty = (comments[i].previousElementSibling.textContent === '');
+			prevIsTab = (comments[i].previousElementSibling.textContent === '  ');
 
 			if ( prevIsEmpty && !prevIsTab) {
-				com[i].previousElementSibling.parentNode.insertBefore(br, com[i]);
+				comments[i].previousElementSibling.parentNode.insertBefore(br, comments[i]);
 			}
 		} else {
 			prevIsEmpty = true;
 			prevIsTab = false;
 		}
-		
-		
+	}
+}
 
+function addLineAfterCommentIfCodeNext(comments) {
+	var br, nextIsPLN;
+	for (var i = 0; i < comments.length; i++) {
 		/////////////// IF PLN AFTER COMMENT, ADD BREAK AFTER PLN
 		nextIsPLN = false;
 		br = document.createElement('br');
 		br.classList.add('br');
 
-		if (com[i].nextSibling !== null) {
-			nextIsPLN = com[i].nextElementSibling.classList.contains('pln');
+		if (comments[i].nextSibling !== null) {
+			nextIsPLN = comments[i].nextElementSibling.classList.contains('pln');
 		}
 
 		if (nextIsPLN) {
-			com[i].parentNode.insertBefore(br, com[i].nextElementSibling);
+			comments[i].parentNode.insertBefore(br, comments[i].nextElementSibling);
 		}
 	}
+}
 
-	/////////////// PUN blocks
-	for (var j = 0; j < pun.length; j++) {
 
+function formatCodeStatements(statements) {
+	addLineAfterSemicolons(statements);
+}
+
+function addLineAfterSemicolons(statements) {
+	var br, hasSemicolon, nextIsComment, prevIsBR;
+
+	for (var i = 0; i < statements.length; i++) {
 		/////////////// IF ;, THEN MAKE A LINE BREAK AFTER IT
 		// Unless the next block is a comment, the previous block is a break, or it has text after the ;
 		br = document.createElement('br');
 		br.classList.add('br');
-		hasSemicolon = pun[j].textContent.indexOf(';') > -1;
+		hasSemicolon = statements[i].textContent.indexOf(';') > -1;
 		
-		if (pun[j].nextSibling !== null) {
-			if (pun[j].nextSibling.nextSibling !== null) {
-				nextIsComment = pun[j].nextElementSibling.nextElementSibling.classList.contains('com');
+		if (statements[i].nextSibling !== null) {
+			if (statements[i].nextSibling.nextSibling !== null) {
+				nextIsComment = statements[i].nextElementSibling.nextElementSibling.classList.contains('com');
 			} else {
 				nextIsComment = false;
 			}
@@ -107,89 +130,109 @@ function formatCodeBlocks(originalAnswer) {
 			nextIsComment = false;
 		}
 
-		if (pun[j].previousSibling !== null) {
-			prevIsBR = (pun[j].previousElementSibling.classList.contains('br'));
+		if (statements[i].previousSibling !== null) {
+			prevIsBR = (statements[i].previousElementSibling.classList.contains('br'));
 		} else {
 			prevIsBR = false;
 		}
 
 		if ( hasSemicolon && !nextIsComment && !prevIsBR ) {
-			pun[j].parentNode.insertBefore(br, pun[j].nextElementSibling);
+			statements[i].parentNode.insertBefore(br, statements[i].nextElementSibling);
 		}
 	}
+}
 
-	/////////////// PLN blocks
-	for (var k = 0; k < pln.length; k++) {
 
-		/////////////// IF EMPTY PLN, ADD LINE BREAK AFTER IT
+function formatWhitespaceBlocks(whitespaces) {
+	addLineBeforeEmptyBlocks(whitespaces);
+	addLineBeforeTabs(whitespaces);
+	addLineBeforeTabsWithinBlocks(whitespaces);
+}
+
+function addLineBeforeEmptyBlocks(whitespaces) {
+	var br, isEmpty, nextIsBracket,prevIsBR;
+
+	for (var i = 0; i < whitespaces.length; i++) {
+		/////////////// IF EMPTY whitespaces, ADD LINE BREAK AFTER IT
 		// Unless the next is a line break, or the previous block is a break.
 		br = document.createElement('br');
 		br.classList.add('br');
-		isEmpty = (pln[k].textContent === '');
+		isEmpty = (whitespaces[i].textContent === '');
 
-		if (pln[k].nextSibling !== null) {
-			nextIsBracket = (pln[k].nextElementSibling.textContent.indexOf('{') > -1);
+		if (whitespaces[i].nextSibling !== null) {
+			nextIsBracket = (whitespaces[i].nextElementSibling.textContent.indexOf('{') > -1);
 		} else {
 			nextIsBracket = false;
 		}
 		
-		if (pln[k].previousSibling !== null) {
-			prevIsBR = (pln[k].previousElementSibling.classList.contains('br'));
+		if (whitespaces[i].previousSibling !== null) {
+			prevIsBR = (whitespaces[i].previousElementSibling.classList.contains('br'));
 		} else {
 			prevIsBR = false;
 		}
 
 		if ( isEmpty && !prevIsBR && !nextIsBracket ) {
-			pln[k].parentNode.insertBefore(br, pln[k].nextElementSibling);
+			whitespaces[i].parentNode.insertBefore(br, whitespaces[i].nextElementSibling);
 		}
+	}
+}
 
+function addLineBeforeTabs(whitespaces) {
+	var br, isSmIndent, nextIsComment, prevIsComment, prevIsBR;
+
+	for (var i = 0; i < whitespaces.length; i++) {
 		/////////////// IF TAB, PUT LINE BREAK BEFORE IT
 		// Except if the next/prev block is a comment, or the previous block is an break 
 		br = document.createElement('br');
 		br.classList.add('br');
 
-		isSmIndent = ( pln[k].textContent === '  ' || pln[k].textContent === '   ' );
+		isSmIndent = ( whitespaces[i].textContent === '  ' || whitespaces[i].textContent === '   ' );
 
-		if (pln[k].nextSibling !== null) {
-			nextIsComment = pln[k].nextElementSibling.classList.contains('com');
+		if (whitespaces[i].nextSibling !== null) {
+			nextIsComment = whitespaces[i].nextElementSibling.classList.contains('com');
 		} else {
 			nextIsComment = false;
 		}
 
-		if (pln[k].previousSibling !== null) {
-			prevIsComment = ( pln[k].previousElementSibling.classList.contains('com') );
-			prevIsBR = (pln[k].previousElementSibling.classList.contains('br'));
+		if (whitespaces[i].previousSibling !== null) {
+			prevIsComment = ( whitespaces[i].previousElementSibling.classList.contains('com') );
+			prevIsBR = (whitespaces[i].previousElementSibling.classList.contains('br'));
 		} else {
 			prevIsComment = false;
 			prevIsBR = false;
 		}
 
 		if ( isSmIndent && !prevIsComment && !prevIsBR && !nextIsComment) {
-			pln[k].previousElementSibling.parentNode.insertBefore(br, pln[k]);
+			whitespaces[i].previousElementSibling.parentNode.insertBefore(br, whitespaces[i]);
 		}
+	}
+}
 
+function addLineBeforeTabsWithinBlocks(whitespaces) {
+	var br, isLgIndent, nextIsComment, prevIsBR, prevIsString;
+
+	for (var i = 0; i < whitespaces.length; i++) {
 		/////////////// IF BLOCK CONTAINS TAB, PUT LINE BREAK BEFORE IT
 		// Unless previous block is a break or string
-		isLgIndent = ( pln[k].textContent.indexOf('    ') > -1 );
+		isLgIndent = ( whitespaces[i].textContent.indexOf('    ') > -1 );
 
-		if (pln[k].nextSibling !== null) {
-			nextIsComment = pln[k].nextElementSibling.classList.contains('com');
+		if (whitespaces[i].nextSibling !== null) {
+			nextIsComment = whitespaces[i].nextElementSibling.classList.contains('com');
 			isLgIndent = (isLgIndent && !nextIsComment); // We only want it to register this as a large indent if the next block isn't a comment
 		}
 
 		br = document.createElement('br');
 		br.classList.add('br');
-		if (pln[k].previousSibling !== null) {
-			prevIsBR = (pln[k].previousSibling.classList.contains('br'));
-			prevIsString = ( pln[k].previousElementSibling.classList.contains('str') );
+		if (whitespaces[i].previousSibling !== null) {
+			prevIsBR = (whitespaces[i].previousSibling.classList.contains('br'));
+			prevIsString = ( whitespaces[i].previousElementSibling.classList.contains('str') );
 		} else {
 			prevIsString = false;
 			prevIsBR = false;
 		}
 
 		if ( isLgIndent && !prevIsBR && !prevIsString) {
-			pln[k].previousElementSibling.parentNode.insertBefore(br, pln[k]);
+			whitespaces[i].previousElementSibling.parentNode.insertBefore(br, whitespaces[i]);
 		}
 	}
-	return formattedAnswer.innerHTML;
 }
