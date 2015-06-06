@@ -1,48 +1,35 @@
-// INITIALIZE GLOBAL VARIABLES
-// Project background colors
-var bgcolors = ['#00bcd4', '#ff436c', '#8bc34a', '#ff9800'];
-var projectHeaders = document.getElementsByClassName('projectHeader');
-
 // Element references
 var starIcons = document.getElementsByClassName('star');
 var emptyIcons = document.getElementsByClassName('empty');
 var projectsToAddIcons = document.getElementsByClassName('addIcons');
-var helperTexts = document.getElementsByClassName('helperText');
+
 
 // Element creations
 var coverup = document.createElement('div'); // A dark black semi-opaque background that goes behind modal
 coverup.classList.add('cover');
 
-/*===================================================================
----------------------------------------------------------------------
-* VISUALS CHANGES
----------------------------------------------------------------------
-===================================================================*/
-
-/*-------------------------------------------------------------------
-********* COLOR PROJECT HEADERS
--------------------------------------------------------------------*/
 function colorHeaders() {
+	var bgcolors = ['#00bcd4', '#ff436c', '#8bc34a', '#ff9800'],
+		projectHeaders = document.getElementsByClassName('projectHeader');
+
 	for (var i = 0; i < projectHeaders.length; i++) {
 		projectHeaders[i].style.background = bgcolors[i%bgcolors.length];
 	}
 }
 
-/*-------------------------------------------------------------------
-********* REMOVE ALL HELPER TEXT
--------------------------------------------------------------------*/
+
 function removeHelperText() {
+	var helperTexts = document.getElementsByClassName('helperText');
+
 	for (var i = 0; i < helperTexts.length; i++) {
 		helperTexts[i].parentNode.removeChild(helperTexts[i]);
 	}
 }
 
-/*-------------------------------------------------------------------
-********* HOVERED QUESTIONS ARE WHITE
--------------------------------------------------------------------*/
-function makeWhite() {
-	var questionDivs = document.getElementsByClassName('question');
-	var questionTitles = document.getElementsByClassName('questionTitle');
+
+function colorQuestionWhite() {
+	var questionDivs = document.getElementsByClassName('question'),
+		questionTitles = document.getElementsByClassName('questionTitle');
 
 	for (var i = 0; i < questionDivs.length; i++) {
 		questionDivs[i].style.backgroundColor = 'white';
@@ -50,9 +37,9 @@ function makeWhite() {
 	}
 }
 
-function notWhite() {
-	var questionDivs = document.getElementsByClassName('question');
-	var questionTitles = document.getElementsByClassName('questionTitle');
+function colorQuestionGrey() {
+	var questionDivs = document.getElementsByClassName('question'),
+		questionTitles = document.getElementsByClassName('questionTitle');
 
 	for (var i = 0; i < questionDivs.length; i++) {
 		questionDivs[i].style.backgroundColor = '#fafafa';
@@ -60,33 +47,16 @@ function notWhite() {
 	}
 }
 
-/*===================================================================
----------------------------------------------------------------------
-* MANIPULATING DATA
----------------------------------------------------------------------
-===================================================================*/
 
-/*-------------------------------------------------------------------
-********* DELETE A LINK
-Search the storage for a link that matches the one that is passed in,
-and delete the match.
--------------------------------------------------------------------*/
-function deleteLink(link, projectPos) {
-	var found = false;
-
+function deleteLink(link, projectIndex) {
 	chrome.storage.local.get(null, function(item) {
-		//Search through all of the links in the desired project
-		for (var i = 0; i < item.projects[projectPos].questions.length; i++ ) {
-			if (link === JSON.stringify(item.projects[projectPos].questions[i].link)) {
-				// found object to delete from storage
-				item.projects[projectPos].questions.splice(i, 1);
-				found = true;
-				break;
+		for (var i = 0; i < item.projects[projectIndex].questions.length; i++ ) {
+			var existingLink = JSON.stringify(item.projects[projectIndex].questions[i].link);
+
+			if (link === existingLink) {
+				item.projects[projectIndex].questions.splice(i, 1);
+				chrome.storage.local.set(item);
 			}
-		}
-	
-		if (found) {
-			chrome.storage.local.set(item);
 		}
 	});
 }

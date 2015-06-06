@@ -1,6 +1,6 @@
 /////////////// GLOBAL VARIABLES
 var inputs = document.getElementsByTagName('input');
-var projects = document.getElementById('projects');
+
 var project = document.getElementsByClassName('project');
 var createButton = document.getElementById('create');
 var editButton = document.getElementById('edit');
@@ -9,151 +9,186 @@ var saveEditsButton = document.getElementById('saveEdits');
 var deleteIcons = document.getElementsByClassName('deleteIcon');
 var goToIcons = document.getElementsByClassName('goToIcon');
 
-/*-------------------------------------------------------------------
-********* CREATE PROJECT
--------------------------------------------------------------------*/
-function createProject() {
-    /////////////// CREATE A PROJECT
-    // Project > (Project header > [Project Name > Input Project] & [Questions])
 
-    // Project
-    var divProject = document.createElement('div');
-    divProject.classList.add('project');
+function buildProjectShell(project) {
+    var projects = document.getElementById('projects'),
+        saveButton = document.getElementById('save'),
+        header, title, inputField;
 
-    // Project header
-    var divProjectHeader = document.createElement('div');
-    divProjectHeader.classList.add('projectHeader');
+    project = document.createElement('div');
+    project.classList.add('project');
 
-    // Project name
-    var pProjectName = document.createElement('p');
-    pProjectName.classList.add('projectTitle', 'addIcons');
+    header = document.createElement('div');
+    header.classList.add('projectHeader');
 
-    // Input project
-    var inputProjectName = document.createElement('input');
-    inputProjectName.maxlength = 21;
-    inputProjectName.classList.add('newproject');
+    title = document.createElement('p');
+    title.classList.add('projectTitle', 'addIcons');
 
-    // Also save the project if the user presses enter
-    inputProjectName.addEventListener('keyup', function(e) {
+    inputField = document.createElement('input');
+    inputField.maxlength = 21;
+    inputField.classList.add('newproject');
+    inputField.addEventListener('keyup', function(e) {
         if (e.which === 13) {
-            document.getElementById('save').click();
+            saveButton.click();
         }
     });
+    inputField.focus();
 
-    // Add input project, project name, & project header to project
-    pProjectName.appendChild(inputProjectName);
-    divProjectHeader.appendChild(pProjectName);
-    divProject.appendChild(divProjectHeader);
+    title.appendChild(inputField);
+    header.appendChild(title);
+    project.appendChild(header);
 
-    projects.appendChild(divProject);
-    inputProjectName.focus();
+    projects.appendChild(project);
 
-    // Add 'Empty' and 'Star' icons
-    var thisProjectIndex = inputs.length - 1;
-    addEmpty(thisProjectIndex);
-    addStar(thisProjectIndex);
+    return project;
+}
+
+function createProject() {
+    var inputTags = document.getElementsByTagName('input'),
+        saveButton = document.getElementById('save'),
+        project, projectIndex;
+
+    project = buildProjectShell(project);
+
+    projectIndex = inputTags.length - 1;
+    addEmptyAndStarIcons(projectIndex);
 
     saveButton.style.display = 'block'; // Show save button
 }
 
-/*-------------------------------------------------------------------
-********* SAVE NEW PROJECTS
--------------------------------------------------------------------*/
+function addEmptyAndStarIcons(projectIndex) {
+    addEmpty(projectIndex);
+    addStar(projectIndex);
+}
+
+
 function saveNewProjects() {
-    var newProjects = $('.newproject');
+    var newProjects = document.getElementsByClassName('newproject'),
+        inputTags = document.getElementsByTagName('input'),
+        saveButton = document.getElementById('save'),
+        createdProject;
 
     chrome.storage.local.get(null, function(items) {
         for (var i = 0; i < newProjects.length; i++) {
-            var createdProject = {
-                'name': newProjects.eq(i).val(),
+            createdProject = {
+                'name': newProjects[i].value,
                 'questions': []
             };
 
             items.projects.push(createdProject);
-            $(".newproject").eq(i).removeClass("newproject");
+            newProjects[i].classList.remove('newproject');
         }
 
         chrome.storage.local.set(items);
     });
 
-    colorHeaders(); // color all of the new projects too
+    clearNewProjectUI();
+}
 
+function clearNewProjectUI() {
+    colorHeaders();
+    disableInputFields();
     saveButton.style.display = 'none';
+}
 
-    // disable all input fields
-    for (var j = 0; j < inputs.length; j++) {
-        inputs[j].disabled = true;
+function disableInputFields() {
+    var inputTags = document.getElementsByTagName('input');
+
+    for (var i = 0; i < inputTags.length; i++) {
+        inputTags[i].disabled = true;
     }
 }
 
-/*-------------------------------------------------------------------
-********* EDIT PROJECTS
--------------------------------------------------------------------*/
-// This will hold our current question IDs in their order
-var questions = [];
 
 function editProjects() {
-    // Switch button shown from edit --> save button
+    var originalQuestionOrder = [];
+
+    enterEditProjectUI();
+    makeProjectHeadersEditable();
+    makeQuestionsDraggable();
+    removeDoubleClickToHideQuestions();
+    removeDeleteAndGotoIcons();
+
+    // Save a list of the questions' ID values so we know their ordering
+    originalQuestionOrder = createListOfQuestionIDs();
+}
+
+function enterEditProjectUI() {
+    var editButton = document.getElementById('edit'),
+        saveEditsButton = document.getElementById('saveEdits');
+
     editButton.style.display = 'none';
     saveEditsButton.style.display = 'block';
     saveEditsButton.style.left = '160px';
+}
+
+function makeProjectHeadersEditable() {
+    var inputTags = document.getElementsByTagName('input'),
+        saveEditsButton = document.getElementById('saveEdits');
 
     // Make all of the project headers, except for 'Unsorted' editable
-    for (var i = 1; i < inputs.length; i++) {
-        inputs[i].disabled = false;
-        inputs[i].addEventListener('keyup', function(e) {
+    for (var i = 1; i < inputTags.length; i++) {
+        inputTags[i].disabled = false;
+        inputTags[i].addEventListener('keyup', function(e) {
             if (e.which == 13) {
                 saveEditsButton.click();
                 this.disabled = true;
             }
         });
     }
-    
-    var questionTitles = document.getElementsByClassName('questionTitle');
-    var titles = document.getElementsByClassName('title');
+}
 
-    for (var j = 0; j < questionTitles.length; j++) {
-        questionTitles[j].removeEventListener('click');
-        questionTitles[j].style.cursor = 'move'; // Indicate that questions are draggable
-        questionTitles[j].draggable = true; // Make questions draggable
-
-        titles[j].removeEventListener('click');
-        titles[j].style.cursor = 'move'; // Indicate that questions are draggable
-        titles[j].draggable = true; // Make questions draggable
-    }
-
-    $(".questions").sortable({
+function makeQuestionsDraggable() {
+    $(".question").sortable({
         connectWith: '.questions'
     });
+}
 
-    // Make it so that double clicking on a header title won't hide all questions
-    for (var k = 0; k < project.length; k++) {
-        project[k].removeEventListener('dblclick');
-    }
+function makeQuestionsLookDraggable() {
+    var question = document.getElementsByClassName('questionTitle'),
+        divider = document.getElementsByClassName('title');
 
-    // Remove the current 'go to' & 'delete' buttons
-    $(".deleteIcon").remove();
-    $(".goToIcon").remove();
-    for (var l = 0; l < deleteIcons.length; l++) {
-        console.log(l);
-        deleteIcons[l].parentNode.removeChild(deleteIcons[l]);
-        goToIcons[l].parentNode.removeChild(goToIcons[l]);
-    }
+    for (var i = 0; i < question.length; i++) {
+        question[i].removeEventListener('click');
+        question[i].style.cursor = 'move';
+        question[i].draggable = true;
 
-    // Save a list of the questions' ID values so we know their ordering
-    questions = []; // reset the array of ID values
-    var questionNum = 0 ; // init
-    var questionses = document.getElementsByClassName('questions');
-    var ourQuestions = document.getElementsByClassName('question');
-
-    for (var m = 0; m < questionses.length; m++) {
-        questions.push([]);
-        for (var n = 0; n < questionses[m].children.length; n++, questionNum++) {
-            ourQuestions[questionNum].id = m + ',' + n; // to make it easier, let's just assign it an integer
-            questions[m].push([m, n]);
-        }
+        divider[i].removeEventListener('click');
+        divider[i].style.cursor = 'move';
+        divider[i].draggable = true;
     }
 }
+
+function removeDoubleClickToHideQuestions() {
+    var projects = document.getElementsByClassName('project');
+
+    for (var i = 0; i < projects.length; i++) {
+        projects[i].removeEventListener('dblclick');
+    }
+}
+
+function removeDeleteAndGotoIcons() {
+    $('.deleteIcon, .goToIcon').remove();
+}
+
+function createListOfQuestionIDs() {
+    var currentQuestionOrder = [],
+        questionNumber = 0,
+        groupsOfQuestions = document.getElementsByClassName('questions'),
+        questions = document.getElementsByClassName('question');
+
+    for (var i = 0; i < groupsOfQuestions.length; i++) {
+        currentQuestionOrder.push([]);
+
+        for (var j = 0; j < groupsOfQuestions[i].children.length; j++, questionNumber++) {
+            questions[questionNumber].id = i + ',' + j;
+            currentQuestionOrder[i].push([i, j]);
+        }
+    }
+
+    return currentQuestionOrder;
+}
+
 
 /*-------------------------------------------------------------------
 ********* SAVE EDITS TO PROJECTS
@@ -205,7 +240,7 @@ function saveEdits() {
         for (var n = 0; n < item.projects.length; n++) {
             item.projects[n].questions = newQuestions[n];
         }
-        
+
         // Set the reordered projects...
         chrome.storage.local.set(item);
     });
