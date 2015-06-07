@@ -1,8 +1,4 @@
-/////////////// GLOBAL VARIABLES
-var aTag = document.getElementsByTagName('a');
-var pTag = document.getElementsByTagName('p');
 var questionHolder = document.getElementsByClassName('questions');
-
 
 
 function getProjects() {
@@ -16,15 +12,12 @@ function getProjects() {
 
 			if (i === 0) {
 				divHelper.parentNode.insertBefore(project, divHelper.nextSibling);
-
 				project.addEventListener("load", colorHeaders(), addUnsortedEmpty(i), addStar(i));
 			} else {
 				lastProject.parentNode.insertBefore(project, lastProject.nextSibling);
-
-				// Execute functions that will [1] change header color, [2] add empty icon, [3] add star icon
 				project.addEventListener("load", colorHeaders(),
-												    addIcon(i),
-												    addStar(i));
+												 addIcon(i),
+												 addStar(i));
 			}
 		}
 
@@ -42,9 +35,7 @@ function createProjectShell(name) {
 	project.classList.add('project');
 
 	header.classList.add('projectHeader');
-	header.addEventListener('dblclick', function() {
-		toggleQuestionsVisibility();
-	});
+	header.addEventListener('dblclick', toggleNext);
 
 	title.classList.add('projectTitle', 'addIcons');
 	inputField.value = name;
@@ -60,103 +51,103 @@ function createProjectShell(name) {
 	return project;
 }
 
-function toggleQuestionsVisibility(header) {
-	if (this.nextElementSibling.style.display === 'none') {
-		this.nextElementSibling.style.display = "block";
-	} else {
+function toggleNext() {
+	if (this.nextElementSibling.style.display !== 'none') {
 		this.nextElementSibling.style.display = "none";
+	} else {
+		this.nextElementSibling.style.display = "block";
 	}
 }
 
 
 
-/*-------------------------------------------------------------------
-********* GET QUESTIONS
-Load in the questions for each of our projects.
--------------------------------------------------------------------*/
 function getProjectQuestions() {
 	chrome.storage.local.get(null, function(items) {
-		// Keep track of the total number of questions
-		var onThisQuestion = 0;
+		var questionNumber = 0;
 
-		// Iterate through the projects
 		for (var i = 0; i < items.projects.length; i++) {
-			// Iterate through the questions
-			for (var j = 0; j < items.projects[i].questions.length; j++, onThisQuestion++) {
-				/////////////// DATA INPUT PREPARATION
-				// Prepare the data that we'll display to the user.
-				var question = items.projects[i].questions[j].question;
-				var link = items.projects[i].questions[j].link;
-				var answer = items.projects[i].questions[j].answer;
-				var upvotes = items.projects[i].questions[j].upvotes;
+			for (var j = 0; j < items.projects[i].questions.length; j++, questionNumber++) {
+				var question = items.projects[i].questions[j].question,
+					link = items.projects[i].questions[j].link,
+					answer = items.projects[i].questions[j].answer,
+					upvotes = items.projects[i].questions[j].upvotes;
 
-				/////////////// DISPLAY THE DATA TO THE USER
-				// Create the dividers to display the data.
-				displayQuestionData(i, j, onThisQuestion, question, link, answer, upvotes);
+				displayQuestionData(i, j, questionNumber, question, link, answer, upvotes);
 			}
 		}
 
-		// Add open in new tab property to every <a>
-		for (var k = 0; k < aTag.length; k++ ) {
-			aTag[k].target = '_blank';
-		}
-
-		//get rid of empty <p> tags
-		for (var l = 0; l < pTag.length; l++) {
-			if (pTag[l].innerHTML.replace(/\s|&nbsp;/g, '').length === 0) {
-				pTag[l].parentNode.removeChild(pTag[l]);
-			}
-		}
+		setLinksToTargetBlank();
+		deleteEmptyParagraphTags();
 	});
+}
+
+function setLinksToTargetBlank() {
+	var links = document.getElementsByTagName('a');
+
+	for (var i = 0; i < links.length; i++) {
+		links[i].target = '_blank';
+	}
+}
+
+function deleteEmptyParagraphTags() {
+	var paragraphs = document.getElementsByTagName('p');
+
+	for (var i = 0; i < paragraphs.length; i++) {
+		if (paragraphs[i].innerHTML.replace(/\s|&nbsp;/g, '').length === 0) {
+			paragraphs[i].parentNode.removeChild(paragraphs[i]);
+		}
+	}
+}
+
+function createGoToIcon() {
+	var goToIcon = document.createElement('img');
+	goToIcon.classList.add('icon', 'goToIcon');
+	goToIcon.src = 'images/go.svg';
+
+	return goToIcon;
+}
+
+function createDeleteIcon() {
+	var deleteIcon = document.createElement('img');
+	deleteIcon.src = '/images/delete.svg';
+	deleteIcon.classList.add('icon', 'deleteIcon');
+
+	return deleteIcon;
 }
 
 /*-------------------------------------------------------------------
 ********* DISPLAY QUESTION DATA
 This header is used to denote a function.
 -------------------------------------------------------------------*/
-function displayQuestionData (i, j, onThisQuestion, question, link, answer, upvotes) {
-	/////////////// ADD QUESTION
-	// Questions > Question Divider > [Title Divider > Title ] & [Answer]
+function displayQuestionData (i, j, questionNumber, question, link, answer, upvotes) {
+	var questions = document.getElementsByClassName('question'),
+		questionDivider = document.createElement('div'),
+		titleDivider = document.createElement('div'),
+		questionParagraph = document.createElement('p'),
+		linkToQuestion = document.createElement('a'),
+		goToIcon = createGoToIcon(),
+		deleteIcon = createDeleteIcon();
 
-	// Question divider
-	var divQuestion = document.createElement('div');
-	divQuestion.classList.add('question');
-	divQuestion.id = 'question' + i + '_' + j;
-	questionHolder[i].appendChild(divQuestion); // Add to all questions
+	questionDivider.classList.add('question');
+	questionDivider.id = 'question' + i + '_' + j;
+	questionHolder[i].appendChild(questionDivider); // Add to all questions
 
-	// Question title's divider
-	var divTitle = document.createElement('div');
-	divTitle.classList.add('title');
-	divTitle.id = 'title' + i + '_' + j;
+	titleDivider.classList.add('title');
+	titleDivider.id = 'title' + i + '_' + j;
 
-	// Question title
-	var pQuestionTitle = document.createElement('p');
-	pQuestionTitle.classList.add('questionTitle');
-	pQuestionTitle.innerHTML = question;
-	divTitle.appendChild(pQuestionTitle);
+	questionParagraph.classList.add('questionTitle');
+	questionParagraph.innerHTML = question;
+	titleDivider.appendChild(questionParagraph);
 
-	// 'Goto' icon
-	var goToIcon = document.createElement('img');
-	goToIcon.classList.add('icon', 'goToIcon');
-	goToIcon.src = 'images/go.svg';
-
-	// Link the 'Goto' icon & then add the question link to the Title divider
-	var questionLink = document.createElement('a');
-	questionLink.href = link;
-	questionLink.appendChild(goToIcon);
-	divTitle.appendChild(questionLink);
+	linkToQuestion.href = link;
+	linkToQuestion.appendChild(goToIcon);
+	titleDivider.appendChild(linkToQuestion);
 
 	// When you click on a question, its answer's display will be toggled
-	divTitle.addEventListener("click", function() {
-		if (this.nextElementSibling.style.display === 'none') {
-			this.nextElementSibling.style.display = "block";
-		} else {
-			this.nextElementSibling.style.display = "none";
-		}
-	});
+	titleDivider.addEventListener("click", toggleNext);
 
 	var destinationQuestion = document.getElementById('question' + i + '_' + j);
-	destinationQuestion.appendChild(divTitle);
+	destinationQuestion.appendChild(titleDivider);
 
 	/////////////// ADD ANSWER
 	// Answer divider
@@ -174,18 +165,10 @@ function displayQuestionData (i, j, onThisQuestion, question, link, answer, upvo
 	var pUpvotes = document.createElement('p');
 	pUpvotes.classList.add('upvotes');
 	pUpvotes.innerHTML = upvotes;
-	pUpvotes.style.top = 0;
-	pUpvotes.style.right = '5px';
 	center.appendChild(pUpvotes);
 	divAnswer.appendChild(center);
 
-	// Add answer to the question it belongs to
 	destinationQuestion.appendChild(divAnswer);
-
-	// Create & add delete icon to question
-	var deleteIcon = document.createElement('img');
-	deleteIcon.src = '/images/delete.svg';
-	deleteIcon.classList.add('icon', 'deleteIcon');
 
 	// When you press the 'delete' Icon, the question is removed from the storage and from view
 	deleteIcon.addEventListener("click", function() {
@@ -196,5 +179,5 @@ function displayQuestionData (i, j, onThisQuestion, question, link, answer, upvo
 		});
 	});
 
-	document.getElementsByClassName('title')[onThisQuestion].appendChild(deleteIcon);
+	document.getElementsByClassName('title')[questionNumber].appendChild(deleteIcon);
 }

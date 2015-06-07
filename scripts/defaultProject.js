@@ -9,6 +9,7 @@ function addStarEventListeners(star) {
         this.src = 'images/star-chosen.svg';
 
         var helperText = createHelperText("Make default project");
+        helperText.style.left = left - 16 + "px";
 
         if (index !== 0) {
             addHelperTextRelativeToUnsorted(helperText);
@@ -37,8 +38,11 @@ function createHelperText(text) {
     var helperText = document.createElement('p');
     helperText.textContent = text;
     helperText.classList.add('helperText');
-    helperText.style.left = left - 16 + "px";
 
+    helperText.addEventListener('mouseout', function() {
+        removeHelperText();
+    });
+    
     return helperText;
 }
 
@@ -60,6 +64,7 @@ function addStar(index) {
 
 function hoverChosenStar(currentDefault) {
     var unsortedEmptyIcon = document.getElementById("emptyUnsorted"),
+        projectHeaders = document.getElementsByClassName('projectHeader'),
         top = starIcons[currentDefault].getBoundingClientRect().top,
         left = starIcons[currentDefault].getBoundingClientRect().left,
         height = projectHeaders[currentDefault].offsetHeight,
@@ -67,6 +72,7 @@ function hoverChosenStar(currentDefault) {
 
     var helperText = createHelperText("This is the default project");
     helperText.style.top = top - topOffset + height + 18 + "px";
+    helperText.style.left = left - 16 + "px";
     document.body.appendChild(helperText);
 }
 
@@ -106,10 +112,17 @@ function showDefaultProject() {
 
 function replaceStarWithFunctionlessStar() {
     var chosenStar = document.createElement('img'),
-        projectsToAddIconsTo = document.getElementsByClassName('addIcons');
+        projectsToAddIconsTo = document.getElementsByClassName('addIcons'),
+        currentDefaultProject;
+
 
     chosenStar.src = 'images/star-chosen.svg';
     chosenStar.classList.add('star');
+
+
+    chrome.storage.local.get(null, function(item) {
+        currentDefaultProject = item.settings.defaultProject;
+    });
 
     // Set activities that'll occur upon user hover
     chosenStar.addEventListener('mouseenter', function() {hoverChosenStar(currentDefaultProject);}, false);

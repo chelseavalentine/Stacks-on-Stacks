@@ -28,7 +28,7 @@ function createNewQuestion(link, question, answer, upvotes) {
 	if (!isDuplicateQuestion) {
 		item.projects[currentDefaultProject].questions.push(newQuestion);
 		chrome.storage.local.set(item);
-	}	
+	}
 }
 
 function removeNewLineCharacters(string) {
@@ -47,8 +47,6 @@ function checkWhetherQuestionExists(newQuestion) {
 				break;
 			}
 		}
-
-		
 	});
 
 	return isDuplicateQuestion;
@@ -102,6 +100,7 @@ function addLineBeforeStandaloneComments(comments) {
 
 function addLineAfterCommentIfCodeNext(comments) {
 	var br, nextIsPLN;
+	
 	for (var i = 0; i < comments.length; i++) {
 		nextIsPLN = false;
 		br = document.createElement('br');
@@ -131,7 +130,7 @@ function addLineAfterSemicolons(statements) {
 		br = document.createElement('br');
 		br.classList.add('br');
 		hasSemicolon = statements[i].textContent.indexOf(';') > -1;
-		
+
 		if (statements[i].nextSibling !== null) {
 			if (statements[i].nextSibling.nextSibling !== null) {
 				nextIsComment = statements[i].nextElementSibling.nextElementSibling.classList.contains('com');
@@ -176,7 +175,7 @@ function addLineBeforeEmptyBlocks(whitespaces) {
 		} else {
 			nextIsBracket = false;
 		}
-		
+
 		if (whitespaces[i].previousSibling !== null) {
 			prevIsBR = (whitespaces[i].previousElementSibling.classList.contains('br'));
 		} else {
@@ -193,7 +192,7 @@ function addLineBeforeTabs(whitespaces) {
 	var br, isSmIndent, nextIsComment, prevIsComment, prevIsBR;
 
 	for (var i = 0; i < whitespaces.length; i++) {
-		// Except if the next/prev block is a comment, or the previous block is an break 
+		// Except if the next/prev block is a comment, or the previous block is an break
 		br = document.createElement('br');
 		br.classList.add('br');
 
@@ -223,6 +222,9 @@ function addLineBeforeTabsWithinBlocks(whitespaces) {
 	var br, isLgIndent, nextIsComment, prevIsBR, prevIsString;
 
 	for (var i = 0; i < whitespaces.length; i++) {
+		br = document.createElement('br');
+		br.classList.add('br');
+
 		// Unless previous block is a break or string
 		isLgIndent = ( whitespaces[i].textContent.indexOf('    ') > -1 );
 
@@ -231,8 +233,6 @@ function addLineBeforeTabsWithinBlocks(whitespaces) {
 			isLgIndent = (isLgIndent && !nextIsComment); // We only want it to register this as a large indent if the next block isn't a comment
 		}
 
-		br = document.createElement('br');
-		br.classList.add('br');
 		if (whitespaces[i].previousSibling !== null) {
 			prevIsBR = (whitespaces[i].previousSibling.classList.contains('br'));
 			prevIsString = ( whitespaces[i].previousElementSibling.classList.contains('str') );

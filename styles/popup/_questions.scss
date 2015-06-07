@@ -89,6 +89,8 @@
   .answer {
     background-color: $white;
     display: none;
+    margin-right: auto;
+    margin-left: auto;
     max-height: 250px;
     overflow-y: scroll;
     padding-top: 5px;
@@ -104,6 +106,8 @@
       padding-left: 3px;
       padding-right: 3px;
       position: absolute;
+      right: 5px;
+      top: 0;
       width: fit-content;
 
       :hover {
