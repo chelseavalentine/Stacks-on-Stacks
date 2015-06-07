@@ -49,7 +49,9 @@ function addHelperTextRelativeToUnsorted(helperText) {
 }
 
 function addStar(index) {
-    var star = createStarIcon();
+    var star = createStarIcon(),
+        projectsToAddIcons = document.getElementsByClassName('addIcons');
+    
     addStarEventListeners(star);
     projectsToAddIcons[index].appendChild(star);
 }

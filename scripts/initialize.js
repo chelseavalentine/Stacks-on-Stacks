@@ -6,16 +6,15 @@
 
 
 function settingsInit() {
-	chrome.storage.local.gept('settings', function(item) {
-		if (Object.keys(item).length === 0) { // initialize storage
+	chrome.storage.local.get('settings', function(item) {
+		if (Object.keys(item).length === 0) {
 			chrome.storage.local.set({
-				// Set 'unsorted' as the default project that things will be added to
 				'settings':{
 					'defaultProject': 0
 				}
 			});
 
-			window.location.href = window.location.href; // Refresh window.
+			window.location.href = window.location.href;
 		}
 	});
 }
@@ -23,7 +22,7 @@ function settingsInit() {
 
 function projectsInit() {
 	chrome.storage.local.get('projects', function(item) {
-		if (Object.keys(item).length === 0) { // initialize storage
+		if (Object.keys(item).length === 0) {
 			chrome.storage.local.set({
 				'projects':[{
 					'name': 'Unsorted',
@@ -32,10 +31,11 @@ function projectsInit() {
 			}, function(){
 				console.log('The projects have been initialized.');
 			});
-			window.location.href = window.location.href; // Refresh window.
-		} else { // projects exist
-			getProjects(); // load in the projects
-			getAllLinks(); // load in the projects' links
+
+			window.location.href = window.location.href;
+		} else {
+			getProjects();
+			getProjectQuestions();
 		}
 	});
 }

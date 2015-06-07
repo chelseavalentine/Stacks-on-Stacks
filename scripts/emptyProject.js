@@ -1,9 +1,9 @@
 function addUnsortedEmpty(projectIndex) {
-    var emptyUnsortedIcon = createUnsortedsEmptyIcon();
+    var emptyUnsortedIcon = createEmptyIcon();
     emptyUnsortedIcon.id = 'emptyUnsorted';
 
-    projectsToAddIcons[projectIndex].appendChild(emptyIcon);
-    addEmptyIconEventListeners(projectIndex);
+    projectsToAddIcons[projectIndex].appendChild(emptyUnsortedIcon);
+    addEmptyIconEventListeners(emptyUnsortedIcon, projectIndex);
 }
 
 function createEmptyIcon() {
@@ -14,14 +14,15 @@ function createEmptyIcon() {
     return emptyIcon;
 }
 
-function addEmptyIconEventListeners(projectIndex) {
-    emptyUnsortedIcon.addEventListener('mouseenter', function() { changeEmptyIconUponHover(projectIndex); }, false);
-    emptyUnsortedIcon.addEventListener('mouseout', function() { restoreEmptyIconOffHover(projectIndex); }, false);
-    emptyUnsortedIcon.addEventListener('click', function() { emptyProject(projectIndex); }, false);
+function addEmptyIconEventListeners(icon, projectIndex) {
+    icon.addEventListener('mouseenter', function() { changeEmptyIconUponHover(projectIndex); }, false);
+    icon.addEventListener('mouseout', function() { restoreEmptyIconOffHover(projectIndex); }, false);
+    icon.addEventListener('click', function() { emptyProject(projectIndex); }, false);
 }
 
 function addEmpty(projectIndex) {
-    var emptyIcon = createEmptyIcon();
+    var emptyIcon = createEmptyIcon(),
+        projectsToAddIcons = document.getElementsByClassName('addIcons');
     projectsToAddIcons[projectIndex].appendChild(emptyIcon);
     addEmptyIconEventListeners(projectIndex);
 }
@@ -58,64 +59,96 @@ function restoreEmptyIconOffHover(projectIndex) {
 
 
 
-
 function emptyProject(projectIndex) {
     chrome.storage.local.get(null, function(item) {
-        var projectName = item.projects[projectIndex].name,
-        var coverup = document.createElement('div'); // A dark black semi-opaque background that goes behind modal
-        coverup.classList.add('cover');
-
-        document.body.appendChild(coverup);
-
-        // Add modal asking for deletion confirmation
-        var modal = document.createElement('div');
-        modal.classList.add('modal');
-        modal.innerHTML = '<p><center id="modalCenter">Are you sure you want to delete <i>' + projectName + '</i>?<br><br></center></p>';
-        document.body.appendChild(modal);
-
-        var modals = document.getElementsByClassName('modal')[0];
-        var deleteButton = document.createElement('button');
-        deleteButton.classList.add('confirmProjectDelete', 'flatButton');
-        deleteButton.innerHTML = 'DELETE';
-        deleteButton.addEventListener("click", function () {
-            coverup.parentNode.removeChild(coverup);
-            modals.parentNode.removeChild(modals);
-
-            //Change behavior depending on whether this is the 'Unsorted' project
-            var questions = document.getElementsByClassName('questions');
-
-            if (projectIndex === 0) {
-                var numQuestions = item.projects[0].questions.length;
-
-                //Clear all of the questions
-                item.projects[0].questions.splice(0, numQuestions);
-                questions[0].innerHTML = '';
-
-                chrome.storage.local.set(item);
-            } else {
-                // Delete the project
-                item.projects.splice(projectIndex, 1);
-
-                chrome.storage.local.set(item);
-
-                // Visually delete the project from view & recolor headers
-                var ourProjects = document.getElementsByClassName('project');
-                ourProjects[projectIndex].parentNode.removeChild(ourProjects[projectIndex]);
-                colorHeaders();
-
-                window.location.href = window.location.href; // refresh the page
-            }
-        });
-        modalCenter = document.getElementById('modalCenter');
-        modalCenter.appendChild(deleteButton);
-
-        var keepButton = document.createElement('button');
-        keepButton.classList.add('confirmKeep', 'flatButton');
-        keepButton.innerHTML = 'NO';
-        keepButton.addEventListener("click", function () {
-            coverup.parentNode.removeChild(coverup);
-            modals.parentNode.removeChild(modals);
-        });
-        modalCenter.appendChild(keepButton);
+        var projectName = item.projects[projectIndex].name;
+        
+        addDarkScreen();
+        createModal("Are you sure that you want to delete <i>" + projectName + "</i>?");
+        addDeleteOption(projectIndex);
+        addKeepOption();    
     });
+}
+
+function addDarkScreen() {
+    var darkScreen = document.createElement('div');
+    darkScreen.classList.add('cover');
+    document.body.appendChild(darkScreen);
+}
+
+function createModal(message) {
+    var modal = document.createElement('div');
+    modal.classList.add('modal');
+    modal.innerHTML = '<p><center id="modalCenter">' + message + '<br><br></center></p>';
+    document.body.appendChild(modal);
+}
+
+function addDeleteOption(projectIndex) {
+    var deleteButton = document.createElement('button'),
+        modalCenter = document.getElementById('modalCenter');
+    deleteButton.classList.add('confirmProjectDelete', 'flatButton');
+    deleteButton.innerHTML = 'DELETE';
+
+    deleteButton.addEventListener('click', function() {
+        removeModalAndDarkScreen();
+
+        if (projectIndex === 0) {
+            clearProjectQuestions();
+        } else {
+            deleteProject(projectIndex);
+        }
+    });
+
+    modalCenter.appendChild(deleteButton);
+}
+
+function removeModalAndDarkScreen() {
+    var darkScreen = document.getElementsByClassName('cover')[0],
+        modal = document.getElementsByClassName('modal')[0];
+
+    darkScreen.parentNode.removeChild(darkScreen);
+    modal.parentNode.removeChild(modal);
+}
+
+function clearProjectQuestions() {
+    var questions = document.getElementsByClassName('questions'),
+        numberOfQuestions;
+
+    chrome.storage.local.get(null, function(item) {
+        numberOfQuestions = item.projects[0].questions.length;
+        item.projects[0].questions.splice(0, numberOfQuestions);
+        questions.innerHTML = '';
+
+        chrome.storage.local.set(item);
+    });
+}
+
+function deleteProject(projectIndex) {
+    chrome.storage.local.get(null, function(item) {
+        item.projects.splice(projectIndex, 1);
+
+        chrome.storage.local.set(item);
+        deleteProjectVisually(projectIndex);
+    });
+}
+
+function deleteProjectVisually(projectIndex) {
+    var projects = document.getElementsByClassName('project');
+    projects[projectIndex].parentNode.removeChild(projects[projectIndex]);
+    colorHeaders();
+
+    window.location.href = window.location.href;
+}
+
+function addKeepOption() {
+    var keepButton = document.createElement('button'),
+        modalCenter = document.getElementById('modalCenter');
+
+    keepButton.classList.add('confirmKeep', 'flatButton');
+    keepButton.innerHTML = 'NO';
+    keepButton.addEventListener("click", function () {
+        removeModalAndDarkScreen();
+    });
+
+    modalCenter.appendChild(keepButton);
 }

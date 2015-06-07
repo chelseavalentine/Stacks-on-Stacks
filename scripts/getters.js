@@ -2,142 +2,109 @@
 var aTag = document.getElementsByTagName('a');
 var pTag = document.getElementsByTagName('p');
 var questionHolder = document.getElementsByClassName('questions');
-var divHelper = document.getElementById('helpInsertProjects');
 
-/*===================================================================
----------------------------------------------------------------------
-* GET FROM THE STORAGE
--
-This checks whether individual data tables exist, and if they don't,
-it will create the data table for you. 
----------------------------------------------------------------------
-===================================================================*/
 
-/*-------------------------------------------------------------------
-********* GET PROJECTS
-Load in each of our projects. This will give us the dividers that
-our questions will get appended to.
--------------------------------------------------------------------*/
+
 function getProjects() {
-	return chrome.storage.local.get(null, function(items) {
-		if (!chrome.runtime.error) {
-			// Iterate through the projects in the storage
-			for (var i = 0; i < items.projects.length; i++) {
-				var name =  items.projects[i].name;
+	chrome.storage.local.get(null, function(items) {
+		for (var i = 0; i < items.projects.length; i++) {
+			var name =  items.projects[i].name,
+				project = createProjectShell(name),
+				divHelper = document.getElementById('helpInsertProjects'),
+				projects = document.getElementsByClassName('project'),
+				lastProject = projects[(projects.length - 1)];
 
-				/////////////// CREATE A PROJECT
-				// Project > (Project header > [Project Name > Input Project] & [Questions])
+			if (i === 0) {
+				divHelper.parentNode.insertBefore(project, divHelper.nextSibling);
 
-				// Project
-				var divProject = document.createElement('div');
-				divProject.classList.add('project');
+				project.addEventListener("load", colorHeaders(), addUnsortedEmpty(i), addStar(i));
+			} else {
+				lastProject.parentNode.insertBefore(project, lastProject.nextSibling);
 
-				// Project header
-				var divProjectHeader = document.createElement('div');
-				divProjectHeader.classList.add('projectHeader');
-				
-				// If you double click on the project header, the questions' visibility is toggled
-				divProjectHeader.addEventListener("dblclick", function() {
-					if (this.nextElementSibling.style.display === 'none') {
-						this.nextElementSibling.style.display = "block";
-					} else {
-						this.nextElementSibling.style.display = "none";
-					}
-				});
-
-				// Project name
-				var pProjectName = document.createElement('p');
-				pProjectName.classList.add('projectTitle', 'addIcons');
-
-				// Input project
-				var inputProjectName = document.createElement('input');
-				inputProjectName.value = name;
-				inputProjectName.disabled = true;
-				
-				// Add input project, project name, & project header to project
-				pProjectName.appendChild(inputProjectName);
-				divProjectHeader.appendChild(pProjectName);
-				divProject.appendChild(divProjectHeader);
-
-				// Questions
-				var divQuestions = document.createElement('div');
-				divQuestions.classList.add('questions');
-				divProject.appendChild(divQuestions);
-
-				/////////////// LOAD IN PROJECTS
-				// Load in 'Unsorted' project if index is 0. Else load in other projects.
-				if (i === 0) {
-					// Insert project after the helper divider
-					divHelper.parentNode.insertBefore(divProject, divHelper.nextSibling);
-
-					// Execute functions that will [1] change header color, [2] add empty icon, [3] add star icon
-					divProject.addEventListener("load", colorHeaders(), addUnsortedEmpty(i), addStar(i));
-				} else {
-					// Place the project after the current last project
-					var projects = document.getElementsByClassName('project');
-					var placing = projects[(projects.length - 1)]; // Get the last project in list of projects
-
-					// Place project after current last project
-					placing.parentNode.insertBefore(divProject, placing.nextSibling);
-
-					// Execute functions that will [1] change header color, [2] add empty icon, [3] add star icon
-					divProject.addEventListener("load", colorHeaders(), addEmpty(i), addStar(i));
-				}
+				// Execute functions that will [1] change header color, [2] add empty icon, [3] add star icon
+				project.addEventListener("load", colorHeaders(),
+												    addIcon(i),
+												    addStar(i));
 			}
-
-			showDefaultProject(); // visually represent the current place links are added to
 		}
+
+		showDefaultProject();
 	});
 }
+
+function createProjectShell(name) {
+	var project = document.createElement('div'),
+		header = document.createElement('div'),
+		title = document.createElement('p'),
+		inputField = document.createElement('input'),
+		questions = document.createElement('div');
+
+	project.classList.add('project');
+
+	header.classList.add('projectHeader');
+	header.addEventListener('dblclick', function() {
+		toggleQuestionsVisibility();
+	});
+
+	title.classList.add('projectTitle', 'addIcons');
+	inputField.value = name;
+	inputField.disabled = true;
+
+	title.appendChild(inputField);
+	header.appendChild(title);
+	project.appendChild(header);
+
+	questions.classList.add('questions');
+	project.appendChild(questions);
+
+	return project;
+}
+
+function toggleQuestionsVisibility(header) {
+	if (this.nextElementSibling.style.display === 'none') {
+		this.nextElementSibling.style.display = "block";
+	} else {
+		this.nextElementSibling.style.display = "none";
+	}
+}
+
+
 
 /*-------------------------------------------------------------------
 ********* GET QUESTIONS
 Load in the questions for each of our projects.
 -------------------------------------------------------------------*/
-function getAllLinks() {
-	return chrome.storage.local.get(null, function(items) {
-		if(!chrome.runtime.error) {
-			// Keep track of the total number of questions
-			var onThisQuestion = 0;
+function getProjectQuestions() {
+	chrome.storage.local.get(null, function(items) {
+		// Keep track of the total number of questions
+		var onThisQuestion = 0;
 
-			// Iterate through the projects
-			for (var i = 0; i < items.projects.length; i++) {
-				// Iterate through the questions
-				for (var j = 0; j < items.projects[i].questions.length; j++, onThisQuestion++) {
-					/////////////// DATA INPUT PREPARATION
-					// Prepare the data that we'll display to the user.
-					var question = items.projects[i].questions[j].question;
-					var link = items.projects[i].questions[j].link;
-					var answer = items.projects[i].questions[j].answer;
-					var upvotes = items.projects[i].questions[j].upvotes;
+		// Iterate through the projects
+		for (var i = 0; i < items.projects.length; i++) {
+			// Iterate through the questions
+			for (var j = 0; j < items.projects[i].questions.length; j++, onThisQuestion++) {
+				/////////////// DATA INPUT PREPARATION
+				// Prepare the data that we'll display to the user.
+				var question = items.projects[i].questions[j].question;
+				var link = items.projects[i].questions[j].link;
+				var answer = items.projects[i].questions[j].answer;
+				var upvotes = items.projects[i].questions[j].upvotes;
 
-					/////////////// DISPLAY THE DATA TO THE USER
-					// Create the dividers to display the data.
-					displayQuestionData(i, j, onThisQuestion, question, link, answer, upvotes);
-				}
+				/////////////// DISPLAY THE DATA TO THE USER
+				// Create the dividers to display the data.
+				displayQuestionData(i, j, onThisQuestion, question, link, answer, upvotes);
 			}
+		}
 
-			// Attach event handlers to make visual change when questions are hovered over
-			var questionDivs = document.getElementsByClassName('question');
-			var questionTitles = document.getElementsByClassName('questionTitle');
+		// Add open in new tab property to every <a>
+		for (var k = 0; k < aTag.length; k++ ) {
+			aTag[k].target = '_blank';
+		}
 
-			// for (var m = 0; m < questionDivs.length; m++) {
-			// 	questionDivs[m].addEventListener('mouseenter', function() {makeWhite();});
-			// 	questionDivs[m].addEventListener('mouseleave', function() {notWhite();});
-			// 	questionTitles[m].addEventListener('mouseenter', function() {makeWhite();});
-			// 	questionTitles[m].addEventListener('mouseleave', function() {notWhite();});
-			// }
-
-			// Add open in new tab property to every <a>
-			for (var k = 0; k < aTag.length; k++ ) {
-				aTag[k].target = '_blank';
-			}
-			
-			//get rid of empty <p> tags
-			for (var l = 0; l < pTag.length; l++) {
-				if (pTag[l].innerHTML.replace(/\s|&nbsp;/g, '').length === 0) {
-					pTag[l].parentNode.removeChild(pTag[l]);
-				}
+		//get rid of empty <p> tags
+		for (var l = 0; l < pTag.length; l++) {
+			if (pTag[l].innerHTML.replace(/\s|&nbsp;/g, '').length === 0) {
+				pTag[l].parentNode.removeChild(pTag[l]);
 			}
 		}
 	});
@@ -229,5 +196,5 @@ function displayQuestionData (i, j, onThisQuestion, question, link, answer, upvo
 		});
 	});
 
-	document.getElementsByClassName('title')[onThisQuestion].appendChild(deleteIcon);       
+	document.getElementsByClassName('title')[onThisQuestion].appendChild(deleteIcon);
 }

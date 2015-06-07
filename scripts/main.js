@@ -4,10 +4,6 @@ var emptyIcons = document.getElementsByClassName('empty');
 var projectsToAddIcons = document.getElementsByClassName('addIcons');
 
 
-// Element creations
-var coverup = document.createElement('div'); // A dark black semi-opaque background that goes behind modal
-coverup.classList.add('cover');
-
 function colorHeaders() {
 	var bgcolors = ['#00bcd4', '#ff436c', '#8bc34a', '#ff9800'],
 		projectHeaders = document.getElementsByClassName('projectHeader');

@@ -1,4 +1,4 @@
-function buildProjectShell(project) {
+function buildNewProjectShell(project) {
     var projects = document.getElementById('projects'),
         saveButton = document.getElementById('save'),
         header, title, inputField;
@@ -36,12 +36,12 @@ function createProject() {
         saveButton = document.getElementById('save'),
         project, projectIndex;
 
-    project = buildProjectShell(project);
+    project = buildNewProjectShell(project);
 
     projectIndex = inputTags.length - 1;
     addEmptyAndStarIcons(projectIndex);
 
-    saveButton.style.display = 'block'; // Show save button
+    saveButton.style.display = 'block';
 }
 
 function addEmptyAndStarIcons(projectIndex) {
@@ -97,7 +97,6 @@ function editProjects() {
     removeDoubleClickToHideQuestions();
     removeDeleteAndGotoIcons();
 
-    // Save a list of the questions' ID values so we know their ordering
     originalQuestionOrder = createListOfQuestionIDs();
 }
 
@@ -114,7 +113,6 @@ function makeProjectHeadersEditable() {
     var inputTags = document.getElementsByTagName('input'),
         saveEditsButton = document.getElementById('saveEdits');
 
-    // Make all of the project headers, except for 'Unsorted' editable
     for (var i = 1; i < inputTags.length; i++) {
         inputTags[i].disabled = false;
         inputTags[i].addEventListener('keyup', function(e) {
