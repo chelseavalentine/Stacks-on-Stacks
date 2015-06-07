@@ -1,64 +1,49 @@
-/*-------------------------------------------------------------------
-********* ADD 'UNSORTED' EMPTY ICON
--------------------------------------------------------------------*/
-function addUnsortedEmpty(projectPos) {
-    // Create unsorted's empty icons & add it to the 'Unsorted' project header
-    var emptyUnsortedIcon = document.createElement('img');
-    emptyUnsortedIcon.src = 'images/empty.svg';
-    emptyUnsortedIcon.classList.add('empty');
+function addUnsortedEmpty(projectIndex) {
+    var emptyUnsortedIcon = createUnsortedsEmptyIcon();
     emptyUnsortedIcon.id = 'emptyUnsorted';
-    projectsToAddIcons[projectPos].appendChild(emptyUnsortedIcon);
 
-    // Set activities that'll occur upon user hover & click
-    emptyUnsortedIcon.addEventListener('mouseenter', function() { changeEmptyIconStart(projectPos); }, false);
-    emptyUnsortedIcon.addEventListener('mouseout', function() { changeEmptyIconEnd(projectPos); }, false);
-    emptyUnsortedIcon.addEventListener('click', function() { emptyProject(projectPos); }, false);
+    projectsToAddIcons[projectIndex].appendChild(emptyIcon);
+    addEmptyIconEventListeners(projectIndex);
 }
 
-/*-------------------------------------------------------------------
-********* ADD EMPTY ICON
--------------------------------------------------------------------*/
-function addEmpty(projectPos) {
-    // Create unsorted's empty icons & add it to the 'Unsorted' project header
+function createEmptyIcon() {
     var emptyIcon = document.createElement('img');
     emptyIcon.src = 'images/empty.svg';
     emptyIcon.classList.add('empty');
-    projectsToAddIcons[projectPos].appendChild(emptyIcon);
-
-    // Set activities that'll occur upon user hover & click
-    emptyIcon.addEventListener('mouseenter', function() { changeEmptyIconStart(projectPos); }, false);
-    emptyIcon.addEventListener('mouseout', function() { changeEmptyIconEnd(projectPos); }, false);
-    emptyIcon.addEventListener('click', function() { emptyProject(projectPos); }, false);
+    
+    return emptyIcon;
 }
 
-/*-------------------------------------------------------------------
-********* Empty icon: Upon hover
-When you hover over an empty icon, change the image to the black 'x'
--------------------------------------------------------------------*/
-function changeEmptyIconStart(projectPos) {
-    emptyIcons[projectPos].src = 'images/empty-hover.svg'; // change to black 'x'
+function addEmptyIconEventListeners(projectIndex) {
+    emptyUnsortedIcon.addEventListener('mouseenter', function() { changeEmptyIconUponHover(projectIndex); }, false);
+    emptyUnsortedIcon.addEventListener('mouseout', function() { restoreEmptyIconOffHover(projectIndex); }, false);
+    emptyUnsortedIcon.addEventListener('click', function() { emptyProject(projectIndex); }, false);
+}
 
-    // Initialize variables
-    var top = emptyIcons[projectPos].getBoundingClientRect().top;
-    var left = emptyIcons[projectPos].getBoundingClientRect().left;
-    
-    var height = projectHeaders[0].offsetHeight; // Get the height of a projectHeader
-    var topOffset = 0;
+function addEmpty(projectIndex) {
+    var emptyIcon = createEmptyIcon();
+    projectsToAddIcons[projectIndex].appendChild(emptyIcon);
+    addEmptyIconEventListeners(projectIndex);
+}
 
-    // Create helper text
-    var helperText = document.createElement('p');
-    helperText.classList.add('helperText');
+function changeEmptyIconUponHover(projectIndex) {
+    var emptyIcons = document.getElementsByClassName('empty'),
+        projectHeaders = document.getElementsByClassName('projectHeader'),
+        top = emptyIcons[projectIndex].getBoundingClientRect().top,
+        unsortedsEmptyIcon = document.getElementById("emptyUnsorted"),
+        left = emptyIcons[projectIndex].getBoundingClientRect().left,
+        height = projectHeaders[0].offsetHeight;
+        topOffset = 0;
+
+    emptyIcons[projectIndex].src = 'images/empty-hover.svg';
+
+    var helperText = createHelperText("Delete project");
     helperText.style.left = left - 4 + "px";
-    helperText.textContent = 'Delete project';
 
-    if (projectPos !== 0) {
-        var unsortedEmptyIcon = document.getElementById("emptyUnsorted");
-        topOffset = unsortedEmptyIcon.getBoundingClientRect().top; // get the Unsorted empty icon's offset from the top
-
-        // Position helper text
+    if (projectIndex !== 0) {
+        topOffset = unsortedsEmptyIcon.getBoundingClientRect().top;
         helperText.style.top = top - topOffset + height + 16 + "px";
     } else {
-        // Edit helper text before adding it to the page
         helperText.textContent = 'Empty this project';
         helperText.style.top = top - topOffset - 23 + "px";
     }
@@ -66,28 +51,20 @@ function changeEmptyIconStart(projectPos) {
     document.body.appendChild(helperText);
 }
 
-/*-------------------------------------------------------------------
-********* Empty icon: After hover
-When you stop hovering over the empty icon, image is a white 'x'
--------------------------------------------------------------------*/
-function changeEmptyIconEnd(projectPos) {
-    emptyIcons[projectPos].src = 'images/empty.svg';
+function restoreEmptyIconOffHover(projectIndex) {
+    emptyIcons[projectIndex].src = 'images/empty.svg';
     removeHelperText();
 }
 
 
 
-/*-------------------------------------------------------------------
-********* EMPTY/DELETE A PROJECT
-If the project is the 'Unsorted' project, clear the links. If it is 
-any other project, then delete the project entirely.
--------------------------------------------------------------------*/
-function emptyProject(projectPos) {
-    // Confirm deletion
-    chrome.storage.local.get(null, function(item) {
-        var projectName = item.projects[projectPos].name;
 
-        // Partially conceal the extension w/ a dark background
+function emptyProject(projectIndex) {
+    chrome.storage.local.get(null, function(item) {
+        var projectName = item.projects[projectIndex].name,
+        var coverup = document.createElement('div'); // A dark black semi-opaque background that goes behind modal
+        coverup.classList.add('cover');
+
         document.body.appendChild(coverup);
 
         // Add modal asking for deletion confirmation
@@ -107,7 +84,7 @@ function emptyProject(projectPos) {
             //Change behavior depending on whether this is the 'Unsorted' project
             var questions = document.getElementsByClassName('questions');
 
-            if (projectPos === 0) {
+            if (projectIndex === 0) {
                 var numQuestions = item.projects[0].questions.length;
 
                 //Clear all of the questions
@@ -117,13 +94,13 @@ function emptyProject(projectPos) {
                 chrome.storage.local.set(item);
             } else {
                 // Delete the project
-                item.projects.splice(projectPos, 1);
+                item.projects.splice(projectIndex, 1);
 
                 chrome.storage.local.set(item);
 
                 // Visually delete the project from view & recolor headers
                 var ourProjects = document.getElementsByClassName('project');
-                ourProjects[projectPos].parentNode.removeChild(ourProjects[projectPos]);
+                ourProjects[projectIndex].parentNode.removeChild(ourProjects[projectIndex]);
                 colorHeaders();
 
                 window.location.href = window.location.href; // refresh the page
