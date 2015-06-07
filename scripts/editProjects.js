@@ -224,7 +224,7 @@ function saveProjectTitles() {
         }
 
         chrome.storage.local.set(item);
-    })
+    });
 }
 
 function saveNewQuestionOrder(newQuestionOrder) {

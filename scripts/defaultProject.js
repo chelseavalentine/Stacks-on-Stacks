@@ -1,87 +1,79 @@
-/*===================================================================
-***** SETTING AND VIEWING THE DEFAULT PROJECT
-===================================================================*/
-
-/*-------------------------------------------------------------------
-********* ADD STARS TO SET/SHOW DEFAULT PROJECT
--------------------------------------------------------------------*/
-function addStar(index) {
-    // Create the star icon
-    var star = document.createElement('img');
-    star.src = 'images/star.svg';
-    star.classList.add('star');
-
-    // Add the events to the star
-    star.addEventListener('click', function() {setDefault(index);}); // click
+function addStarEventListeners(star) {
+    star.addEventListener('click', function() {setDefault(index);});
     star.addEventListener('mouseenter', function() {
-        this.src = 'images/star-chosen.svg'; // change to filled in star
+        var top = starIcons[index].getBoundingClientRect().top,
+            left = starIcons[index].getBoundingClientRect().left,
+            height = projectHeaders[index].offsetHeight,
+            topOffset = 0;
 
-        // get position of empty icon so we can position helper text
-        var top = starIcons[index].getBoundingClientRect().top; // get the star's offset from the top
-        var left = starIcons[index].getBoundingClientRect().left; // get the star's offset from the left
+        this.src = 'images/star-chosen.svg';
 
-        var height = projectHeaders[index].offsetHeight; // get height of project header
-        var topOffset = 0;
-
-        // Create helper text
-        var helperText = document.createElement('p');
-        helperText.textContent = "Make default project";
-        helperText.classList.add('helperText');
-        helperText.style.left = left - 16 + "px";
+        var helperText = createHelperText("Make default project");
 
         if (index !== 0) {
-            // get X pos of emptyUnsorted icon to position helper texts relative to that
-            var unsortedEmptyIcon = document.getElementById("emptyUnsorted");
-            topOffset = unsortedEmptyIcon.getBoundingClientRect().top;
-
-            // Position helper text            
-            helperText.style.top = top - topOffset + height + 18 + "px";
+            addHelperTextRelativeToUnsorted(helperText);
         } else {
             helperText.style.top = top - topOffset - 21 + "px";
         }
+
         document.body.appendChild(helperText);
     });
+
     star.addEventListener('mouseleave', function() {
         this.src = 'images/star.svg';
         removeHelperText();
     });
+}
 
-    // Add the star to the project header
+function createStarIcon() {
+    var star = document.createElement('img');
+    star.src = 'images/star.svg';
+    star.classList.add('star');
+
+    return star;
+}
+
+function createHelperText(text) {
+    var helperText = document.createElement('p');
+    helperText.textContent = text;
+    helperText.classList.add('helperText');
+    helperText.style.left = left - 16 + "px";
+
+    return helperText;
+}
+
+function addHelperTextRelativeToUnsorted(helperText) {
+    var unsortedEmptyIcon = document.getElementById("emptyUnsorted");
+    topOffset = unsortedEmptyIcon.getBoundingClientRect().top;
+    helperText.style.top = top - topOffset + height + 18 + "px";
+}
+
+function addStar(index) {
+    var star = createStarIcon();
+    addStarEventListeners(star);
     projectsToAddIcons[index].appendChild(star);
 }
 
-/*-------------------------------------------------------------------
-********* SHOW NEW DEFAULT CHOICE: Upon hovering over star
-Display helper text to indicate the action that'll occur upon click
--------------------------------------------------------------------*/
+
+
 function hoverChosenStar(currentDefault) {
-    // Initialize variables
-    var unsortedEmptyIcon = document.getElementById("emptyUnsorted");
-    var top = starIcons[currentDefault].getBoundingClientRect().top; // get the star's offset from the top
-    var left = starIcons[currentDefault].getBoundingClientRect().left; // get the star's offset from the left
+    var unsortedEmptyIcon = document.getElementById("emptyUnsorted"),
+        top = starIcons[currentDefault].getBoundingClientRect().top,
+        left = starIcons[currentDefault].getBoundingClientRect().left,
+        height = projectHeaders[currentDefault].offsetHeight,
+        topOffset = unsortedEmptyIcon.getBoundingClientRect().top;
 
-    var height = projectHeaders[currentDefault].offsetHeight;
-    var topOffset = unsortedEmptyIcon.getBoundingClientRect().top; // get the Unsorted empty icon's offset from the top
-
-    // Create and style helper text, before adding it to the page
-    var helperText = document.createElement('p');
-    helperText.textContent = "This is the default project";
-    helperText.classList.add('helperText');
+    var helperText = createHelperText("This is the default project");
     helperText.style.top = top - topOffset + height + 18 + "px";
-    helperText.style.left = left - 16 + "px";
     document.body.appendChild(helperText);
 }
 
-/*-------------------------------------------------------------------
-********* SET DEFAULT PROJECT
-Change the project that links are automatically added to.
--------------------------------------------------------------------*/
+
+
 function setDefault(newDefault) {
     chrome.storage.local.get(null, function(item) {
-        // Hold on to the previous default project
         var prevDefault = item.settings.defaultProject;
 
-        // Replace the star of the previous default so that things happen when you hover, click, etc.
         $(".star").remove();
         removeHelperText();
         for (var i = 0; i < projectsToAddIcons.length; i++) {
@@ -90,37 +82,36 @@ function setDefault(newDefault) {
 
         showDefaultProject();
 
-        // Change the current default project to the user selection
         item.settings.defaultProject = newDefault;
         chrome.storage.local.set(item);
-    }); 
+    });
 }
 
-/*-------------------------------------------------------------------
-********* SHOW DEFAULT
-When projects are loaded in, show the project which is the default
-project that links are added into by replacing its star with a filled
-star that doesn't change to an unfilled star when hovered over.
--------------------------------------------------------------------*/
+
+
 function showDefaultProject() {
     chrome.storage.local.get(null, function(item) {
-        // get index of current default project
-        var currentDefault = item.settings.defaultProject;
+        var currentDefaultProject = item.settings.defaultProject,
+            starIcons = document.getElementsByClassName('star');
 
-        // remove the current star of the current project
-        starIcons[currentDefault].parentNode.removeChild(starIcons[currentDefault]);
+        starIcons[currentDefaultProject].parentNode.removeChild(starIcons[currentDefaultProject]);
 
-        /////////////// REPLACE IT WITH A FUNCTIONLESS STAR
-        // create the functionless star to be added to the body
-        var chosenStar = document.createElement('img');
-        chosenStar.src = 'images/star-chosen.svg';
-        chosenStar.classList.add('star');
+        var chosenStar = replaceStarWithFunctionlessStar(currentDefaultProject);
 
-        // Set activities that'll occur upon user hover
-        chosenStar.addEventListener('mouseenter', function() {hoverChosenStar(currentDefault);}, false);
-        chosenStar.addEventListener('mouseout', function() {removeHelperText();}, false);
-
-        // Add star to the body
-        projectsToAddIcons[currentDefault].appendChild(chosenStar);
+        projectsToAddIcons[currentDefaultProject].appendChild(chosenStar);
     });
+}
+
+function replaceStarWithFunctionlessStar() {
+    var chosenStar = document.createElement('img'),
+        projectsToAddIconsTo = document.getElementsByClassName('addIcons');
+
+    chosenStar.src = 'images/star-chosen.svg';
+    chosenStar.classList.add('star');
+
+    // Set activities that'll occur upon user hover
+    chosenStar.addEventListener('mouseenter', function() {hoverChosenStar(currentDefaultProject);}, false);
+    chosenStar.addEventListener('mouseout', function() {removeHelperText();}, false);
+
+    return chosenStar;
 }
