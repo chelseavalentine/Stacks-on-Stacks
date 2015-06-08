@@ -42,7 +42,7 @@ function createHelperText(text) {
     helperText.addEventListener('mouseout', function() {
         removeHelperText();
     });
-    
+
     return helperText;
 }
 
@@ -124,7 +124,6 @@ function replaceStarWithFunctionlessStar() {
         currentDefaultProject = item.settings.defaultProject;
     });
 
-    // Set activities that'll occur upon user hover
     chosenStar.addEventListener('mouseenter', function() {hoverChosenStar(currentDefaultProject);}, false);
     chosenStar.addEventListener('mouseout', function() {removeHelperText();}, false);
 

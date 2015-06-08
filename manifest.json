@@ -3,7 +3,7 @@
   "name": "Stacks on Stacks",
   "short_name": "Stacks",
   "description": "An extension optimized for StackOverflow. It will automatically store your StackOverflow tabs, so you can check them later.",
-  "version": "1.1",
+  "version": "1.5",
   "icons": {
     "128": "icon128.png"
   },
