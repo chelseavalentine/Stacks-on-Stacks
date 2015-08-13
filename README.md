@@ -4,6 +4,6 @@ A Chrome extension optimized for StackOverflow. It works in the background, savi
 
 You have the option to create projects to organize your links into logical groups, and rearrange and delete links.
 
-This chrome extension was first made at the TechCrunch Disrupt Hackathon on 5/2-5/3. We decided that we could actually find the extension useful, so it was polished after the hackathon and released.
+This chrome extension was first made at the TechCrunch Disrupt Hackathon on 5/2-5/3. We decided that we could actually find the extension useful, so it was polished after the hackathon.
 
-You can get the extension at the [Chrome Web store](https://chrome.google.com/webstore/detail/stacks-on-stacks/danbmmaoheepijndebbjcikhoflgadbj). You can check out the video of our [sleep-deprived demo at the TechCrunch Hackathon here](http://techcrunch.com/video/stacks-on-stacks/518803648/).
+You can check out the video of our [sleep-deprived demo at the TechCrunch Hackathon here](http://techcrunch.com/video/stacks-on-stacks/518803648/).
